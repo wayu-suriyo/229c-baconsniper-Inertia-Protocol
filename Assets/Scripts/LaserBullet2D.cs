@@ -37,7 +37,7 @@ public class LaserBullet2D : MonoBehaviour
             Destroy(other.gameObject);
         }
 
-        if (!other.CompareTag("GravityPad") && other.GetComponent<MagneticTrap>() == null)
+        if (other.GetComponent<MagneticTrap>() == null)
         {
             Destroy(gameObject);
         }
