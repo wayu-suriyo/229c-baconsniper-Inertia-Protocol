@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DroneHealth : MonoBehaviour
 {
@@ -30,8 +31,9 @@ public class DroneHealth : MonoBehaviour
 
     void Die()
     {
-        Debug.LogError("Drone Destroyed! (HP = 0)");
-        Destroy(gameObject);
+        Debug.LogError("🚨 Drone Destroyed! 💥 (HP = 0)");
+        // รีสตาร์ทด่าน
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
