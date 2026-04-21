@@ -1,0 +1,130 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+[RequireComponent(typeof(Rigidbody2D))]
+public class DroneController : MonoBehaviour
+{
+    [Header("Flight Settings")]
+    [Tooltip("แรงขับไอพ่น (ดันให้โดรนลอยขึ้น)")]
+    public float thrustForce = 35f;
+    [Tooltip("แรงบิดตอนเอียงซ้าย/ขวา")]
+    public float torqueForce = 15f;
+    [Tooltip("ความเร็วในการกลับมาตั้งตรงอัตโนมัติเมื่อปล่อยปุ่ม")]
+    public float autoLevelForce = 10f;
+
+    [Header("Physics Limits")]
+    [Tooltip("จำกัดความเร็วสูงสุดที่โดรนจะบินได้")]
+    public float maxSpeed = 15f;
+    [Tooltip("องศาที่อนุญาตให้เอียงได้มากสุด")]
+    public float maxTiltAngle = 70f;
+
+    private Rigidbody2D rb;
+    private float tiltInput = 0f;
+    private bool isThrusting = false;
+    private FuelSystem fuelSystem;
+    private PlayerInput playerInput;
+    private InputAction jumpAction;
+    private InputAction moveAction;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        fuelSystem = GetComponent<FuelSystem>();
+        playerInput = GetComponent<PlayerInput>();
+        
+        if (playerInput != null)
+        {
+            jumpAction = playerInput.actions["Jump"];
+            moveAction = playerInput.actions["Move"];
+        }
+
+        
+        rb.angularDamping = 3f; 
+        rb.linearDamping = 0.5f;      
+    }
+
+    void OnMove(InputValue value)
+    {
+        var obj = value.Get();
+        if (obj is Vector2 v2) {
+            tiltInput = -v2.x; 
+        } else if (obj is float f) {
+            tiltInput = -f; 
+        } else {
+            tiltInput = 0f;
+        }
+    }
+
+    void OnJump(InputValue value)
+    {
+        isThrusting = value.isPressed;
+    }
+
+    void FixedUpdate()
+    {
+        if (jumpAction != null) isThrusting = jumpAction.IsPressed();
+        if (moveAction != null) {
+            var v2 = moveAction.ReadValue<Vector2>();
+            tiltInput = -v2.x;
+        }
+
+        HandleTilt();
+        HandleThrust();
+        ClampVelocity();
+    }
+
+    private void HandleTilt()
+    {
+        float currentAngle = rb.rotation;
+        currentAngle = Mathf.DeltaAngle(0, currentAngle);
+
+        if (Mathf.Abs(tiltInput) > 0.1f)
+        {
+            float targetAngle = tiltInput * maxTiltAngle;
+            
+            float angleDifference = Mathf.DeltaAngle(currentAngle, targetAngle);
+            rb.AddTorque(angleDifference * torqueForce * Time.fixedDeltaTime);
+        }
+        else if (autoLevelForce > 0)
+        {
+            float levelMultiplier = isThrusting ? 0.5f : 1.5f;
+            float angleDifference = Mathf.DeltaAngle(currentAngle, 0f); 
+            rb.AddTorque(angleDifference * (autoLevelForce * levelMultiplier) * Time.fixedDeltaTime);
+        }
+    }
+
+    private void HandleThrust()
+    {
+        if (isThrusting)
+        {
+            if (fuelSystem != null && fuelSystem.IsOutOfFuel) return;
+
+            float angleInRad = Mathf.Abs(rb.rotation) * Mathf.Deg2Rad;
+            float tiltCompensation = 1f / Mathf.Max(Mathf.Cos(angleInRad), 0.5f);
+
+            rb.AddForce(transform.up * (thrustForce * tiltCompensation), ForceMode2D.Force);
+            
+            if (fuelSystem != null)
+            {
+                fuelSystem.ConsumeFuel();
+            }
+        }
+    }
+
+    private void ClampVelocity()
+    {
+        Vector2 clampedVelocity = rb.linearVelocity;
+        
+        if (Mathf.Abs(clampedVelocity.x) > maxSpeed)
+        {
+            clampedVelocity.x = Mathf.Sign(clampedVelocity.x) * maxSpeed;
+        }
+        
+        if (Mathf.Abs(clampedVelocity.y) > maxSpeed * 1.5f)
+        {
+            clampedVelocity.y = Mathf.Sign(clampedVelocity.y) * maxSpeed * 1.5f;
+        }
+
+        rb.linearVelocity = clampedVelocity;
+    }
+}
