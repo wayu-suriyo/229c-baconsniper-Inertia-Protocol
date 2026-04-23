@@ -29,4 +29,14 @@ public class FuelSystem : MonoBehaviour
             }
         }
     }
+
+    public void AddFuel(float amount)
+    {
+        currentFuel += amount;
+        if (currentFuel > maxFuel)
+        {
+            currentFuel = maxFuel;
+        }
+        Debug.Log($"⛽ เติมน้ำมันเพิ่ม {amount} หน่วย! น้ำมันตอนนี้: {currentFuel:F1} / {maxFuel}");
+    }
 }
