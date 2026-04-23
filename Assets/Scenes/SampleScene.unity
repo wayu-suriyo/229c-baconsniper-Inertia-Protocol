@@ -618,7 +618,7 @@ MonoBehaviour:
   trapMass: 50
   maxInfluenceRadius: 10
   minSafeDistance: 2
-  maxPullForce: 12
+  maxPullForce: 15
 --- !u!212 &577852406
 SpriteRenderer:
   serializedVersion: 2
@@ -1279,8 +1279,8 @@ Transform:
   m_GameObject: {fileID: 1385603814}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.54, y: -1.27, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 3.435, y: -1.3627, z: 0}
+  m_LocalScale: {x: 0.79000175, y: 0.79000175, z: 0.79000175}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1354,12 +1354,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -1453,8 +1453,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1523,7 +1523,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 82, y: -60}
-  m_SizeDelta: {x: 423.4, y: 60}
+  m_SizeDelta: {x: 600, y: 60}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1682904498
 GameObject:
@@ -1637,11 +1637,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3affb9e9737db7a44be97a0125e48357, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DroneController
-  thrustForce: 15
+  thrustForce: 25
   torqueForce: 2
   autoLevelForce: 2
-  maxSpeed: 15
-  maxTiltAngle: 25
+  maxSpeed: 20
+  maxTiltAngle: 20
   airDensity: 1.25
   surfaceArea: 0.2
   dragCoefficient: 0.5
@@ -1858,7 +1858,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 82, y: -151}
-  m_SizeDelta: {x: 423.4, y: 60}
+  m_SizeDelta: {x: 600, y: 60}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &2106782376
 CanvasRenderer:
@@ -1915,8 +1915,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

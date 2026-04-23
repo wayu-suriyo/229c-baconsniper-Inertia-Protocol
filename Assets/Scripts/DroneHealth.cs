@@ -32,7 +32,6 @@ public class DroneHealth : MonoBehaviour
     void Die()
     {
         Debug.LogError("🚨 Drone Destroyed! 💥 (HP = 0)");
-        // รีสตาร์ทด่าน
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

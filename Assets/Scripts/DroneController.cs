@@ -78,13 +78,12 @@ public class DroneController : MonoBehaviour
 
         HandleTilt();
         HandleThrust();
-        CalculateAirResistance(); // ใช้สูตรฟิสิกส์ทำแรงต้านแทน Damping ของระบบ
+        CalculateAirResistance(); 
         ClampVelocity();
     }
 
     private void CalculateAirResistance()
     {
-        // สมการแรงต้านอากาศ: F_d = 1/2 * rho * v^2 * Cd * A
         Vector2 velocity = rb.linearVelocity;
         float speedSqr = velocity.sqrMagnitude;
 
@@ -92,10 +91,8 @@ public class DroneController : MonoBehaviour
         {
             float dragForceMagnitude = 0.5f * airDensity * speedSqr * dragCoefficient * surfaceArea;
             
-            // ทิศทางของแรงต้านจะต้อง "สู้" (ตรงข้าม) กับทิศทางการเคลื่อนที่ของโดรนเสมอ
             Vector2 dragVector = -velocity.normalized * dragForceMagnitude;
             
-            // โยนแรงเข้าใส่โดรน (ทำหน้าที่เป็นเบรกอากาศ)
             rb.AddForce(dragVector, ForceMode2D.Force);
         }
     }
