@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI; 
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class GameUIManager : MonoBehaviour
@@ -12,11 +13,9 @@ public class GameUIManager : MonoBehaviour
     
     [Header("Fuel UI Elements")]
     public Image fuelImage;
-    [Tooltip("ใส่รูประดับน้ำมัน 5 รูปเรียงจาก: หมด(0), 1 ขีด(1), 2 ขีด(2), 3 ขีด(3), เต็ม(4)")]
     public Sprite[] fuelSprites;
     
     [Header("Health UI Elements")]
-    [Tooltip("ลาก UI Image ที่ตั้งค่า Image Type เป็น Filled สำหรับหลอดเลือดมาใส่")]
     public Image healthBarFill;
     public Color healthFullColor = Color.green;
     public Color healthLowColor = Color.red;
@@ -26,6 +25,11 @@ public class GameUIManager : MonoBehaviour
     private int currentDrives = 0;
     private float elapsedTime = 0f;
     private bool isLevelCompleted = false;
+    private bool isGameOver = false;
+
+    [Header("Game Over Settings")]
+    public GameObject gameOverPanel;
+    public string mainMenuSceneName = "MainMenu";
 
     private FuelSystem playerFuel;
     private DroneHealth playerHealth;
@@ -49,19 +53,16 @@ public class GameUIManager : MonoBehaviour
 
     void Update()
     {
-        if (!isLevelCompleted)
+        if (!isLevelCompleted && !isGameOver)
         {
             elapsedTime += Time.deltaTime;
             UpdateTimeUI();
         }
 
-        // อัปเดตภาพหลอดน้ำมัน
         if (playerFuel != null && fuelImage != null)
         {
             UpdateFuelUI();
         }
-
-        // อัปเดตหลอดเลือด
         if (playerHealth != null && healthBarFill != null)
         {
             UpdateHealthUI();
@@ -107,15 +108,14 @@ public class GameUIManager : MonoBehaviour
         {
             int spriteIndex = 0;
             
-            // แบ่งเกณฑ์การโชว์รูปภาพออกเป็น 5 ระดับ
-            if (fuelPercent >= 0.75f) spriteIndex = 4;      // 75% - 100% (รูป 4 ขีดเต็ม)
-            else if (fuelPercent >= 0.50f) spriteIndex = 3; // 50% - 74% (รูป 3 ขีด)
-            else if (fuelPercent >= 0.25f) spriteIndex = 2; // 25% - 49% (รูป 2 ขีด)
-            else if (fuelPercent > 0f) spriteIndex = 1;     // 1% - 24% (รูป 1 ขีด)
-            else spriteIndex = 0;                           // 0% (หลอดเปล่า)
+            if (fuelPercent >= 0.75f) spriteIndex = 4;      
+            else if (fuelPercent >= 0.50f) spriteIndex = 3; 
+            else if (fuelPercent >= 0.25f) spriteIndex = 2; 
+            else if (fuelPercent > 0f) spriteIndex = 1;     
+            else spriteIndex = 0;                           
             
             fuelImage.sprite = fuelSprites[spriteIndex];
-            fuelImage.color = Color.white; // เคลียร์สีเผื่อของเก่าทำไว้
+            fuelImage.color = Color.white; 
         }
     }
 
@@ -123,16 +123,41 @@ public class GameUIManager : MonoBehaviour
     {
         float healthPercent = playerHealth.currentHealth / playerHealth.maxHealth;
         
-        // ทีเด็ด: ใช้ Lerp ทำให้หลอดเลือดลดลงแบบสมูทๆ แทนที่จะกระตุกฮวบหายไป
         healthBarFill.fillAmount = Mathf.Lerp(healthBarFill.fillAmount, healthPercent, Time.deltaTime * 5f);
         
-        // เปลียนสีหลอดไล่เฉด (ถ้าเต็มจะเขียว ถ้าเจ็บหนักจะค่อยๆ แดง)
         healthBarFill.color = Color.Lerp(healthLowColor, healthFullColor, healthPercent);
     }
 
     private void LevelComplete()
     {
         isLevelCompleted = true;
-        Debug.Log(" Mission Complete! ");
+        Debug.Log("Mission Complete!");
+    }
+
+    public void ShowGameOver()
+    {
+        if (isGameOver || isLevelCompleted) return;
+        
+        isGameOver = true;
+        
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(true);
+        }
+        
+        Time.timeScale = 0f;
+        Debug.Log("Game Over Triggered!");
+    }
+
+    public void RestartLevel()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void LoadMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(mainMenuSceneName);
     }
 }

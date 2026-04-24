@@ -5,17 +5,12 @@ using UnityEngine.InputSystem;
 public class DroneController : MonoBehaviour
 {
     [Header("Flight Settings")]
-    [Tooltip("แรงขับไอพ่น (ดันให้โดรนลอยขึ้น)")]
     public float thrustForce = 35f;
-    [Tooltip("แรงบิดตอนเอียงซ้าย/ขวา")]
     public float torqueForce = 15f;
-    [Tooltip("ความเร็วในการกลับมาตั้งตรงอัตโนมัติเมื่อปล่อยปุ่ม")]
     public float autoLevelForce = 10f;
 
     [Header("Physics Limits")]
-    [Tooltip("จำกัดความเร็วสูงสุดที่โดรนจะบินได้")]
     public float maxSpeed = 15f;
-    [Tooltip("องศาที่อนุญาตให้เอียงได้มากสุด")]
     public float maxTiltAngle = 70f;
 
     [Header("Air Resistance (Physics Topic E)")]

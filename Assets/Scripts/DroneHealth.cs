@@ -8,9 +8,7 @@ public class DroneHealth : MonoBehaviour
     public float currentHealth;
     
     [Header("Impact Settings")]
-    [Tooltip("แรงที่ต้องการเพื่อให้รับดาเมจ")]
     public float crashThreshold = 10f;
-    [Tooltip("ดาเมจที่ได้รับต่อ 1 หน่วยของแรงที่เกินขีดจำกัด")]
     public float damagePerForceUnit = 3f;
 
     void Start()
@@ -31,8 +29,14 @@ public class DroneHealth : MonoBehaviour
 
     void Die()
     {
-        Debug.LogError("🚨 Drone Destroyed! 💥 (HP = 0)");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Debug.LogError("Drone Destroyed!");
+        
+        if (GameUIManager.instance != null)
+        {
+            GameUIManager.instance.ShowGameOver();
+        }
+
+        gameObject.SetActive(false);
     }
 
     void OnCollisionEnter2D(Collision2D collision)

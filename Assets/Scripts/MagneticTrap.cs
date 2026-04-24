@@ -3,11 +3,8 @@ using UnityEngine;
 public class MagneticTrap : MonoBehaviour
 {
     [Header("Magnetic Trap Settings")]
-    [Tooltip("ค่าคงที่แรงโน้มถ่วง (G)")]
     public float gravitationalConstant = 10f;
-    [Tooltip("มวลของกับดัก (m1)")]
     public float trapMass = 50f;
-    [Tooltip("Maximum distance the trap can reach")]
     public float maxInfluenceRadius = 15f;
     [Tooltip("ระยะห่างน้อยที่สุดที่จะนำมาคำนวณ (ป้องกันแรงดูดเป็นอนันต์เวลาเข้าใกล้จุดกึ่งกลาง)")]
     public float minSafeDistance = 2f;
@@ -15,11 +12,8 @@ public class MagneticTrap : MonoBehaviour
     public float maxPullForce = 25f;
 
     [Header("Pulse Settings")]
-    [Tooltip("เปิดระบบให้แม่เหล็กทำงานสลับกับหยุดพัก")]
     public bool isPulseMode = true;
-    [Tooltip("ระยะเวลาที่แม่เหล็กปล่อยพลังดูด (วินาที)")]
     public float activeTime = 2f;
-    [Tooltip("ระยะเวลาที่แม่เหล็กหยุดพักให้โดรนหนี (วินาที)")]
     public float restTime = 3f;
 
     [Header("Audio Settings")]

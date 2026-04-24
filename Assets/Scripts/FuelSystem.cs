@@ -3,18 +3,40 @@ using UnityEngine;
 public class FuelSystem : MonoBehaviour
 {
     [Header("Fuel Settings")]
-    [Tooltip("ปริมาณน้ำมันสูงสุด")]
     public float maxFuel = 100f;
-    [Tooltip("ปริมาณน้ำมันปัจจุบัน")]
     public float currentFuel;
-    [Tooltip("อัตราการใช้เชื้อเพลิงต่อวินาที")]
     public float fuelDrainRate = 15f; 
 
     public bool IsOutOfFuel => currentFuel <= 0f;
 
+    private float emptyFuelTimer = 0f;
+    private bool isGameOverTriggered = false;
+
     void Start()
     {
         currentFuel = maxFuel;
+    }
+
+    void Update()
+    {
+        if (IsOutOfFuel && !isGameOverTriggered)
+        {
+            emptyFuelTimer += Time.deltaTime;
+            if (emptyFuelTimer >= 2f)
+            {
+                isGameOverTriggered = true;
+                Debug.Log("Fuel depleted for 2 seconds. Game Over.");
+                
+                if (GameUIManager.instance != null)
+                {
+                    GameUIManager.instance.ShowGameOver();
+                }
+            }
+        }
+        else if (!IsOutOfFuel)
+        {
+            emptyFuelTimer = 0f;
+        }
     }
 
     public void ConsumeFuel()
@@ -37,6 +59,10 @@ public class FuelSystem : MonoBehaviour
         {
             currentFuel = maxFuel;
         }
-        Debug.Log($"⛽ เติมน้ำมันเพิ่ม {amount} หน่วย! น้ำมันตอนนี้: {currentFuel:F1} / {maxFuel}");
+        
+        isGameOverTriggered = false;
+        emptyFuelTimer = 0f;
+
+        Debug.Log($"Fuel refilled by {amount}. Current fuel: {currentFuel:F1} / {maxFuel}");
     }
 }
