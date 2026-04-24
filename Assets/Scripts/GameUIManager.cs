@@ -31,6 +31,11 @@ public class GameUIManager : MonoBehaviour
     public GameObject gameOverPanel;
     public string mainMenuSceneName = "MainMenu";
 
+    [Header("Win Settings")]
+    public GameObject winPanel;
+    public TextMeshProUGUI finalTimeText;
+    public string nextLevelSceneName = "Level2";
+
     private FuelSystem playerFuel;
     private DroneHealth playerHealth;
 
@@ -131,7 +136,17 @@ public class GameUIManager : MonoBehaviour
     private void LevelComplete()
     {
         isLevelCompleted = true;
-        Debug.Log("Mission Complete!");
+        
+        ExitPortal portal = Object.FindAnyObjectByType<ExitPortal>();
+        if (portal != null)
+        {
+            portal.OpenPortal();
+        }
+        else
+        {
+            Debug.LogWarning("Level Complete, but no ExitPortal found in scene!");
+            ShowWinScreen(); // Fallback if no portal exists
+        }
     }
 
     public void ShowGameOver()
@@ -159,5 +174,31 @@ public class GameUIManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(mainMenuSceneName);
+    }
+
+    public void ShowWinScreen()
+    {
+        if (isGameOver) return;
+
+        if (winPanel != null)
+        {
+            winPanel.SetActive(true);
+        }
+
+        if (finalTimeText != null)
+        {
+            int minutes = Mathf.FloorToInt(elapsedTime / 60F);
+            int seconds = Mathf.FloorToInt(elapsedTime - minutes * 60);
+            finalTimeText.text = string.Format("Time: {0:00}:{1:00}", minutes, seconds);
+        }
+
+        Time.timeScale = 0f;
+        Debug.Log("Stage Cleared! Win Screen Triggered!");
+    }
+
+    public void LoadNextLevel()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(nextLevelSceneName);
     }
 }
