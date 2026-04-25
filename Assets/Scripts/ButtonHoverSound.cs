@@ -13,14 +13,13 @@ public class ButtonHoverSound : MonoBehaviour, IPointerEnterHandler
         Debug.Log($"[ButtonHoverSound] Hovered over {gameObject.name}");
         if (hoverClip != null)
         {
-            // สร้าง GameObject สำหรับเล่นเสียง 2D โดยเฉพาะ
             GameObject soundGo = new GameObject("HoverSound2D");
             AudioSource source = soundGo.AddComponent<AudioSource>();
             
             source.clip = hoverClip;
             source.volume = volume;
-            source.spatialBlend = 0f; // 2D Sound (เสียงดังเท่ากันหมดไม่ต้องสนระยะห่าง)
-            source.ignoreListenerPause = true; // ไม่ถูกหยุดแม้เกมหยุด
+            source.spatialBlend = 0f; 
+            source.ignoreListenerPause = true; 
             
             source.Play();
             Destroy(soundGo, hoverClip.length + 0.1f);

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class DroneHealth : MonoBehaviour
 {
@@ -11,13 +10,34 @@ public class DroneHealth : MonoBehaviour
     public float crashThreshold = 10f;
     public float damagePerForceUnit = 3f;
 
+    [Header("Invincibility Frames")]
+    [Tooltip("Seconds of invincibility after taking damage (prevents multi-source instant kill)")]
+    public float iFrameDuration = 0.5f;
+
+    private bool isInvincible = false;
+    private float iFrameTimer = 0f;
+
     void Start()
     {
         currentHealth = maxHealth;
     }
 
+    void Update()
+    {
+        if (isInvincible)
+        {
+            iFrameTimer -= Time.deltaTime;
+            if (iFrameTimer <= 0f)
+            {
+                isInvincible = false;
+            }
+        }
+    }
+
     public void TakeDamage(float amount)
     {
+        if (isInvincible) return;
+
         currentHealth -= amount;
         Debug.Log($"💥 Drone took {amount:F1} damage. HP left: {currentHealth:F1}");
         
@@ -25,11 +45,19 @@ public class DroneHealth : MonoBehaviour
         {
             Die();
         }
+        else
+        {
+            isInvincible = true;
+            iFrameTimer = iFrameDuration;
+        }
     }
 
     void Die()
     {
         Debug.LogError("Drone Destroyed!");
+
+        DroneController controller = GetComponent<DroneController>();
+        if (controller != null) controller.enabled = false;
         
         if (GameUIManager.instance != null)
         {

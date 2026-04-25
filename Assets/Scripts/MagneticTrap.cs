@@ -124,7 +124,7 @@ public class MagneticTrap : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (targetDrone == null || droneRb == null || !isActive) return;
+        if (targetDrone == null || !targetDrone.gameObject.activeInHierarchy || droneRb == null || !isActive) return;
 
         Vector2 forceDirection = (Vector2)transform.position - (Vector2)targetDrone.position;
         float distance = forceDirection.magnitude;

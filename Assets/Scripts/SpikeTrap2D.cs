@@ -3,27 +3,30 @@ using UnityEngine;
 public class SpikeTrap2D : MonoBehaviour
 {
     [Header("Trap Settings")]
-    public float damage = 50f; 
+    public float damage = 50f;
+    public float knockbackForce = 20f;
 
     [Header("Audio Settings")]
-    public AudioClip deathSound;
+    public AudioClip hitSound;
     [Range(0f, 1f)]
     public float soundVolume = 0.5f;
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        if (other.CompareTag("Player") || other.GetComponent<DroneHealth>() != null)
-        {
-            if (deathSound != null)
-            {
-                AudioSource.PlayClipAtPoint(deathSound, transform.position, soundVolume);
-            }
+        DroneHealth health = collision.gameObject.GetComponent<DroneHealth>();
+        if (health == null) return;
 
-            DroneHealth health = other.GetComponent<DroneHealth>();
-            if (health != null)
-            {
-                health.TakeDamage(damage);
-            }
+        if (hitSound != null)
+            AudioSource.PlayClipAtPoint(hitSound, transform.position, soundVolume);
+
+        health.TakeDamage(damage);
+
+        Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            Vector2 knockbackDir = (collision.transform.position - transform.position).normalized;
+            rb.linearVelocity = Vector2.zero;
+            rb.AddForce(knockbackDir * knockbackForce, ForceMode2D.Impulse);
         }
     }
 }

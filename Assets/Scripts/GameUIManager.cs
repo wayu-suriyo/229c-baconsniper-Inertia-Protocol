@@ -38,6 +38,7 @@ public class GameUIManager : MonoBehaviour
 
     private FuelSystem playerFuel;
     private DroneHealth playerHealth;
+    private DroneController playerController;
 
     void Awake()
     {
@@ -52,6 +53,7 @@ public class GameUIManager : MonoBehaviour
 
         playerFuel = Object.FindAnyObjectByType<FuelSystem>();
         playerHealth = Object.FindAnyObjectByType<DroneHealth>();
+        playerController = Object.FindAnyObjectByType<DroneController>();
 
         UpdateScoreUI();
     }
@@ -145,7 +147,7 @@ public class GameUIManager : MonoBehaviour
         else
         {
             Debug.LogWarning("Level Complete, but no ExitPortal found in scene!");
-            ShowWinScreen(); // Fallback if no portal exists
+            ShowWinScreen(); 
         }
     }
 
@@ -154,6 +156,7 @@ public class GameUIManager : MonoBehaviour
         if (isGameOver || isLevelCompleted) return;
         
         isGameOver = true;
+        DisableDroneController();
         
         if (gameOverPanel != null)
         {
@@ -180,6 +183,8 @@ public class GameUIManager : MonoBehaviour
     {
         if (isGameOver) return;
 
+        DisableDroneController();
+
         if (winPanel != null)
         {
             winPanel.SetActive(true);
@@ -200,5 +205,10 @@ public class GameUIManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(nextLevelSceneName);
+    }
+
+    private void DisableDroneController()
+    {
+        if (playerController != null) playerController.enabled = false;
     }
 }
