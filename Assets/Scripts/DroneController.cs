@@ -21,6 +21,9 @@ public class DroneController : MonoBehaviour
     [Tooltip("สัมประสิทธิ์แรงต้าน (Cd) - ลดลงถ้าหนืดไป")]
     public float dragCoefficient = 0.5f;
 
+    [Header("VFX")]
+    public ParticleSystem exhaustParticles;
+
     private Rigidbody2D rb;
     private float tiltInput = 0f;
     private bool isThrusting = false;
@@ -114,19 +117,24 @@ public class DroneController : MonoBehaviour
 
     private void HandleThrust()
     {
-        if (isThrusting)
-        {
-            if (fuelSystem != null && fuelSystem.IsOutOfFuel) return;
+        bool hasFuel = fuelSystem == null || !fuelSystem.IsOutOfFuel;
+        bool shouldEmit = isThrusting && hasFuel;
 
+        if (shouldEmit)
+        {
             float angleInRad = Mathf.Abs(rb.rotation) * Mathf.Deg2Rad;
             float tiltCompensation = 1f / Mathf.Max(Mathf.Cos(angleInRad), 0.5f);
 
             rb.AddForce(transform.up * (thrustForce * tiltCompensation), ForceMode2D.Force);
-            
+
             if (fuelSystem != null)
-            {
                 fuelSystem.ConsumeFuel();
-            }
+        }
+
+        if (exhaustParticles != null)
+        {
+            var emission = exhaustParticles.emission;
+            emission.enabled = shouldEmit;
         }
     }
 

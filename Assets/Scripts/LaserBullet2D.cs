@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class LaserBullet2D : MonoBehaviour
 {
@@ -10,9 +11,20 @@ public class LaserBullet2D : MonoBehaviour
     [Range(0f, 1f)]
     public float soundVolume = 0.5f;
 
-    void Start()
+    void OnEnable()
     {
-        Destroy(gameObject, lifeTime);
+        StartCoroutine(AutoReturn());
+    }
+
+    void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
+    IEnumerator AutoReturn()
+    {
+        yield return new WaitForSeconds(lifeTime);
+        ReturnToPool();
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -39,7 +51,15 @@ public class LaserBullet2D : MonoBehaviour
 
         if (other.GetComponent<MagneticTrap>() == null)
         {
-            Destroy(gameObject);
+            ReturnToPool();
         }
+    }
+
+    private void ReturnToPool()
+    {
+        if (BulletPool.instance != null)
+            BulletPool.instance.Return(gameObject);
+        else
+            Destroy(gameObject);
     }
 }

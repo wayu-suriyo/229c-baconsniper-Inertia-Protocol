@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 public class DynamicCamera2D : MonoBehaviour
 {
+    public static DynamicCamera2D instance;
     public Transform target;
 
     [Header("Camera Speeds")]
@@ -22,14 +23,25 @@ public class DynamicCamera2D : MonoBehaviour
     public float fallbackDistance = 5f;
     public float memoryTime = 0.5f;
 
+    [Header("Camera Shake")]
+    public float shakeDecaySpeed = 5f;
+
     [HideInInspector]
-    public BoxCollider2D currentFocusZone; 
+    public BoxCollider2D currentFocusZone;
 
     private Camera cam;
     private float lastGoodFloorY;
     private float lastGoodCeilingY;
     private float floorTimer;
     private float ceilingTimer;
+
+    private float shakeIntensity = 0f;
+    private Vector3 shakeOffset = Vector3.zero;
+
+    void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
@@ -121,5 +133,28 @@ public class DynamicCamera2D : MonoBehaviour
 
         transform.position = targetPos;
         cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, desiredOrthoSize, Time.fixedDeltaTime * zoomSpeed);
+    }
+
+    void LateUpdate()
+    {
+        if (shakeIntensity > 0f)
+        {
+            shakeOffset = Random.insideUnitSphere * shakeIntensity;
+            shakeOffset.z = 0f;
+            transform.position += shakeOffset;
+            shakeIntensity = Mathf.MoveTowards(shakeIntensity, 0f, shakeDecaySpeed * Time.unscaledDeltaTime);
+        }
+    }
+
+    public static void Shake(float intensity)
+    {
+        if (instance != null)
+            instance.shakeIntensity = Mathf.Max(instance.shakeIntensity, intensity);
+    }
+
+    public static void StopShake()
+    {
+        if (instance != null)
+            instance.shakeIntensity = 0f;
     }
 }

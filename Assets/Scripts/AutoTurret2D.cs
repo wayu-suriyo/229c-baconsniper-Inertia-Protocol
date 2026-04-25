@@ -81,14 +81,22 @@ public class AutoTurret2D : MonoBehaviour
 
     void Shoot()
     {
-        if (bulletPrefab != null && firePoint != null)
-        {
-            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-            if (rb != null) rb.AddForce(firePoint.up * fireForce, ForceMode2D.Impulse);
+        if (firePoint == null) return;
 
-            if (shootSound != null) AudioSource.PlayClipAtPoint(shootSound, transform.position, volume);
+        GameObject bullet = BulletPool.instance != null
+            ? BulletPool.instance.Get(firePoint.position, firePoint.rotation)
+            : null;
+
+        if (bullet == null) return;
+
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.AddForce(firePoint.up * fireForce, ForceMode2D.Impulse);
         }
+
+        if (shootSound != null) AudioSource.PlayClipAtPoint(shootSound, transform.position, volume);
     }
 
     private void OnDrawGizmosSelected()

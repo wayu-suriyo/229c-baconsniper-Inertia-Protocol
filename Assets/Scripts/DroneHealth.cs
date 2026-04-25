@@ -40,6 +40,12 @@ public class DroneHealth : MonoBehaviour
 
         currentHealth -= amount;
         Debug.Log($"💥 Drone took {amount:F1} damage. HP left: {currentHealth:F1}");
+
+        float shakeAmount = Mathf.Clamp(amount / 50f, 0.1f, 0.6f);
+        DynamicCamera2D.Shake(shakeAmount);
+
+        if (GameUIManager.instance != null)
+            GameUIManager.instance.TriggerDamageFlash();
         
         if (currentHealth <= 0f)
         {
@@ -55,6 +61,8 @@ public class DroneHealth : MonoBehaviour
     void Die()
     {
         Debug.LogError("Drone Destroyed!");
+
+        DynamicCamera2D.Shake(0.8f);
 
         DroneController controller = GetComponent<DroneController>();
         if (controller != null) controller.enabled = false;
@@ -79,6 +87,8 @@ public class DroneHealth : MonoBehaviour
         }
         else if (impactForce > 2f)
         {
+            float minorShake = Mathf.Clamp(impactForce / 20f, 0f, 0.15f);
+            DynamicCamera2D.Shake(minorShake);
             Debug.Log($"Bumped! Minor Impact Force: {impactForce:F2}");
         }
     }

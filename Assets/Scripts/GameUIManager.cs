@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI; 
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Collections;
 
 public class GameUIManager : MonoBehaviour
 {
@@ -19,6 +20,11 @@ public class GameUIManager : MonoBehaviour
     public Image healthBarFill;
     public Color healthFullColor = Color.green;
     public Color healthLowColor = Color.red;
+
+    [Header("Damage Flash")]
+    [Tooltip("Fullscreen Image set to red with low alpha — fades out on hit")]
+    public Image damageFlashImage;
+    public float flashDuration = 0.3f;
     
     [Header("Game State")]
     [HideInInspector] public int requiredDrives = 0; 
@@ -76,6 +82,26 @@ public class GameUIManager : MonoBehaviour
         }
     }
 
+    public void TriggerDamageFlash()
+    {
+        if (damageFlashImage != null)
+            StartCoroutine(FlashDamage());
+    }
+
+    private IEnumerator FlashDamage()
+    {
+        damageFlashImage.color = new Color(1f, 0f, 0f, 0.35f);
+        float elapsed = 0f;
+        while (elapsed < flashDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float alpha = Mathf.Lerp(0.35f, 0f, elapsed / flashDuration);
+            damageFlashImage.color = new Color(1f, 0f, 0f, alpha);
+            yield return null;
+        }
+        damageFlashImage.color = Color.clear;
+    }
+
     public void AddDataDrive()
     {
         if (isLevelCompleted) return;
@@ -131,8 +157,16 @@ public class GameUIManager : MonoBehaviour
         float healthPercent = playerHealth.currentHealth / playerHealth.maxHealth;
         
         healthBarFill.fillAmount = Mathf.Lerp(healthBarFill.fillAmount, healthPercent, Time.deltaTime * 5f);
-        
         healthBarFill.color = Color.Lerp(healthLowColor, healthFullColor, healthPercent);
+    }
+
+    public void ForceHealthToZero()
+    {
+        if (healthBarFill != null)
+        {
+            healthBarFill.fillAmount = 0f;
+            healthBarFill.color = healthLowColor;
+        }
     }
 
     private void LevelComplete()
@@ -157,6 +191,8 @@ public class GameUIManager : MonoBehaviour
         
         isGameOver = true;
         DisableDroneController();
+        DynamicCamera2D.StopShake();
+        ForceHealthToZero();
         
         if (gameOverPanel != null)
         {
@@ -184,6 +220,7 @@ public class GameUIManager : MonoBehaviour
         if (isGameOver) return;
 
         DisableDroneController();
+        DynamicCamera2D.StopShake();
 
         if (winPanel != null)
         {
