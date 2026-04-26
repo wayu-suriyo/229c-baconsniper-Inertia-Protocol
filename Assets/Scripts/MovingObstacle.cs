@@ -1,34 +1,52 @@
 using UnityEngine;
 
+public enum ObstaclePatrolMode { Loop, PingPong }
+
 [RequireComponent(typeof(Rigidbody2D))]
 public class MovingObstacle : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float speed = 3f;
-    public float waitTimeAtWaypoint = 1f;
+    public float waitTimeAtWaypoint = 0.5f;
+    public ObstaclePatrolMode patrolMode = ObstaclePatrolMode.PingPong;
 
     [Header("Waypoints")]
-    public Transform[] waypoints;
+    public Vector2[] waypointOffsets = { new Vector2(0, 3f), new Vector2(0, -3f) };
+
+    [Header("Activation")]
+    public bool startActive = true;
 
     private Rigidbody2D rb;
-    private int currentWaypointIndex = 0;
+    private Vector2[] worldWaypoints;
+    private int currentIndex = 0;
+    private int direction = 1;
     private float waitTimer = 0f;
     private bool isWaiting = false;
+    private bool isMoving = false;
+    private Vector2 startPosition;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
-        
-        if (waypoints != null && waypoints.Length > 0)
+
+        startPosition = rb.position;
+        BakeWorldWaypoints();
+        isMoving = startActive;
+    }
+
+    private void BakeWorldWaypoints()
+    {
+        worldWaypoints = new Vector2[waypointOffsets.Length];
+        for (int i = 0; i < waypointOffsets.Length; i++)
         {
-            transform.position = waypoints[0].position;
+            worldWaypoints[i] = startPosition + waypointOffsets[i];
         }
     }
 
     void FixedUpdate()
     {
-        if (waypoints == null || waypoints.Length < 2) return;
+        if (!isMoving || worldWaypoints == null || worldWaypoints.Length < 2) return;
 
         if (isWaiting)
         {
@@ -37,51 +55,63 @@ public class MovingObstacle : MonoBehaviour
             {
                 isWaiting = false;
                 waitTimer = 0f;
-                SetNextWaypoint();
+                AdvanceWaypoint();
             }
             return;
         }
 
-        Transform target = waypoints[currentWaypointIndex];
-        Vector2 newPosition = Vector2.MoveTowards(rb.position, target.position, speed * Time.fixedDeltaTime);
-        
-        rb.MovePosition(newPosition);
+        Vector2 target = worldWaypoints[currentIndex];
+        Vector2 newPos = Vector2.MoveTowards(rb.position, target, speed * Time.fixedDeltaTime);
+        rb.MovePosition(newPos);
 
-        if (Vector2.Distance(rb.position, target.position) < 0.05f)
+        if (Vector2.Distance(rb.position, target) < 0.05f)
         {
             isWaiting = true;
         }
     }
 
-    private void SetNextWaypoint()
+    private void AdvanceWaypoint()
     {
-        currentWaypointIndex++;
-        if (currentWaypointIndex >= waypoints.Length)
+        if (patrolMode == ObstaclePatrolMode.Loop)
         {
-            currentWaypointIndex = 0;
+            currentIndex = (currentIndex + 1) % worldWaypoints.Length;
+        }
+        else
+        {
+            currentIndex += direction;
+            if (currentIndex >= worldWaypoints.Length || currentIndex < 0)
+            {
+                direction *= -1;
+                currentIndex += direction * 2;
+            }
         }
     }
 
+    public void Activate()   => isMoving = true;
+    public void Deactivate() => isMoving = false;
+
     void OnDrawGizmos()
     {
-        if (waypoints == null || waypoints.Length < 2) return;
+        if (waypointOffsets == null || waypointOffsets.Length < 2) return;
 
-        Gizmos.color = Color.red;
-        for (int i = 0; i < waypoints.Length; i++)
+        Vector2 origin = Application.isPlaying ? startPosition : (Vector2)transform.position;
+
+        Gizmos.color = new Color(1f, 0.5f, 0f);
+
+        for (int i = 0; i < waypointOffsets.Length; i++)
         {
-            if (waypoints[i] != null)
+            Vector2 pointA = origin + waypointOffsets[i];
+            Vector2 pointB = origin + waypointOffsets[(i + 1) % waypointOffsets.Length];
+
+            Gizmos.DrawWireSphere(pointA, 0.25f);
+
+            if (patrolMode == ObstaclePatrolMode.Loop || i < waypointOffsets.Length - 1)
             {
-                Gizmos.DrawWireSphere(waypoints[i].position, 0.3f);
-                if (i < waypoints.Length - 1 && waypoints[i+1] != null)
-                {
-                    Gizmos.DrawLine(waypoints[i].position, waypoints[i+1].position);
-                }
+                Gizmos.DrawLine(pointA, pointB);
             }
         }
-        
-        if (waypoints[0] != null && waypoints[waypoints.Length - 1] != null)
-        {
-            Gizmos.DrawLine(waypoints[waypoints.Length - 1].position, waypoints[0].position);
-        }
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(origin, origin + waypointOffsets[0]);
     }
 }

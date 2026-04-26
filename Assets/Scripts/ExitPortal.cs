@@ -41,7 +41,7 @@ public class ExitPortal : MonoBehaviour
 
         if (openSound != null)
         {
-            audioSource.PlayOneShot(openSound, volume);
+            AudioManager.PlaySFX(openSound, volume);
         }
         
         Debug.Log("🚪 Exit Portal Opened!");
@@ -52,10 +52,7 @@ public class ExitPortal : MonoBehaviour
         if (isOpen && (other.CompareTag("Player") || other.GetComponent<DroneHealth>() != null))
         {
             // ผู้เล่นเข้าประตูที่เปิดแล้ว
-            if (enterSound != null)
-            {
-                AudioSource.PlayClipAtPoint(enterSound, transform.position, volume);
-            }
+            AudioManager.PlaySFXAt(enterSound, transform.position, volume);
 
             if (GameUIManager.instance != null)
             {

@@ -57,31 +57,39 @@ public class WindZone : MonoBehaviour
 
     private void UpdateParticleDirection()
     {
-        if (windParticles != null)
+        if (windParticles == null) return;
+
+        // Rotate particle system to emit along wind direction
+        Vector3 dir3D = new Vector3(windDirection.x, windDirection.y, 0).normalized;
+        if (dir3D != Vector3.zero)
         {
-            Vector3 dir3D = new Vector3(windDirection.x, windDirection.y, 0).normalized;
-            if (dir3D != Vector3.zero)
+            windParticles.transform.rotation = Quaternion.LookRotation(dir3D, Vector3.back);
+        }
+
+        var main = windParticles.main;
+        float particleSpeed = windForce * 0.5f;
+        main.startSpeed = particleSpeed;
+
+        BoxCollider2D col = GetComponent<BoxCollider2D>();
+        if (col != null)
+        {
+            var shape = windParticles.shape;
+            shape.shapeType = ParticleSystemShapeType.Box;
+
+            // The axis of travel is determined by whichever wind component dominates
+            bool isVertical = Mathf.Abs(windDirection.y) > Mathf.Abs(windDirection.x);
+
+            // Spawn width = the collider's cross-axis (perpendicular to travel direction)
+            // Travel length = the collider's on-axis dimension (parallel to wind)
+            float spawnWidth  = isVertical ? col.size.x : col.size.y;
+            float travelLength = isVertical ? col.size.y : col.size.x;
+
+            shape.scale = new Vector3(spawnWidth, 0.1f, 1f);
+
+            // lifetime = distance / speed — particle dies exactly at the far boundary
+            if (particleSpeed > 0f)
             {
-                windParticles.transform.rotation = Quaternion.LookRotation(dir3D, Vector3.back);
-            }
-            
-            var main = windParticles.main;
-            main.startSpeed = windForce * 0.5f; 
-            
-            BoxCollider2D col = GetComponent<BoxCollider2D>();
-            if (col != null)
-            {
-                var shape = windParticles.shape;
-                shape.shapeType = ParticleSystemShapeType.Box;
-                
-                if (Mathf.Abs(windDirection.y) > Mathf.Abs(windDirection.x))
-                {
-                    shape.scale = new Vector3(col.size.x, 0.1f, 1f);
-                }
-                else
-                {
-                    shape.scale = new Vector3(col.size.y, 0.1f, 1f);
-                }
+                main.startLifetime = travelLength / particleSpeed;
             }
         }
     }

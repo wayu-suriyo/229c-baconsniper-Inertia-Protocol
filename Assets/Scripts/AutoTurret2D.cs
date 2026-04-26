@@ -96,7 +96,7 @@ public class AutoTurret2D : MonoBehaviour
             rb.AddForce(firePoint.up * fireForce, ForceMode2D.Impulse);
         }
 
-        if (shootSound != null) AudioSource.PlayClipAtPoint(shootSound, transform.position, volume);
+        if (shootSound != null) AudioManager.PlaySFXAt(shootSound, transform.position, volume);
     }
 
     private void OnDrawGizmosSelected()

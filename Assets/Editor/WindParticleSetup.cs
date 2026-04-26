@@ -53,7 +53,7 @@ public class WindParticleSetup : EditorWindow
             }
         }
 
-        Debug.Log($"✅ [WindParticleSetup] Set up Particle for {count} WindZone(s) successfully!");
+        Debug.Log($"[WindParticleSetup] Set up Particle for {count} WindZone(s) successfully!");
     }
 }
 #endif

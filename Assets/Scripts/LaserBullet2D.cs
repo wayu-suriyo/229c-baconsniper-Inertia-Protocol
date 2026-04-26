@@ -36,10 +36,7 @@ public class LaserBullet2D : MonoBehaviour
 
         if (other.CompareTag("Player") || other.GetComponent<DroneHealth>() != null)
         {
-            if (hitSound != null)
-            {
-                AudioSource.PlayClipAtPoint(hitSound, transform.position, soundVolume);
-            }
+            AudioManager.PlaySFXAt(hitSound, transform.position, soundVolume);
 
             DroneHealth health = other.GetComponent<DroneHealth>();
             if (health != null) health.TakeDamage(damage);

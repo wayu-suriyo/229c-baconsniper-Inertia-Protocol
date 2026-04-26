@@ -10,19 +10,6 @@ public class ButtonHoverSound : MonoBehaviour, IPointerEnterHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log($"[ButtonHoverSound] Hovered over {gameObject.name}");
-        if (hoverClip != null)
-        {
-            GameObject soundGo = new GameObject("HoverSound2D");
-            AudioSource source = soundGo.AddComponent<AudioSource>();
-            
-            source.clip = hoverClip;
-            source.volume = volume;
-            source.spatialBlend = 0f; 
-            source.ignoreListenerPause = true; 
-            
-            source.Play();
-            Destroy(soundGo, hoverClip.length + 0.1f);
-        }
+        AudioManager.PlaySFX(hoverClip, volume);
     }
-}
+}

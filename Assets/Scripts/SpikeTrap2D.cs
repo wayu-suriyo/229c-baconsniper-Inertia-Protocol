@@ -16,8 +16,7 @@ public class SpikeTrap2D : MonoBehaviour
         DroneHealth health = collision.gameObject.GetComponent<DroneHealth>();
         if (health == null) return;
 
-        if (hitSound != null)
-            AudioSource.PlayClipAtPoint(hitSound, transform.position, soundVolume);
+        AudioManager.PlaySFXAt(hitSound, transform.position, soundVolume);
 
         health.TakeDamage(damage);
 
