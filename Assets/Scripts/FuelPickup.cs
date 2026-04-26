@@ -18,12 +18,7 @@ public class FuelPickup : MonoBehaviour
             if (fuelSys != null)
             {
                 fuelSys.AddFuel(refuelAmount);
-
-                if (pickupSound != null)
-                {
-                    AudioSource.PlayClipAtPoint(pickupSound, transform.position, volume);
-                }
-
+                AudioManager.PlaySFXAt(pickupSound, transform.position, volume);
                 Destroy(gameObject);
             }
             else
