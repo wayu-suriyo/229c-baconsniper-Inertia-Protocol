@@ -11,16 +11,11 @@ public class DataDrive : MonoBehaviour
     {
         if (other.CompareTag("Player") || other.GetComponent<DroneHealth>() != null)
         {
-            if (collectSound != null)
-            {
-                AudioSource.PlayClipAtPoint(collectSound, transform.position, volume);
-            }
+            AudioManager.PlaySFXAt(collectSound, transform.position, volume);
 
             if (GameUIManager.instance != null)
-            {
                 GameUIManager.instance.AddDataDrive();
-            }
-            
+
             Destroy(gameObject);
         }
     }

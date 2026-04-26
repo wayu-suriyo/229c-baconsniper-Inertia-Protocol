@@ -14,6 +14,12 @@ public class DroneHealth : MonoBehaviour
     [Tooltip("Seconds of invincibility after taking damage (prevents multi-source instant kill)")]
     public float iFrameDuration = 0.5f;
 
+    [Header("Audio")]
+    public AudioClip damageSoundClip;
+    [Range(0f, 1f)] public float damageSoundVolume = 0.8f;
+    public AudioClip deathSoundClip;
+    [Range(0f, 1f)] public float deathSoundVolume = 1f;
+
     private bool isInvincible = false;
     private float iFrameTimer = 0f;
 
@@ -43,6 +49,7 @@ public class DroneHealth : MonoBehaviour
 
         float shakeAmount = Mathf.Clamp(amount / 50f, 0.1f, 0.6f);
         DynamicCamera2D.Shake(shakeAmount);
+        AudioManager.PlaySFX(damageSoundClip, damageSoundVolume);
 
         if (GameUIManager.instance != null)
             GameUIManager.instance.TriggerDamageFlash();
@@ -63,6 +70,7 @@ public class DroneHealth : MonoBehaviour
         Debug.LogError("Drone Destroyed!");
 
         DynamicCamera2D.Shake(0.8f);
+        AudioManager.PlaySFX(deathSoundClip, deathSoundVolume);
 
         DroneController controller = GetComponent<DroneController>();
         if (controller != null) controller.enabled = false;

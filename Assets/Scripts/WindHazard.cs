@@ -16,12 +16,35 @@ public class WindZone : MonoBehaviour
     [Header("Visuals")]
     public ParticleSystem windParticles;
 
+    [Header("Audio")]
+    [Tooltip("Looping wind sound — volume increases as drone gets closer (3D spatial)")]
+    public AudioClip windLoopClip;
+    [Range(0f, 1f)] public float windVolume = 0.8f;
+    [Tooltip("Distance at which wind is fully audible")]
+    public float audioMinDistance = 2f;
+    [Tooltip("Distance at which wind becomes inaudible")]
+    public float audioMaxDistance = 20f;
+
     private float currentForce;
+    private AudioSource windAudioSource;
 
     void Start()
     {
         currentForce = windForce;
         UpdateParticleDirection();
+
+        if (windLoopClip != null)
+        {
+            windAudioSource = gameObject.AddComponent<AudioSource>();
+            windAudioSource.clip = windLoopClip;
+            windAudioSource.loop = true;
+            windAudioSource.spatialBlend = 1f;
+            windAudioSource.rolloffMode = AudioRolloffMode.Linear;
+            windAudioSource.minDistance = audioMinDistance;
+            windAudioSource.maxDistance = audioMaxDistance;
+            windAudioSource.volume = windVolume;
+            windAudioSource.Play();
+        }
     }
 
     void Update()

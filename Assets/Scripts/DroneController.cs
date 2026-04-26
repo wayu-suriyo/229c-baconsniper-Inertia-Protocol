@@ -24,6 +24,14 @@ public class DroneController : MonoBehaviour
     [Header("VFX")]
     public ParticleSystem exhaustParticles;
 
+    [Header("Audio")]
+    [Tooltip("Looping engine hum while drone is active (mid-air idle)")]
+    public AudioClip engineHumClip;
+    [Tooltip("Looping thruster burst played only while Space is held")]
+    public AudioClip thrusterClip;
+    [Range(0f, 1f)] public float engineVolume = 0.4f;
+    [Range(0f, 1f)] public float thrusterVolume = 0.7f;
+
     private Rigidbody2D rb;
     private float tiltInput = 0f;
     private bool isThrusting = false;
@@ -31,6 +39,8 @@ public class DroneController : MonoBehaviour
     private PlayerInput playerInput;
     private InputAction jumpAction;
     private InputAction moveAction;
+    private AudioSource engineSource;
+    private AudioSource thrusterSource;
 
     void Start()
     {
@@ -44,9 +54,25 @@ public class DroneController : MonoBehaviour
             moveAction = playerInput.actions["Move"];
         }
 
-        
-        rb.angularDamping = 3f; 
-        rb.linearDamping = 0.5f;      
+        rb.angularDamping = 3f;
+        rb.linearDamping = 0.5f;
+
+        engineSource = CreateLoopingAudioSource(engineHumClip, engineVolume);
+        thrusterSource = CreateLoopingAudioSource(thrusterClip, thrusterVolume);
+
+        if (engineSource != null) engineSource.Play();
+    }
+
+    private AudioSource CreateLoopingAudioSource(AudioClip clip, float vol)
+    {
+        if (clip == null) return null;
+        AudioSource src = gameObject.AddComponent<AudioSource>();
+        src.clip = clip;
+        src.loop = true;
+        src.volume = vol;
+        src.spatialBlend = 0f;
+        src.playOnAwake = false;
+        return src;
     }
 
     void OnMove(InputValue value)
@@ -135,6 +161,12 @@ public class DroneController : MonoBehaviour
         {
             var emission = exhaustParticles.emission;
             emission.enabled = shouldEmit;
+        }
+
+        if (thrusterSource != null)
+        {
+            if (shouldEmit && !thrusterSource.isPlaying) thrusterSource.Play();
+            else if (!shouldEmit && thrusterSource.isPlaying) thrusterSource.Stop();
         }
     }
 

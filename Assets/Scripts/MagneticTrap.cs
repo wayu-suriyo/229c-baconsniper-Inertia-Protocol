@@ -42,7 +42,10 @@ public class MagneticTrap : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         
         audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.spatialBlend = 0f; 
+        audioSource.spatialBlend = 1f;
+        audioSource.rolloffMode = AudioRolloffMode.Linear;
+        audioSource.minDistance = 2f;
+        audioSource.maxDistance = maxInfluenceRadius;
 
         radiusLine = GetComponent<LineRenderer>();
         if (radiusLine == null)

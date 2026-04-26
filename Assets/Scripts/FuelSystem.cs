@@ -5,12 +5,18 @@ public class FuelSystem : MonoBehaviour
     [Header("Fuel Settings")]
     public float maxFuel = 100f;
     public float currentFuel;
-    public float fuelDrainRate = 15f; 
+    public float fuelDrainRate = 15f;
+
+    [Header("Low Fuel Warning")]
+    public AudioClip lowFuelWarningClip;
+    [Range(0f, 1f)] public float warningVolume = 0.9f;
+    [Range(0f, 1f)] public float lowFuelThreshold = 0.25f;
 
     public bool IsOutOfFuel => currentFuel <= 0f;
 
     private float emptyFuelTimer = 0f;
     private bool isGameOverTriggered = false;
+    private bool lowFuelWarningPlayed = false;
 
     void Start()
     {
@@ -36,6 +42,17 @@ public class FuelSystem : MonoBehaviour
         else if (!IsOutOfFuel)
         {
             emptyFuelTimer = 0f;
+        }
+
+        float fuelPercent = currentFuel / maxFuel;
+        if (!lowFuelWarningPlayed && fuelPercent <= lowFuelThreshold && fuelPercent > 0f)
+        {
+            lowFuelWarningPlayed = true;
+            AudioManager.PlaySFX(lowFuelWarningClip, warningVolume);
+        }
+        else if (fuelPercent > lowFuelThreshold)
+        {
+            lowFuelWarningPlayed = false;
         }
     }
 

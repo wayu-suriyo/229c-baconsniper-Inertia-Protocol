@@ -4,7 +4,7 @@ public class SmashPlatform2D : MonoBehaviour
 {
     [Header("Smash Settings")]
     public float breakVelocityThreshold = 8f;
-    public float droneDamageThreshold = 25f; 
+    public float droneDamageThreshold = 25f;
 
     [Header("Audio Settings")]
     public AudioClip smashSound;
@@ -19,18 +19,12 @@ public class SmashPlatform2D : MonoBehaviour
 
             if (impactForce >= breakVelocityThreshold)
             {
-                if (smashSound != null)
-                {
-                    AudioSource.PlayClipAtPoint(smashSound, transform.position, volume);
-                }
-
+                AudioManager.PlaySFXAt(smashSound, transform.position, volume);
                 GetComponent<Collider2D>().enabled = false;
-                
+
                 DroneHealth playerHealth = collision.gameObject.GetComponent<DroneHealth>();
                 if (playerHealth != null)
-                {
                     playerHealth.TakeDamage(droneDamageThreshold);
-                }
 
                 Destroy(gameObject);
             }

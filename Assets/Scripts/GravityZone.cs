@@ -12,16 +12,37 @@ public class GravityZone : MonoBehaviour
     public Color zoneColor = new Color(0.4f, 0f, 1f, 0.25f);
     public Color activeColor = new Color(1f, 0.2f, 0.8f, 0.4f);
 
+    [Header("Audio")]
+    [Tooltip("Looping sound played while gravity zone is active")]
+    public AudioClip activeLoopClip;
+    [Range(0f, 1f)] public float loopVolume = 0.5f;
+    public float audioMinDistance = 2f;
+    public float audioMaxDistance = 15f;
+
     private Rigidbody2D droneRb;
     private float originalGravityScale = 1f;
     private bool droneInside = false;
     private bool isZoneActive = true;
     private SpriteRenderer sr;
+    private AudioSource loopSource;
 
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
         SetVisual(isZoneActive);
+
+        if (activeLoopClip != null)
+        {
+            loopSource = gameObject.AddComponent<AudioSource>();
+            loopSource.clip = activeLoopClip;
+            loopSource.loop = true;
+            loopSource.spatialBlend = 1f;
+            loopSource.rolloffMode = AudioRolloffMode.Linear;
+            loopSource.minDistance = audioMinDistance;
+            loopSource.maxDistance = audioMaxDistance;
+            loopSource.volume = loopVolume;
+            loopSource.playOnAwake = false;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -63,6 +84,7 @@ public class GravityZone : MonoBehaviour
         isZoneActive = true;
         SetVisual(true);
         if (droneInside) ApplyInvertedGravity();
+        if (loopSource != null && !loopSource.isPlaying) loopSource.Play();
     }
 
     public void Deactivate()
@@ -70,6 +92,7 @@ public class GravityZone : MonoBehaviour
         isZoneActive = false;
         SetVisual(false);
         if (droneInside) RestoreGravity();
+        if (loopSource != null && loopSource.isPlaying) loopSource.Stop();
     }
 
     private void SetVisual(bool active)

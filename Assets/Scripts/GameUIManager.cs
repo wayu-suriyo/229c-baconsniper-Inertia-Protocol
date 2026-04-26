@@ -41,6 +41,8 @@ public class GameUIManager : MonoBehaviour
     public GameObject winPanel;
     public TextMeshProUGUI finalTimeText;
     public string nextLevelSceneName = "Level2";
+    public AudioClip winSound;
+    [Range(0f, 1f)] public float winSoundVolume = 1f;
 
     private FuelSystem playerFuel;
     private DroneHealth playerHealth;
@@ -221,6 +223,7 @@ public class GameUIManager : MonoBehaviour
 
         DisableDroneController();
         DynamicCamera2D.StopShake();
+        AudioManager.PlaySFX(winSound, winSoundVolume);
 
         if (winPanel != null)
         {
