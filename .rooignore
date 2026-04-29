@@ -1,0 +1,11 @@
+Library/
+Logs/
+Temp/
+obj/
+bin/
+Packages/
+UserSettings/
+*.meta
+*.mat
+*.prefab
+*.asset

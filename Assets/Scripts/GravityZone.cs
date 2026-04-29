@@ -4,8 +4,8 @@ using UnityEngine;
 public class GravityZone : MonoBehaviour
 {
     [Header("Gravity Settings")]
-    [Tooltip("Gravity scale applied to the drone while inside. Use -1 to fully invert.")]
-    public float invertedGravityScale = -1f;
+    [Tooltip("The acceleration vector applied to the drone in this zone. Standard gravity is (0, -9.81). Up is (0, 9.81).")]
+    public Vector2 gravityVector = new Vector2(0f, 9.81f);
     public float transitionSpeed = 5f;
 
     [Header("Visual")]
@@ -19,16 +19,41 @@ public class GravityZone : MonoBehaviour
     public float audioMinDistance = 2f;
     public float audioMaxDistance = 15f;
 
+    [Header("Chevron Animation")]
+    public int chevronCount = 4;
+    public float chevronSize = 0.4f;
+    public float chevronSpacing = 0.8f;
+    public float animationSpeed = 2.0f;
+    public float chevronThickness = 0.1f;
+
     private Rigidbody2D droneRb;
     private float originalGravityScale = 1f;
     private bool droneInside = false;
     private bool isZoneActive = true;
     private SpriteRenderer sr;
     private AudioSource loopSource;
+    private LineRenderer[] chevrons;
 
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
+
+        // Setup the animated chevrons
+        chevrons = new LineRenderer[chevronCount];
+        for (int i = 0; i < chevronCount; i++)
+        {
+            GameObject child = new GameObject("Chevron_" + i);
+            child.transform.SetParent(transform);
+            LineRenderer lr = child.AddComponent<LineRenderer>();
+            lr.material = new Material(Shader.Find("Sprites/Default"));
+            lr.startWidth = chevronThickness;
+            lr.endWidth = chevronThickness;
+            lr.useWorldSpace = true;
+            lr.positionCount = 3;
+            lr.numCornerVertices = 4; // Makes the chevron joint sharp and clean
+            chevrons[i] = lr;
+        }
+        
         SetVisual(isZoneActive);
 
         if (activeLoopClip != null)
@@ -67,10 +92,60 @@ public class GravityZone : MonoBehaviour
         droneRb = null;
     }
 
+    void Update()
+    {
+        if (chevrons == null || chevrons.Length == 0) return;
+
+        Vector3 dir = gravityVector == Vector2.zero ? Vector3.up : new Vector3(gravityVector.x, gravityVector.y, 0).normalized;
+        Vector3 right = Vector3.Cross(dir, Vector3.forward).normalized;
+        Vector3 center = transform.position;
+
+        float totalLength = chevronSpacing * chevronCount;
+        float startOffset = -totalLength / 2f;
+
+        // Loop the offset seamlessly
+        float timeOffset = (Time.time * animationSpeed) % chevronSpacing;
+        
+        Color baseColor = isZoneActive ? activeColor : zoneColor;
+        float baseAlpha = isZoneActive ? 1f : 0.2f;
+
+        for (int i = 0; i < chevronCount; i++)
+        {
+            float posOffset = startOffset + (i * chevronSpacing) + timeOffset;
+            Vector3 chevronCenter = center + dir * posOffset;
+
+            // Define points for a chevron ">>>"
+            Vector3 p0 = chevronCenter - dir * (chevronSize * 0.5f) + right * chevronSize;
+            Vector3 p1 = chevronCenter + dir * (chevronSize * 0.5f);
+            Vector3 p2 = chevronCenter - dir * (chevronSize * 0.5f) - right * chevronSize;
+
+            LineRenderer lr = chevrons[i];
+            lr.SetPosition(0, p0);
+            lr.SetPosition(1, p1);
+            lr.SetPosition(2, p2);
+
+            // Smoothly fade out at the very edges so they don't pop in/out abruptly
+            float alphaMult = 1.0f - Mathf.Clamp01(Mathf.Abs(posOffset) / (totalLength / 2f));
+            Color fadedColor = baseColor;
+            fadedColor.a = baseAlpha * alphaMult;
+            lr.startColor = fadedColor;
+            lr.endColor = fadedColor;
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (droneInside && isZoneActive && droneRb != null)
+        {
+            // Force = mass * acceleration. This simulates gravity perfectly in any direction.
+            droneRb.AddForce(gravityVector * droneRb.mass, ForceMode2D.Force);
+        }
+    }
+
     private void ApplyInvertedGravity()
     {
         if (droneRb != null)
-            droneRb.gravityScale = invertedGravityScale;
+            droneRb.gravityScale = 0f; // Turn off standard global gravity
     }
 
     private void RestoreGravity()
@@ -117,8 +192,13 @@ public class GravityZone : MonoBehaviour
 
         Gizmos.color = new Color(1f, 0.2f, 0.8f, 0.8f);
         Vector3 center = transform.position;
-        Gizmos.DrawLine(center + Vector3.down * 0.5f, center + Vector3.up * 0.5f);
-        Gizmos.DrawLine(center + Vector3.up * 0.5f, center + new Vector3(-0.2f, 0.2f, 0));
-        Gizmos.DrawLine(center + Vector3.up * 0.5f, center + new Vector3(0.2f, 0.2f, 0));
+        Vector3 dir = gravityVector == Vector2.zero ? Vector3.up : new Vector3(gravityVector.x, gravityVector.y, 0).normalized;
+        float arrowLength = 0.5f;
+        
+        Gizmos.DrawLine(center - dir * arrowLength, center + dir * arrowLength);
+        
+        Vector3 right = Vector3.Cross(dir, Vector3.forward).normalized;
+        Gizmos.DrawLine(center + dir * arrowLength, center + dir * arrowLength * 0.5f + right * 0.2f);
+        Gizmos.DrawLine(center + dir * arrowLength, center + dir * arrowLength * 0.5f - right * 0.2f);
     }
 }

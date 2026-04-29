@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 public class GameUIManager : MonoBehaviour
 {
@@ -44,6 +45,10 @@ public class GameUIManager : MonoBehaviour
     public AudioClip winSound;
     [Range(0f, 1f)] public float winSoundVolume = 1f;
 
+    [Header("Pause Settings")]
+    public GameObject pausePanel;
+    private bool isPaused = false;
+
     private FuelSystem playerFuel;
     private DroneHealth playerHealth;
     private DroneController playerController;
@@ -70,6 +75,12 @@ public class GameUIManager : MonoBehaviour
     {
         if (!isLevelCompleted && !isGameOver)
         {
+            // Check for pause input
+            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                TogglePause();
+            }
+
             elapsedTime += Time.deltaTime;
             UpdateTimeUI();
         }
@@ -245,6 +256,28 @@ public class GameUIManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(nextLevelSceneName);
+    }
+
+    public void TogglePause()
+    {
+        if (isGameOver || isLevelCompleted) return;
+
+        isPaused = !isPaused;
+
+        if (pausePanel != null)
+        {
+            pausePanel.SetActive(isPaused);
+        }
+
+        Time.timeScale = isPaused ? 0f : 1f;
+    }
+
+    public void ResumeGame()
+    {
+        if (isPaused)
+        {
+            TogglePause();
+        }
     }
 
     private void DisableDroneController()
