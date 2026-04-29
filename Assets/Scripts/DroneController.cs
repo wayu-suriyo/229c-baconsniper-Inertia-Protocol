@@ -35,6 +35,14 @@ public class DroneController : MonoBehaviour
     private Rigidbody2D rb;
     private float tiltInput = 0f;
     private bool isThrusting = false;
+    
+    [HideInInspector]
+    public bool invertControls = false;
+    [HideInInspector]
+    public float invertThrustMultiplier = 1f;
+    [HideInInspector]
+    public float invertFuelMultiplier = 1f;
+
     private FuelSystem fuelSystem;
     private PlayerInput playerInput;
     private InputAction jumpAction;
@@ -100,8 +108,11 @@ public class DroneController : MonoBehaviour
             tiltInput = -v2.x;
         }
 
-        HandleTilt();
-        HandleThrust();
+        bool activeThrust = invertControls ? !isThrusting : isThrusting;
+        float activeTilt = invertControls ? -tiltInput : tiltInput;
+
+        HandleTilt(activeTilt, activeThrust);
+        HandleThrust(activeThrust);
         CalculateAirResistance(); 
         ClampVelocity();
     }
@@ -121,40 +132,44 @@ public class DroneController : MonoBehaviour
         }
     }
 
-    private void HandleTilt()
+    private void HandleTilt(float activeTilt, bool activeThrust)
     {
         float currentAngle = rb.rotation;
         currentAngle = Mathf.DeltaAngle(0, currentAngle);
 
-        if (Mathf.Abs(tiltInput) > 0.1f)
+        if (Mathf.Abs(activeTilt) > 0.1f)
         {
-            float targetAngle = tiltInput * maxTiltAngle;
+            float targetAngle = activeTilt * maxTiltAngle;
             
             float angleDifference = Mathf.DeltaAngle(currentAngle, targetAngle);
             rb.AddTorque(angleDifference * torqueForce * Time.fixedDeltaTime);
         }
         else if (autoLevelForce > 0)
         {
-            float levelMultiplier = isThrusting ? 0.5f : 1.5f;
+            float levelMultiplier = activeThrust ? 0.5f : 1.5f;
             float angleDifference = Mathf.DeltaAngle(currentAngle, 0f); 
             rb.AddTorque(angleDifference * (autoLevelForce * levelMultiplier) * Time.fixedDeltaTime);
         }
     }
 
-    private void HandleThrust()
+    private void HandleThrust(bool activeThrust)
     {
         bool hasFuel = fuelSystem == null || !fuelSystem.IsOutOfFuel;
-        bool shouldEmit = isThrusting && hasFuel;
+        bool shouldEmit = activeThrust && hasFuel;
 
         if (shouldEmit)
         {
             float angleInRad = Mathf.Abs(rb.rotation) * Mathf.Deg2Rad;
             float tiltCompensation = 1f / Mathf.Max(Mathf.Cos(angleInRad), 0.5f);
 
-            rb.AddForce(transform.up * (thrustForce * tiltCompensation), ForceMode2D.Force);
+            float currentThrust = invertControls ? thrustForce * invertThrustMultiplier : thrustForce;
+            rb.AddForce(transform.up * (currentThrust * tiltCompensation), ForceMode2D.Force);
 
             if (fuelSystem != null)
-                fuelSystem.ConsumeFuel();
+            {
+                float currentFuelMult = invertControls ? invertFuelMultiplier : 1f;
+                fuelSystem.ConsumeFuel(currentFuelMult);
+            }
         }
 
         if (exhaustParticles != null)

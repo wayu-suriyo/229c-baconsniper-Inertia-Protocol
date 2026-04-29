@@ -56,11 +56,11 @@ public class FuelSystem : MonoBehaviour
         }
     }
 
-    public void ConsumeFuel()
+    public void ConsumeFuel(float multiplier = 1f)
     {
         if (currentFuel > 0f)
         {
-            currentFuel -= fuelDrainRate * Time.fixedDeltaTime;
+            currentFuel -= fuelDrainRate * multiplier * Time.fixedDeltaTime;
             if (currentFuel <= 0f)
             {
                 currentFuel = 0f;

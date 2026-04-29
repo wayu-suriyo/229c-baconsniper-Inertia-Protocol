@@ -15,7 +15,7 @@ public class HealthPickup : MonoBehaviour
     {
         DroneHealth health = other.GetComponent<DroneHealth>();
         if (health == null) return;
-        if (health.currentHealth >= health.maxHealth) return;
+
 
         float amount = fullRestore ? health.maxHealth : healAmount;
         health.currentHealth = Mathf.Min(health.currentHealth + amount, health.maxHealth);

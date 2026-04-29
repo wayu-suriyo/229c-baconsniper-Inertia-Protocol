@@ -171,15 +171,37 @@ public class PressurePlate : MonoBehaviour
     void OnDrawGizmos()
     {
         BoxCollider2D col = GetComponent<BoxCollider2D>();
-        if (col == null) return;
+        if (col != null)
+        {
+            Gizmos.color = new Color(0.2f, 1f, 0.4f, 0.35f);
+            Gizmos.matrix = Matrix4x4.TRS(
+                transform.TransformPoint(col.offset),
+                transform.rotation,
+                transform.lossyScale
+            );
+            Gizmos.DrawCube(Vector3.zero, col.size);
+            Gizmos.matrix = Matrix4x4.identity;
+        }
 
-        Gizmos.color = new Color(0.2f, 1f, 0.4f, 0.35f);
-        Gizmos.matrix = Matrix4x4.TRS(
-            transform.TransformPoint(col.offset),
-            transform.rotation,
-            transform.lossyScale
-        );
-        Gizmos.DrawCube(Vector3.zero, col.size);
-        Gizmos.matrix = Matrix4x4.identity;
+        // Draw connecting lines to linked objects in Edit Mode
+        Gizmos.color = new Color(1f, 0.8f, 0f, 0.8f); // Yellowish connecting line
+
+        if (movingObstacleTarget != null)
+        {
+            Gizmos.DrawLine(transform.position, movingObstacleTarget.transform.position);
+            Gizmos.DrawWireSphere(movingObstacleTarget.transform.position, 0.3f);
+        }
+
+        if (doorTarget != null)
+        {
+            Gizmos.DrawLine(transform.position, doorTarget.transform.position);
+            Gizmos.DrawWireSphere(doorTarget.transform.position, 0.3f);
+        }
+
+        if (gravityZoneTarget != null)
+        {
+            Gizmos.DrawLine(transform.position, gravityZoneTarget.transform.position);
+            Gizmos.DrawWireSphere(gravityZoneTarget.transform.position, 0.3f);
+        }
     }
 }
