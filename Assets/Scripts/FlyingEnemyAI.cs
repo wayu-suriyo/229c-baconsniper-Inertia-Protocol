@@ -127,8 +127,7 @@ public class FlyingEnemyAI : MonoBehaviour
                         {
                             rb.AddForce(dir * trackingSpeed);
                         }
-                            
-                        RotateSprite(dir);
+                        ResetRotation();
                     }
                 }
                 break;
@@ -208,10 +207,7 @@ public class FlyingEnemyAI : MonoBehaviour
                     rb.AddForce(dir * trackingSpeed * 0.5f);
                 }
                     
-                if (rb.linearVelocity.sqrMagnitude > 0.1f)
-                {
-                    RotateSprite(rb.linearVelocity.normalized);
-                }
+                ResetRotation();
             }
         }
     }
@@ -225,14 +221,45 @@ public class FlyingEnemyAI : MonoBehaviour
         return hit.collider == null;
     }
 
+    private void ResetRotation()
+    {
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.identity, Time.fixedDeltaTime * 5f);
+        FaceDirection(rb.linearVelocity);
+    }
+
+    private void FaceDirection(Vector2 dir)
+    {
+        if (spriteRenderer == null || Mathf.Abs(dir.x) < 0.05f) return;
+
+        bool movingRight = dir.x > 0;
+        
+        if (spriteFacing == FacingDirection.Left)
+        {
+            spriteRenderer.flipX = movingRight;
+        }
+        else if (spriteFacing == FacingDirection.Right)
+        {
+            spriteRenderer.flipX = !movingRight;
+        }
+    }
+
     private void RotateSprite(Vector2 direction)
     {
         if (direction == Vector2.zero) return;
         
+        FaceDirection(direction);
+        
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         
-        // Adjust angle based on which way the sprite is drawn naturally
-        switch (spriteFacing)
+        FacingDirection currentFacing = spriteFacing;
+        if (spriteRenderer != null && spriteRenderer.flipX)
+        {
+            if (spriteFacing == FacingDirection.Left) currentFacing = FacingDirection.Right;
+            else if (spriteFacing == FacingDirection.Right) currentFacing = FacingDirection.Left;
+        }
+        
+        // Adjust angle based on which way the sprite is currently facing
+        switch (currentFacing)
         {
             case FacingDirection.Right:
                 // Atan2 expects right as 0 degrees, so no offset needed

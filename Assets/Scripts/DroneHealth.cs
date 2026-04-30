@@ -20,8 +20,13 @@ public class DroneHealth : MonoBehaviour
     public AudioClip deathSoundClip;
     [Range(0f, 1f)] public float deathSoundVolume = 1f;
 
+    [Header("Death Settings")]
+    public GameObject explosionPrefab;
+    public float explosionDuration = 1f;
+
     private bool isInvincible = false;
     private float iFrameTimer = 0f;
+    private bool isDead = false;
 
     void Start()
     {
@@ -67,6 +72,9 @@ public class DroneHealth : MonoBehaviour
 
     void Die()
     {
+        if (isDead) return;
+        isDead = true;
+
         Debug.LogError("Drone Destroyed!");
 
         DynamicCamera2D.Shake(0.8f);
@@ -75,6 +83,25 @@ public class DroneHealth : MonoBehaviour
         DroneController controller = GetComponent<DroneController>();
         if (controller != null) controller.enabled = false;
         
+        SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>();
+        foreach(var r in renderers) r.enabled = false;
+
+        Collider2D[] colliders = GetComponents<Collider2D>();
+        foreach(var col in colliders) col.enabled = false;
+
+        if (explosionPrefab != null)
+        {
+            GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            Destroy(explosion, explosionDuration);
+        }
+
+        StartCoroutine(GameOverRoutine());
+    }
+
+    private System.Collections.IEnumerator GameOverRoutine()
+    {
+        yield return new WaitForSeconds(explosionDuration);
+
         if (GameUIManager.instance != null)
         {
             GameUIManager.instance.ShowGameOver();

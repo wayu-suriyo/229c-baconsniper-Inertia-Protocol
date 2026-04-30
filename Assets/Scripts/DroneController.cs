@@ -43,6 +43,8 @@ public class DroneController : MonoBehaviour
     [HideInInspector]
     public float invertFuelMultiplier = 1f;
 
+    private WindZone activeWindZone = null;
+
     private FuelSystem fuelSystem;
     private PlayerInput playerInput;
     private InputAction jumpAction;
@@ -117,6 +119,19 @@ public class DroneController : MonoBehaviour
         ClampVelocity();
     }
 
+    public void ApplyWindOverride(WindZone zone)
+    {
+        activeWindZone = zone;
+    }
+
+    public void RemoveWindOverride(WindZone zone)
+    {
+        if (activeWindZone == zone)
+        {
+            activeWindZone = null;
+        }
+    }
+
     private void CalculateAirResistance()
     {
         Vector2 velocity = rb.linearVelocity;
@@ -137,12 +152,15 @@ public class DroneController : MonoBehaviour
         float currentAngle = rb.rotation;
         currentAngle = Mathf.DeltaAngle(0, currentAngle);
 
+        float currentTorque = (activeWindZone != null) ? activeWindZone.droneTorqueOverride : torqueForce;
+        float currentMaxTilt = (activeWindZone != null) ? activeWindZone.droneTiltOverride : maxTiltAngle;
+
         if (Mathf.Abs(activeTilt) > 0.1f)
         {
-            float targetAngle = activeTilt * maxTiltAngle;
+            float targetAngle = activeTilt * currentMaxTilt;
             
             float angleDifference = Mathf.DeltaAngle(currentAngle, targetAngle);
-            rb.AddTorque(angleDifference * torqueForce * Time.fixedDeltaTime);
+            rb.AddTorque(angleDifference * currentTorque * Time.fixedDeltaTime);
         }
         else if (autoLevelForce > 0)
         {
@@ -162,7 +180,8 @@ public class DroneController : MonoBehaviour
             float angleInRad = Mathf.Abs(rb.rotation) * Mathf.Deg2Rad;
             float tiltCompensation = 1f / Mathf.Max(Mathf.Cos(angleInRad), 0.5f);
 
-            float currentThrust = invertControls ? thrustForce * invertThrustMultiplier : thrustForce;
+            float baseThrust = (activeWindZone != null) ? activeWindZone.droneThrustOverride : thrustForce;
+            float currentThrust = invertControls ? baseThrust * invertThrustMultiplier : baseThrust;
             rb.AddForce(transform.up * (currentThrust * tiltCompensation), ForceMode2D.Force);
 
             if (fuelSystem != null)

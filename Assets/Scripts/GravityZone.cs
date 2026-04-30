@@ -9,6 +9,11 @@ public class GravityZone : MonoBehaviour
     public Vector2 gravityVector = new Vector2(0f, 9.81f);
     public float transitionSpeed = 5f;
 
+    [Header("Pulse Settings")]
+    public bool isPulseMode = false;
+    public float activeTime = 2f;
+    public float restTime = 3f;
+
     [Header("Visual")]
     public Color zoneColor = new Color(0.4f, 0f, 1f, 0.25f);
     public Color activeColor = new Color(1f, 0.2f, 0.8f, 0.4f);
@@ -16,7 +21,10 @@ public class GravityZone : MonoBehaviour
     [Header("Audio")]
     [Tooltip("Looping sound played while gravity zone is active")]
     public AudioClip activeLoopClip;
+    public AudioClip turnOnSound;
+    public AudioClip turnOffSound;
     [Range(0f, 1f)] public float loopVolume = 0.5f;
+    [Range(0f, 1f)] public float sfxVolume = 0.7f;
     public float audioMinDistance = 2f;
     public float audioMaxDistance = 15f;
 
@@ -31,6 +39,7 @@ public class GravityZone : MonoBehaviour
     private Dictionary<Rigidbody2D, float> affectedBodies = new Dictionary<Rigidbody2D, float>();
     
     private bool isZoneActive = true;
+    private float pulseTimer = 0f;
     private SpriteRenderer sr;
     private AudioSource loopSource;
     private LineRenderer[] chevrons;
@@ -97,6 +106,21 @@ public class GravityZone : MonoBehaviour
 
     void Update()
     {
+        if (isPulseMode)
+        {
+            pulseTimer += Time.deltaTime;
+            if (isZoneActive && pulseTimer >= activeTime)
+            {
+                Deactivate();
+                pulseTimer = 0f;
+            }
+            else if (!isZoneActive && pulseTimer >= restTime)
+            {
+                Activate();
+                pulseTimer = 0f;
+            }
+        }
+
         if (chevrons == null || chevrons.Length == 0) return;
 
         Vector3 dir = gravityVector == Vector2.zero ? Vector3.up : new Vector3(gravityVector.x, gravityVector.y, 0).normalized;
@@ -201,6 +225,11 @@ public class GravityZone : MonoBehaviour
         isZoneActive = true;
         SetVisual(true);
         ApplyInvertedGravity();
+        
+        if (turnOnSound != null && loopSource != null)
+        {
+            loopSource.PlayOneShot(turnOnSound, sfxVolume);
+        }
     }
 
     public void Deactivate()
@@ -208,6 +237,11 @@ public class GravityZone : MonoBehaviour
         isZoneActive = false;
         SetVisual(false);
         RestoreGravity();
+        
+        if (turnOffSound != null && loopSource != null)
+        {
+            loopSource.PlayOneShot(turnOffSound, sfxVolume);
+        }
     }
 
     private void SetVisual(bool active)

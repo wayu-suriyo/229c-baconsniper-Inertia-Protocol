@@ -31,6 +31,7 @@ public class GameUIManager : MonoBehaviour
     [HideInInspector] public int requiredDrives = 0; 
     private int currentDrives = 0;
     private float elapsedTime = 0f;
+    private bool isGoalOpen = false;
     private bool isLevelCompleted = false;
     private bool isGameOver = false;
 
@@ -73,14 +74,19 @@ public class GameUIManager : MonoBehaviour
 
     void Update()
     {
-        if (!isLevelCompleted && !isGameOver)
+        bool isAnyEndPanelOpen = (gameOverPanel != null && gameOverPanel.activeSelf) || 
+                                 (winPanel != null && winPanel.activeSelf);
+
+        if (!isAnyEndPanelOpen)
         {
-            // Check for pause input
             if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
             {
                 TogglePause();
             }
+        }
 
+        if (!isLevelCompleted && !isGameOver)
+        {
             elapsedTime += Time.deltaTime;
             UpdateTimeUI();
         }
@@ -117,14 +123,24 @@ public class GameUIManager : MonoBehaviour
 
     public void AddDataDrive()
     {
-        if (isLevelCompleted) return;
+        if (isGoalOpen || isLevelCompleted) return;
 
         currentDrives++;
         UpdateScoreUI();
 
         if (currentDrives >= requiredDrives)
         {
-            LevelComplete();
+            isGoalOpen = true;
+            ExitPortal portal = Object.FindAnyObjectByType<ExitPortal>();
+            if (portal != null)
+            {
+                portal.OpenPortal();
+            }
+            else
+            {
+                Debug.LogWarning("Goal opened, but no ExitPortal found in scene!");
+                ShowWinScreen();
+            }
         }
     }
 
@@ -182,22 +198,6 @@ public class GameUIManager : MonoBehaviour
         }
     }
 
-    private void LevelComplete()
-    {
-        isLevelCompleted = true;
-        
-        ExitPortal portal = Object.FindAnyObjectByType<ExitPortal>();
-        if (portal != null)
-        {
-            portal.OpenPortal();
-        }
-        else
-        {
-            Debug.LogWarning("Level Complete, but no ExitPortal found in scene!");
-            ShowWinScreen(); 
-        }
-    }
-
     public void ShowGameOver()
     {
         if (isGameOver || isLevelCompleted) return;
@@ -230,7 +230,8 @@ public class GameUIManager : MonoBehaviour
 
     public void ShowWinScreen()
     {
-        if (isGameOver) return;
+        if (isGameOver || isLevelCompleted) return;
+        isLevelCompleted = true;
 
         DisableDroneController();
         DynamicCamera2D.StopShake();
@@ -260,7 +261,10 @@ public class GameUIManager : MonoBehaviour
 
     public void TogglePause()
     {
-        if (isGameOver || isLevelCompleted) return;
+        bool isAnyEndPanelOpen = (gameOverPanel != null && gameOverPanel.activeSelf) || 
+                                 (winPanel != null && winPanel.activeSelf);
+                                 
+        if (isAnyEndPanelOpen) return;
 
         isPaused = !isPaused;
 
