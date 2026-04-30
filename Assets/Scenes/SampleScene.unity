@@ -7238,14 +7238,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 069df9888127d7845828a2bfd9faab2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MagneticTrap
-  gravitationalConstant: 10
+  gravitationalConstant: 30
   trapMass: 50
   maxInfluenceRadius: 8
   minSafeDistance: 2
   maxPullForce: 20
   isPulseMode: 1
   activeTime: 2
-  restTime: 3
+  restTime: 2
   turnOnSound: {fileID: 0}
   turnOffSound: {fileID: 0}
   volume: 0.5
@@ -8007,8 +8007,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlyingEnemyAI
   playerTarget: {fileID: 1935454265}
-  detectionRadius: 3.05
-  attackRange: 2.09
+  detectionRadius: 8.48
+  attackRange: 2.92
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -8021,6 +8021,7 @@ MonoBehaviour:
   dashForce: 35
   damageToPlayer: 30
   playerKnockbackForce: 5
+  crashThreshold: 10
   spriteRenderer: {fileID: 867545732}
   chargeParticles: {fileID: 349539559}
   explosionPrefab: {fileID: 9043156549408507262, guid: 62bd9fda895db3341bc0d557b9187837, type: 3}
@@ -9121,7 +9122,7 @@ Transform:
   m_GameObject: {fileID: 1155732318}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.28, y: -3.37, z: 0}
+  m_LocalPosition: {x: 1.04, y: -3.39, z: 0}
   m_LocalScale: {x: 3.9211, y: 0.5529, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10526,7 +10527,7 @@ Transform:
   m_GameObject: {fileID: 1669091424}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.5, y: 2.81, z: 0}
+  m_LocalPosition: {x: -7.43, y: 1.09, z: 0}
   m_LocalScale: {x: 0.5198, y: 0.5198, z: 0.5198}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16573,7 +16574,7 @@ Transform:
   m_GameObject: {fileID: 2034669726}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.62, y: 3.38, z: 0}
+  m_LocalPosition: {x: 3.62, y: 0.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -16628,17 +16629,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2054673259}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1504306325}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -744, y: 339.63}
-  m_SizeDelta: {x: 242.2983, y: 55.2525}
+  m_AnchoredPosition: {x: -834, y: -323}
+  m_SizeDelta: {x: 242.2983, y: 29.2271}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2054673261
 MonoBehaviour:

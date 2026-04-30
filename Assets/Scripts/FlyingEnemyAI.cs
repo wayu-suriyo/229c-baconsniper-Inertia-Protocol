@@ -30,6 +30,8 @@ public class FlyingEnemyAI : MonoBehaviour
     public float damageToPlayer = 30f;
     [Tooltip("Controlled knockback force to prevent launching the player to space")]
     public float playerKnockbackForce = 15f;
+    [Tooltip("Velocity required to explode when hitting a wall. High enough to ignore normal flying, low enough that Gravity crushes it.")]
+    public float crashThreshold = 10f;
 
     [Header("Visuals & VFX")]
     public SpriteRenderer spriteRenderer;
@@ -119,10 +121,12 @@ public class FlyingEnemyAI : MonoBehaviour
                     else
                     {
                         Vector2 dir = (playerTarget.position - transform.position).normalized;
-                        rb.AddForce(dir * trackingSpeed);
                         
-                        if (rb.linearVelocity.magnitude > maxTrackingVelocity)
-                            rb.linearVelocity = rb.linearVelocity.normalized * maxTrackingVelocity;
+                        float speedInDir = Vector2.Dot(rb.linearVelocity, dir);
+                        if (speedInDir < maxTrackingVelocity)
+                        {
+                            rb.AddForce(dir * trackingSpeed);
+                        }
                             
                         RotateSprite(dir);
                     }
@@ -198,9 +202,11 @@ public class FlyingEnemyAI : MonoBehaviour
             {
                 Vector2 dir = (currentPatrolTarget - (Vector2)transform.position).normalized;
                 
-                rb.AddForce(dir * trackingSpeed * 0.5f);
-                if (rb.linearVelocity.magnitude > maxTrackingVelocity * 0.5f)
-                    rb.linearVelocity = rb.linearVelocity.normalized * (maxTrackingVelocity * 0.5f);
+                float speedInDir = Vector2.Dot(rb.linearVelocity, dir);
+                if (speedInDir < maxTrackingVelocity * 0.5f)
+                {
+                    rb.AddForce(dir * trackingSpeed * 0.5f);
+                }
                     
                 if (rb.linearVelocity.sqrMagnitude > 0.1f)
                 {
@@ -299,10 +305,14 @@ public class FlyingEnemyAI : MonoBehaviour
             }
             // If it hits the player while Tracking or Charging, it just physically bumps them without exploding.
         }
-        else if (currentState == EnemyState.Dashing)
+        else 
         {
-            // Crashed into a wall or obstacle while dashing!
-            Die();
+            float impactForce = collision.relativeVelocity.magnitude;
+            if (currentState == EnemyState.Dashing || impactForce >= crashThreshold)
+            {
+                // Crashed into a wall or obstacle hard enough, or while dashing!
+                Die();
+            }
         }
     }
 

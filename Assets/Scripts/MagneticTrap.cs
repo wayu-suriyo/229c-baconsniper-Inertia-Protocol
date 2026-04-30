@@ -28,8 +28,6 @@ public class MagneticTrap : MonoBehaviour
     public Color activeColor = new Color(1f, 0f, 0f, 0.5f);
     public Color inactiveColor = new Color(0.5f, 0.5f, 0.5f, 0.1f);
 
-    private Transform targetDrone;
-    private Rigidbody2D droneRb;
     private SpriteRenderer spriteRenderer;
     private LineRenderer radiusLine;
     private AudioSource audioSource;
@@ -55,17 +53,6 @@ public class MagneticTrap : MonoBehaviour
             radiusLine.useWorldSpace = false;
         }
         DrawRadiusCircle();
-
-        DroneController drone = FindAnyObjectByType<DroneController>();
-        if (drone != null)
-        {
-            targetDrone = drone.transform;
-            droneRb = drone.GetComponent<Rigidbody2D>();
-        }
-        else
-        {
-            Debug.LogWarning("MagneticTrap could not find the DroneController in the scene!");
-        }
     }
 
     void Update()
@@ -127,29 +114,36 @@ public class MagneticTrap : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (targetDrone == null || !targetDrone.gameObject.activeInHierarchy || droneRb == null || !isActive) return;
+        if (!isActive) return;
 
-        Vector2 forceDirection = (Vector2)transform.position - (Vector2)targetDrone.position;
-        float distance = forceDirection.magnitude;
-
-        if (distance > 0f && distance <= maxInfluenceRadius)
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, maxInfluenceRadius);
+        foreach (Collider2D col in colliders)
         {
-            float mathDistance = Mathf.Max(distance, minSafeDistance);
-
-            float forceMagnitude = gravitationalConstant * (trapMass * droneRb.mass) / (mathDistance * mathDistance);
-            
-            forceMagnitude = Mathf.Clamp(forceMagnitude, 0f, maxPullForce);
-
-            Vector2 appliedForce = forceDirection.normalized * forceMagnitude;
-
-            droneRb.WakeUp();
-
-            if (forceDirection.y > 0)
+            if (col.GetComponent<DroneController>() != null || col.GetComponent<FlyingEnemyAI>() != null)
             {
-                appliedForce.y += 9.81f * droneRb.mass * forceDirection.normalized.y;
-            }
+                Rigidbody2D rb = col.GetComponent<Rigidbody2D>();
+                if (rb == null || !col.gameObject.activeInHierarchy) continue;
 
-            droneRb.AddForce(appliedForce, ForceMode2D.Force);
+                Vector2 forceDirection = (Vector2)transform.position - (Vector2)col.transform.position;
+                float distance = forceDirection.magnitude;
+
+                if (distance > 0f && distance <= maxInfluenceRadius)
+                {
+                    float mathDistance = Mathf.Max(distance, minSafeDistance);
+                    float forceMagnitude = gravitationalConstant * (trapMass * rb.mass) / (mathDistance * mathDistance);
+                    forceMagnitude = Mathf.Clamp(forceMagnitude, 0f, maxPullForce);
+                    Vector2 appliedForce = forceDirection.normalized * forceMagnitude;
+
+                    rb.WakeUp();
+
+                    if (forceDirection.y > 0)
+                    {
+                        appliedForce.y += 9.81f * rb.mass * forceDirection.normalized.y;
+                    }
+
+                    rb.AddForce(appliedForce, ForceMode2D.Force);
+                }
+            }
         }
     }
     

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Collider2D))]
 public class GravityZone : MonoBehaviour
@@ -26,9 +27,9 @@ public class GravityZone : MonoBehaviour
     public float animationSpeed = 2.0f;
     public float chevronThickness = 0.1f;
 
-    private Rigidbody2D droneRb;
-    private float originalGravityScale = 1f;
-    private bool droneInside = false;
+    // Dictionary to keep track of affected objects and their original gravity scale
+    private Dictionary<Rigidbody2D, float> affectedBodies = new Dictionary<Rigidbody2D, float>();
+    
     private bool isZoneActive = true;
     private SpriteRenderer sr;
     private AudioSource loopSource;
@@ -72,24 +73,26 @@ public class GravityZone : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.GetComponent<DroneController>() == null && other.GetComponent<FlyingEnemyAI>() == null) return;
+
         Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
-        DroneController dc = other.GetComponent<DroneController>();
-        if (rb == null || dc == null) return;
+        if (rb == null) return;
 
-        droneRb = rb;
-        originalGravityScale = rb.gravityScale;
-        droneInside = true;
-
-        if (isZoneActive)
-            ApplyInvertedGravity();
+        if (!affectedBodies.ContainsKey(rb))
+        {
+            affectedBodies[rb] = rb.gravityScale;
+            if (isZoneActive) rb.gravityScale = 0f;
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.GetComponent<DroneController>() == null) return;
-        RestoreGravity();
-        droneInside = false;
-        droneRb = null;
+        Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
+        if (rb != null && affectedBodies.ContainsKey(rb))
+        {
+            rb.gravityScale = affectedBodies[rb];
+            affectedBodies.Remove(rb);
+        }
     }
 
     void Update()
@@ -131,43 +134,80 @@ public class GravityZone : MonoBehaviour
             lr.startColor = fadedColor;
             lr.endColor = fadedColor;
         }
+        
+        // Handle Audio
+        if (loopSource != null)
+        {
+            bool hasValidTargets = false;
+            foreach (var kvp in affectedBodies)
+            {
+                if (kvp.Key != null)
+                {
+                    hasValidTargets = true;
+                    break;
+                }
+            }
+
+            if (isZoneActive && hasValidTargets && !loopSource.isPlaying)
+                loopSource.Play();
+            else if ((!isZoneActive || !hasValidTargets) && loopSource.isPlaying)
+                loopSource.Stop();
+        }
     }
 
     void FixedUpdate()
     {
-        if (droneInside && isZoneActive && droneRb != null)
+        if (isZoneActive)
         {
-            // Force = mass * acceleration. This simulates gravity perfectly in any direction.
-            droneRb.AddForce(gravityVector * droneRb.mass, ForceMode2D.Force);
+            List<Rigidbody2D> keysToRemove = new List<Rigidbody2D>();
+            
+            foreach (var kvp in affectedBodies)
+            {
+                Rigidbody2D rb = kvp.Key;
+                if (rb == null)
+                {
+                    keysToRemove.Add(rb);
+                    continue;
+                }
+                
+                rb.AddForce(gravityVector * rb.mass, ForceMode2D.Force);
+            }
+            
+            foreach (var k in keysToRemove)
+            {
+                affectedBodies.Remove(k);
+            }
         }
     }
 
     private void ApplyInvertedGravity()
     {
-        if (droneRb != null)
-            droneRb.gravityScale = 0f; // Turn off standard global gravity
+        foreach (var kvp in affectedBodies)
+        {
+            if (kvp.Key != null) kvp.Key.gravityScale = 0f;
+        }
     }
 
     private void RestoreGravity()
     {
-        if (droneRb != null)
-            droneRb.gravityScale = originalGravityScale;
+        foreach (var kvp in affectedBodies)
+        {
+            if (kvp.Key != null) kvp.Key.gravityScale = kvp.Value;
+        }
     }
 
     public void Activate()
     {
         isZoneActive = true;
         SetVisual(true);
-        if (droneInside) ApplyInvertedGravity();
-        if (loopSource != null && !loopSource.isPlaying) loopSource.Play();
+        ApplyInvertedGravity();
     }
 
     public void Deactivate()
     {
         isZoneActive = false;
         SetVisual(false);
-        if (droneInside) RestoreGravity();
-        if (loopSource != null && loopSource.isPlaying) loopSource.Stop();
+        RestoreGravity();
     }
 
     private void SetVisual(bool active)

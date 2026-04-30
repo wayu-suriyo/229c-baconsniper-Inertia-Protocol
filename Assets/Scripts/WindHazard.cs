@@ -68,7 +68,7 @@ public class WindZone : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.CompareTag("Player") || other.GetComponent<DroneController>() != null)
+        if (other.GetComponent<DroneController>() != null || other.GetComponent<FlyingEnemyAI>() != null)
         {
             Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
             if (rb != null)
