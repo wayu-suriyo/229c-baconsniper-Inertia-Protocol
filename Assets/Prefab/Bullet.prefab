@@ -183,3 +183,9 @@ MonoBehaviour:
   damage: 25
   hitSound: {fileID: 0}
   soundVolume: 0.3
+  trail: {fileID: 0}
+  trailTime: 0.08
+  trailStartWidth: 0.15
+  trailEndWidth: 0
+  trailStartColor: {r: 1, g: 0.20000002, b: 0, a: 1}
+  trailEndColor: {r: 1, g: 0.7029911, b: 0, a: 1}
