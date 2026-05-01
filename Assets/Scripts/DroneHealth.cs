@@ -78,6 +78,10 @@ public class DroneHealth : MonoBehaviour, IDamageable
         if (isDead) return;
         isDead = true;
 
+        // Track deaths for end-of-level summary
+        if (CheckpointManager.instance != null)
+            CheckpointManager.instance.IncrementDeathCount();
+
         Debug.Log("Drone Destroyed!");
 
         DynamicCamera2D.Shake(0.8f);

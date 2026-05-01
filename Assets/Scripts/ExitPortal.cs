@@ -49,14 +49,13 @@ public class ExitPortal : MonoBehaviour
             AudioManager.PlaySFX(openSound, volume);
         }
         
-        Debug.Log("🚪 Exit Portal Opened!");
+        Debug.Log("Exit Portal Opened!");
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (isOpen && (other.CompareTag("Player") || other.GetComponent<DroneHealth>() != null))
         {
-            // ผู้เล่นเข้าประตูที่เปิดแล้ว
             AudioManager.PlaySFXAt(enterSound, transform.position, volume);
 
             if (GameUIManager.instance != null)

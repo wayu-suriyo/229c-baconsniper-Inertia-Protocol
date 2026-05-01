@@ -11,7 +11,8 @@ public class GameUIManager : MonoBehaviour
 
     [Header("UI Text Elements")]
     public TextMeshProUGUI scoreText; 
-    public TextMeshProUGUI timeText; 
+    public TextMeshProUGUI timeText;
+    public TextMeshProUGUI deathCountHUDText;
     
     [Header("Fuel UI Elements")]
     public Image fuelImage;
@@ -35,6 +36,7 @@ public class GameUIManager : MonoBehaviour
     private bool isLevelCompleted = false;
     private bool isGameOver = false;
     private int lastDisplayedSeconds = -1;
+    private int lastDisplayedDeaths = -1;
 
     [Header("Game Over Settings")]
     public GameObject gameOverPanel;
@@ -43,6 +45,7 @@ public class GameUIManager : MonoBehaviour
     [Header("Win Settings")]
     public GameObject winPanel;
     public TextMeshProUGUI finalTimeText;
+    public TextMeshProUGUI deathCountText;
     public string nextLevelSceneName = "Level2";
     public AudioClip winSound;
     [Range(0f, 1f)] public float winSoundVolume = 1f;
@@ -101,6 +104,10 @@ public class GameUIManager : MonoBehaviour
         {
             UpdateHealthUI();
         }
+        if (deathCountHUDText != null)
+        {
+            UpdateDeathCountUI();
+        }
     }
 
     public void TriggerDamageFlash()
@@ -149,7 +156,7 @@ public class GameUIManager : MonoBehaviour
     {
         if (scoreText != null)
         {
-            scoreText.text = $"Data Drives: {currentDrives} / {requiredDrives}";
+            scoreText.text = $"Data : {currentDrives} / {requiredDrives}";
         }
     }
 
@@ -164,6 +171,17 @@ public class GameUIManager : MonoBehaviour
         int minutes = totalSeconds / 60;
         int seconds = totalSeconds % 60;
         timeText.text = string.Format("Time: {0:00}:{1:00}", minutes, seconds);
+    }
+
+    private void UpdateDeathCountUI()
+    {
+        if (deathCountHUDText == null) return;
+
+        int deaths = (CheckpointManager.instance != null) ? CheckpointManager.instance.DeathCount : 0;
+        if (deaths == lastDisplayedDeaths) return;
+        lastDisplayedDeaths = deaths;
+
+        deathCountHUDText.text = $"Deaths: {deaths}";
     }
 
     private void UpdateFuelUI()
@@ -226,13 +244,65 @@ public class GameUIManager : MonoBehaviour
     public void RestartLevel()
     {
         Time.timeScale = 1f;
+
+        // If a checkpoint exists, reload scene but respawn at checkpoint
+        if (CheckpointManager.instance != null &&
+            CheckpointManager.instance.HasCheckpointForCurrentScene())
+        {
+            pendingRespawn = true;
+        }
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void LoadMainMenu()
     {
         Time.timeScale = 1f;
+
+        // Clear checkpoint when returning to menu
+        if (CheckpointManager.instance != null)
+            CheckpointManager.instance.ClearCheckpoint();
+
         SceneManager.LoadScene(mainMenuSceneName);
+    }
+
+    // --- Checkpoint Respawn System ---
+    private static bool pendingRespawn = false;
+
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (!pendingRespawn) return;
+        pendingRespawn = false;
+
+        if (CheckpointManager.instance == null ||
+            !CheckpointManager.instance.HasCheckpointForCurrentScene()) return;
+
+        // Find the drone fresh after scene reload
+        DroneController drone = FindAnyObjectByType<DroneController>();
+        if (drone == null) return;
+
+        // Reposition drone at checkpoint
+        Vector3 respawnPos = CheckpointManager.instance.RespawnPosition;
+        Rigidbody2D droneRb = drone.GetComponent<Rigidbody2D>();
+        if (droneRb != null)
+        {
+            droneRb.linearVelocity = Vector2.zero;
+            droneRb.angularVelocity = 0f;
+            droneRb.rotation = 0f;
+        }
+        drone.transform.position = respawnPos;
+
+        Debug.Log($"Respawned at checkpoint: {respawnPos}");
     }
 
     public void ShowWinScreen()
@@ -254,6 +324,12 @@ public class GameUIManager : MonoBehaviour
             int minutes = Mathf.FloorToInt(elapsedTime / 60F);
             int seconds = Mathf.FloorToInt(elapsedTime - minutes * 60);
             finalTimeText.text = string.Format("Time: {0:00}:{1:00}", minutes, seconds);
+        }
+
+        if (deathCountText != null)
+        {
+            int deaths = (CheckpointManager.instance != null) ? CheckpointManager.instance.DeathCount : 0;
+            deathCountText.text = deaths == 0 ? "Deaths: 0" : $"Deaths: {deaths}";
         }
 
         Time.timeScale = 0f;
