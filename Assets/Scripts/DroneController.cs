@@ -21,8 +21,14 @@ public class DroneController : MonoBehaviour
     [Tooltip("สัมประสิทธิ์แรงต้าน (Cd) - ลดลงถ้าหนืดไป")]
     public float dragCoefficient = 0.5f;
 
-    [Header("VFX")]
+    [Header("Visuals & VFX")]
     public ParticleSystem exhaustParticles;
+    
+    [Header("Animation Settings")]
+    public Animator undersideAnimator;
+    public float baseAnimSpeed = 1f;
+    public float maxAnimSpeedMultiplier = 3f;
+    public float speedDecayRate = 2f;
 
     [Header("Audio")]
     [Tooltip("Looping engine hum while drone is active (mid-air idle)")]
@@ -35,6 +41,9 @@ public class DroneController : MonoBehaviour
     private Rigidbody2D rb;
     private float tiltInput = 0f;
     private bool isThrusting = false;
+    
+    private float currentAnimMultiplier = 1f;
+    private float lastThrustTime = 0f;
     
     [HideInInspector]
     public bool invertControls = false;
@@ -100,6 +109,32 @@ public class DroneController : MonoBehaviour
     void OnJump(InputValue value)
     {
         isThrusting = value.isPressed;
+        
+        if (isThrusting)
+        {
+            float timeSinceLast = Time.time - lastThrustTime;
+            lastThrustTime = Time.time;
+            
+            if (timeSinceLast < 0.4f)
+            {
+                currentAnimMultiplier += 0.6f;
+                currentAnimMultiplier = Mathf.Min(currentAnimMultiplier, maxAnimSpeedMultiplier);
+            }
+        }
+    }
+
+    void Update()
+    {
+        if (currentAnimMultiplier > 1f)
+        {
+            currentAnimMultiplier -= Time.deltaTime * speedDecayRate;
+            currentAnimMultiplier = Mathf.Max(1f, currentAnimMultiplier);
+        }
+
+        if (undersideAnimator != null)
+        {
+            undersideAnimator.speed = baseAnimSpeed * currentAnimMultiplier;
+        }
     }
 
     void FixedUpdate()
@@ -195,6 +230,11 @@ public class DroneController : MonoBehaviour
         {
             var emission = exhaustParticles.emission;
             emission.enabled = shouldEmit;
+        }
+
+        if (undersideAnimator != null)
+        {
+            undersideAnimator.SetBool("IsOpen", shouldEmit);
         }
 
         if (thrusterSource != null)

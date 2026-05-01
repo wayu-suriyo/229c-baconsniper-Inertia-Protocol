@@ -16310,6 +16310,7 @@ GameObject:
   - component: {fileID: 1935454261}
   - component: {fileID: 1935454267}
   - component: {fileID: 1935454266}
+  - component: {fileID: 1935454268}
   - component: {fileID: 1935454260}
   m_Layer: 0
   m_Name: PlayerDrone
@@ -16369,6 +16370,12 @@ MonoBehaviour:
   surfaceArea: 0.2
   dragCoefficient: 0.5
   exhaustParticles: {fileID: 2063373901}
+  spriteRenderer: {fileID: 0}
+  facesRightNaturally: 1
+  undersideAnimator: {fileID: 0}
+  baseAnimSpeed: 1
+  maxAnimSpeedMultiplier: 3
+  speedDecayRate: 2
   engineHumClip: {fileID: 0}
   thrusterClip: {fileID: 0}
   engineVolume: 0.4
@@ -16414,13 +16421,13 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 2.59375, y: 0.65625}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.56, y: 0.65}
   m_EdgeRadius: 0
 --- !u!50 &1935454263
 Rigidbody2D:
@@ -16498,7 +16505,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 253005588072490991, guid: 6eadeb520956406478b52159f717e4a4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -16517,8 +16524,8 @@ Transform:
   m_GameObject: {fileID: 1935454259}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.32, y: -0.1474, z: 0}
-  m_LocalScale: {x: 1, y: 0.5851, z: 1}
+  m_LocalPosition: {x: -5.287, y: -0.229, z: 0}
+  m_LocalScale: {x: 0.6565, y: 0.8209148, z: 0.6565}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2063373903}
@@ -16565,6 +16572,28 @@ MonoBehaviour:
   deathSoundVolume: 1
   explosionPrefab: {fileID: 9043156549408507262, guid: 62bd9fda895db3341bc0d557b9187837, type: 3}
   explosionDuration: 0.5
+--- !u!95 &1935454268
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1935454259}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2030754200
 GameObject:
   m_ObjectHideFlags: 0
@@ -21737,7 +21766,7 @@ Transform:
   m_GameObject: {fileID: 2063373900}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.53, z: 0}
+  m_LocalPosition: {x: 0, y: -0.325, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
