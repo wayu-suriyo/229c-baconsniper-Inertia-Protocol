@@ -15,10 +15,9 @@ public class CameraFocusZone2D : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            DynamicCamera2D camFollow = Camera.main.GetComponent<DynamicCamera2D>();
-            if (camFollow != null)
+            if (DynamicCamera2D.instance != null)
             {
-                camFollow.currentFocusZone = zoneCollider;
+                DynamicCamera2D.instance.currentFocusZone = zoneCollider;
             }
         }
     }
@@ -27,10 +26,9 @@ public class CameraFocusZone2D : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            DynamicCamera2D camFollow = Camera.main.GetComponent<DynamicCamera2D>();
-            if (camFollow != null && camFollow.currentFocusZone == zoneCollider)
+            if (DynamicCamera2D.instance != null && DynamicCamera2D.instance.currentFocusZone == zoneCollider)
             {
-                camFollow.currentFocusZone = null;
+                DynamicCamera2D.instance.currentFocusZone = null;
             }
         }
     }

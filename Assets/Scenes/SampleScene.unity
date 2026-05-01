@@ -271,7 +271,7 @@ Transform:
   m_GameObject: {fileID: 101257780}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.23, y: -11.83, z: 0}
+  m_LocalPosition: {x: -22.56, y: -0.19, z: 0}
   m_LocalScale: {x: 18.154179, y: 10.227673, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -679,7 +679,7 @@ Transform:
   m_GameObject: {fileID: 138772659}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.67, y: -3.98, z: 0}
+  m_LocalPosition: {x: -7.84, y: -3.94, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -789,7 +789,7 @@ Transform:
   m_GameObject: {fileID: 180360714}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.13, y: 3.82, z: 0}
+  m_LocalPosition: {x: 0.54, y: 3.77, z: 0}
   m_LocalScale: {x: 3.9211, y: 0.5529, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1151,7 +1151,7 @@ GameObject:
   - component: {fileID: 349539561}
   - component: {fileID: 349539559}
   - component: {fileID: 349539560}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ChargeVFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7115,6 +7115,9 @@ MonoBehaviour:
   lineWidth: 0.05
   activeColor: {r: 1, g: 0, b: 0, a: 0.5}
   inactiveColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.1}
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!212 &577852406
 SpriteRenderer:
   serializedVersion: 2
@@ -7183,7 +7186,7 @@ Transform:
   m_GameObject: {fileID: 577852404}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16.25, y: 7.13, z: 0}
+  m_LocalPosition: {x: 16.33, y: 4.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7850,7 +7853,7 @@ GameObject:
   - component: {fileID: 867545730}
   - component: {fileID: 867545729}
   - component: {fileID: 867545734}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7871,7 +7874,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FlyingEnemyAI
   playerTarget: {fileID: 1935454265}
   detectionRadius: 8.48
-  attackRange: 2.92
+  attackRange: 3.87
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -9789,7 +9792,7 @@ Transform:
   m_GameObject: {fileID: 1473972493}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -34.09, y: 0.15, z: 0}
+  m_LocalPosition: {x: -17.6, y: -11.02, z: 0}
   m_LocalScale: {x: 6.04, y: 10.28, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16174,7 +16177,7 @@ GameObject:
   - component: {fileID: 1935454266}
   - component: {fileID: 1935454268}
   - component: {fileID: 1935454260}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerDrone
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -16312,7 +16315,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
@@ -16384,7 +16387,7 @@ Transform:
   m_GameObject: {fileID: 1935454259}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.31, y: 3.4, z: 0}
+  m_LocalPosition: {x: -5.62, y: -0.2, z: 0}
   m_LocalScale: {x: 0.6565, y: 0.8209148, z: 0.6565}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -16665,6 +16668,9 @@ MonoBehaviour:
   windVolume: 0.8
   audioMinDistance: 2
   audioMaxDistance: 20
+  droneLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &2054673259
 GameObject:
   m_ObjectHideFlags: 0
@@ -16751,7 +16757,7 @@ GameObject:
   - component: {fileID: 2063373903}
   - component: {fileID: 2063373901}
   - component: {fileID: 2063373902}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ExhaustVFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}

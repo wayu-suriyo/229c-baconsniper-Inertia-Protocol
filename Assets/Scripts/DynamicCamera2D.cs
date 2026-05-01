@@ -37,6 +37,7 @@ public class DynamicCamera2D : MonoBehaviour
 
     private float shakeIntensity = 0f;
     private Vector3 shakeOffset = Vector3.zero;
+    private RaycastHit2D[] rayBuffer = new RaycastHit2D[8];
 
     void Awake()
     {
@@ -55,10 +56,11 @@ public class DynamicCamera2D : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    void LateUpdate()
     {
         if (target == null || cam == null) return;
 
+        float dt = Time.deltaTime;
         float lowestFloorY = target.position.y;
         float highestCeilingY = target.position.y;
 
@@ -69,11 +71,12 @@ public class DynamicCamera2D : MonoBehaviour
         }
         else
         {
-            RaycastHit2D[] downHits = Physics2D.RaycastAll(target.position, Vector2.down, rayDistance, groundLayer);
+            int downCount = Physics2D.RaycastNonAlloc(target.position, Vector2.down, rayBuffer, rayDistance, groundLayer);
             bool foundFloor = false;
 
-            foreach (RaycastHit2D hit in downHits)
+            for (int i = 0; i < downCount; i++)
             {
+                RaycastHit2D hit = rayBuffer[i];
                 if (!hit.collider.isTrigger && (!foundFloor || hit.point.y < lowestFloorY))
                 {
                     lowestFloorY = hit.point.y;
@@ -88,16 +91,26 @@ public class DynamicCamera2D : MonoBehaviour
             }
             else
             {
-                floorTimer += Time.fixedDeltaTime;
-                if (floorTimer <= memoryTime) lowestFloorY = lastGoodFloorY;
-                else lowestFloorY = target.position.y - fallbackDistance;
+                floorTimer += dt;
+                if (floorTimer <= memoryTime)
+                {
+                    lowestFloorY = lastGoodFloorY;
+                }
+                else
+                {
+                    // Smoothly drift toward the fallback rather than snapping to target.position.y
+                    float softFallback = target.position.y - fallbackDistance;
+                    lowestFloorY = Mathf.Lerp(lastGoodFloorY, softFallback, (floorTimer - memoryTime) * 0.5f);
+                    lastGoodFloorY = lowestFloorY;
+                }
             }
 
-            RaycastHit2D[] upHits = Physics2D.RaycastAll(target.position, Vector2.up, rayDistance, groundLayer);
+            int upCount = Physics2D.RaycastNonAlloc(target.position, Vector2.up, rayBuffer, rayDistance, groundLayer);
             bool foundCeiling = false;
 
-            foreach (RaycastHit2D hit in upHits)
+            for (int i = 0; i < upCount; i++)
             {
+                RaycastHit2D hit = rayBuffer[i];
                 if (!hit.collider.isTrigger && (!foundCeiling || hit.point.y > highestCeilingY))
                 {
                     highestCeilingY = hit.point.y;
@@ -112,9 +125,18 @@ public class DynamicCamera2D : MonoBehaviour
             }
             else
             {
-                ceilingTimer += Time.fixedDeltaTime;
-                if (ceilingTimer <= memoryTime) highestCeilingY = lastGoodCeilingY;
-                else highestCeilingY = target.position.y + fallbackDistance;
+                ceilingTimer += dt;
+                if (ceilingTimer <= memoryTime)
+                {
+                    highestCeilingY = lastGoodCeilingY;
+                }
+                else
+                {
+                    // Smoothly drift toward the fallback rather than snapping to target.position.y
+                    float softFallback = target.position.y + fallbackDistance;
+                    highestCeilingY = Mathf.Lerp(lastGoodCeilingY, softFallback, (ceilingTimer - memoryTime) * 0.5f);
+                    lastGoodCeilingY = highestCeilingY;
+                }
             }
         }
 
@@ -127,16 +149,14 @@ public class DynamicCamera2D : MonoBehaviour
 
         Vector3 targetPos = new Vector3(
             target.position.x,
-            Mathf.Lerp(transform.position.y, targetY, Time.fixedDeltaTime * smoothSpeed),
+            Mathf.Lerp(transform.position.y, targetY, dt * smoothSpeed),
             transform.position.z 
         );
 
         transform.position = targetPos;
-        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, desiredOrthoSize, Time.fixedDeltaTime * zoomSpeed);
-    }
+        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, desiredOrthoSize, dt * zoomSpeed);
 
-    void LateUpdate()
-    {
+        // Camera shake
         if (shakeIntensity > 0f)
         {
             shakeOffset = Random.insideUnitSphere * shakeIntensity;

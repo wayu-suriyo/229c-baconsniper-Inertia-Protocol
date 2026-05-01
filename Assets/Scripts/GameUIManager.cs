@@ -34,6 +34,7 @@ public class GameUIManager : MonoBehaviour
     private bool isGoalOpen = false;
     private bool isLevelCompleted = false;
     private bool isGameOver = false;
+    private int lastDisplayedSeconds = -1;
 
     [Header("Game Over Settings")]
     public GameObject gameOverPanel;
@@ -154,12 +155,15 @@ public class GameUIManager : MonoBehaviour
 
     private void UpdateTimeUI()
     {
-        if (timeText != null)
-        {
-            int minutes = Mathf.FloorToInt(elapsedTime / 60F);
-            int seconds = Mathf.FloorToInt(elapsedTime - minutes * 60);
-            timeText.text = string.Format("Time: {0:00}:{1:00}", minutes, seconds);
-        }
+        if (timeText == null) return;
+
+        int totalSeconds = Mathf.FloorToInt(elapsedTime);
+        if (totalSeconds == lastDisplayedSeconds) return;
+        lastDisplayedSeconds = totalSeconds;
+
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+        timeText.text = string.Format("Time: {0:00}:{1:00}", minutes, seconds);
     }
 
     private void UpdateFuelUI()
@@ -184,6 +188,9 @@ public class GameUIManager : MonoBehaviour
     private void UpdateHealthUI()
     {
         float healthPercent = playerHealth.currentHealth / playerHealth.maxHealth;
+
+        // Skip if fill is already at target (within tolerance)
+        if (Mathf.Abs(healthBarFill.fillAmount - healthPercent) < 0.001f) return;
         
         healthBarFill.fillAmount = Mathf.Lerp(healthBarFill.fillAmount, healthPercent, Time.deltaTime * 5f);
         healthBarFill.color = Color.Lerp(healthLowColor, healthFullColor, healthPercent);

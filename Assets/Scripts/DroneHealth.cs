@@ -78,7 +78,7 @@ public class DroneHealth : MonoBehaviour, IDamageable
         if (isDead) return;
         isDead = true;
 
-        Debug.LogError("Drone Destroyed!");
+        Debug.Log("Drone Destroyed!");
 
         DynamicCamera2D.Shake(0.8f);
         AudioManager.PlaySFX(deathSoundClip, deathSoundVolume);

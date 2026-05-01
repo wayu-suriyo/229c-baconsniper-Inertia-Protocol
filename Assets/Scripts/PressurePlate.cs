@@ -36,6 +36,7 @@ public class PressurePlate : MonoBehaviour
     private float timerRemaining = 0f;
     private Vector3 originalRendererLocalPos;
     private Vector3 targetLocalPos;
+    private DroneController cachedDrone;
 
     void Start()
     {
@@ -96,7 +97,8 @@ public class PressurePlate : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<DroneController>() == null) return;
+        cachedDrone = collision.gameObject.GetComponent<DroneController>();
+        if (cachedDrone == null) return;
         isDroneOnPlate = true;
         timerRunning = false;
 
@@ -105,7 +107,7 @@ public class PressurePlate : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<DroneController>() == null) return;
+        if (cachedDrone == null) return;
         isDroneOnPlate = true;
 
         if (!targetsActivated)
@@ -114,7 +116,8 @@ public class PressurePlate : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<DroneController>() == null) return;
+        if (cachedDrone == null) return;
+        cachedDrone = null;
         isDroneOnPlate = false;
 
         if (!targetsActivated) return;

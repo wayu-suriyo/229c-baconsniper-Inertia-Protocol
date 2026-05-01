@@ -33,12 +33,21 @@ public class WindZone : MonoBehaviour
     [Tooltip("Distance at which wind becomes inaudible")]
     public float audioMaxDistance = 20f;
 
+    [Header("Detection")]
+    [Tooltip("Set to the Player layer so the expanded-zone query only finds the drone")]
+    public LayerMask droneLayer;
+
     private AudioSource windAudioSource;
+    private BoxCollider2D boxCol;
     private HashSet<Rigidbody2D> affectedBodies = new HashSet<Rigidbody2D>();
     private HashSet<DroneController> dronesInExpandedZone = new HashSet<DroneController>();
+    private Collider2D[] expandedZoneBuffer = new Collider2D[8];
+    private List<Rigidbody2D> rbRemoveCache = new List<Rigidbody2D>();
+    private List<DroneController> dcRemoveCache = new List<DroneController>();
 
     void Start()
     {
+        boxCol = GetComponent<BoxCollider2D>();
         UpdateParticleDirection();
 
         if (windLoopClip != null)
@@ -55,20 +64,17 @@ public class WindZone : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        UpdateParticleDirection();
-    }
+    // UpdateParticleDirection() is called once in Start() since windDirection is static.
 
     void FixedUpdate()
     {
-        List<Rigidbody2D> keysToRemove = new List<Rigidbody2D>();
+        rbRemoveCache.Clear();
         
         foreach (Rigidbody2D rb in affectedBodies)
         {
             if (rb == null || !rb.gameObject.activeInHierarchy)
             {
-                keysToRemove.Add(rb);
+                rbRemoveCache.Add(rb);
                 continue;
             }
             
@@ -76,30 +82,29 @@ public class WindZone : MonoBehaviour
             rb.AddForce(windDirection.normalized * windForce, ForceMode2D.Force);
         }
         
-        foreach (var k in keysToRemove)
+        foreach (var k in rbRemoveCache)
         {
             affectedBodies.Remove(k);
         }
 
         // Handle Expanded Override Zone for Drones
-        BoxCollider2D col = GetComponent<BoxCollider2D>();
-        if (col != null)
+        if (boxCol != null)
         {
             Vector2 expandDir = windDirection.normalized;
-            Vector2 worldSize = new Vector2(col.size.x * Mathf.Abs(transform.lossyScale.x), col.size.y * Mathf.Abs(transform.lossyScale.y));
+            Vector2 worldSize = new Vector2(boxCol.size.x * Mathf.Abs(transform.lossyScale.x), boxCol.size.y * Mathf.Abs(transform.lossyScale.y));
             
             Vector2 expandedSize = worldSize;
             expandedSize.x += Mathf.Abs(expandDir.x) * overridePreZoneDistance;
             expandedSize.y += Mathf.Abs(expandDir.y) * overridePreZoneDistance;
             
-            Vector2 centerWorld = (Vector2)transform.TransformPoint(col.offset) + (expandDir * (overridePreZoneDistance / 2f));
+            Vector2 centerWorld = (Vector2)transform.TransformPoint(boxCol.offset) + (expandDir * (overridePreZoneDistance / 2f));
             
-            Collider2D[] hits = Physics2D.OverlapBoxAll(centerWorld, expandedSize, transform.eulerAngles.z);
+            int hitCount = Physics2D.OverlapBoxNonAlloc(centerWorld, expandedSize, transform.eulerAngles.z, expandedZoneBuffer, droneLayer);
             HashSet<DroneController> currentHits = new HashSet<DroneController>();
             
-            foreach (var hit in hits)
+            for (int i = 0; i < hitCount; i++)
             {
-                DroneController dc = hit.GetComponent<DroneController>();
+                DroneController dc = expandedZoneBuffer[i].GetComponent<DroneController>();
                 if (dc != null)
                 {
                     currentHits.Add(dc);
@@ -111,17 +116,17 @@ public class WindZone : MonoBehaviour
                 }
             }
             
-            List<DroneController> toRemove = new List<DroneController>();
+            dcRemoveCache.Clear();
             foreach (var dc in dronesInExpandedZone)
             {
-                if (dc == null) toRemove.Add(dc);
+                if (dc == null) dcRemoveCache.Add(dc);
                 else if (!currentHits.Contains(dc))
                 {
                     dc.RemoveWindOverride(this);
-                    toRemove.Add(dc);
+                    dcRemoveCache.Add(dc);
                 }
             }
-            foreach (var dc in toRemove) dronesInExpandedZone.Remove(dc);
+            foreach (var dc in dcRemoveCache) dronesInExpandedZone.Remove(dc);
         }
     }
 

@@ -37,6 +37,7 @@ public class GravityZone : MonoBehaviour
 
     // Dictionary to keep track of affected objects and their original gravity scale
     private Dictionary<Rigidbody2D, float> affectedBodies = new Dictionary<Rigidbody2D, float>();
+    private List<Rigidbody2D> rbRemoveCache = new List<Rigidbody2D>();
     
     private bool isZoneActive = true;
     private float pulseTimer = 0f;
@@ -183,21 +184,21 @@ public class GravityZone : MonoBehaviour
     {
         if (isZoneActive)
         {
-            List<Rigidbody2D> keysToRemove = new List<Rigidbody2D>();
+            rbRemoveCache.Clear();
             
             foreach (var kvp in affectedBodies)
             {
                 Rigidbody2D rb = kvp.Key;
                 if (rb == null)
                 {
-                    keysToRemove.Add(rb);
+                    rbRemoveCache.Add(rb);
                     continue;
                 }
                 
                 rb.AddForce(gravityVector * rb.mass, ForceMode2D.Force);
             }
             
-            foreach (var k in keysToRemove)
+            foreach (var k in rbRemoveCache)
             {
                 affectedBodies.Remove(k);
             }

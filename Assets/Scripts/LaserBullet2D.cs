@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class LaserBullet2D : MonoBehaviour
 {
@@ -11,20 +10,20 @@ public class LaserBullet2D : MonoBehaviour
     [Range(0f, 1f)]
     public float soundVolume = 0.5f;
 
+    private float timer;
+
     void OnEnable()
     {
-        StartCoroutine(AutoReturn());
+        timer = lifeTime;
     }
 
-    void OnDisable()
+    void Update()
     {
-        StopAllCoroutines();
-    }
-
-    IEnumerator AutoReturn()
-    {
-        yield return new WaitForSeconds(lifeTime);
-        ReturnToPool();
+        timer -= Time.deltaTime;
+        if (timer <= 0f)
+        {
+            ReturnToPool();
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)

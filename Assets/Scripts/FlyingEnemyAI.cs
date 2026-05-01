@@ -86,15 +86,16 @@ public class FlyingEnemyAI : MonoBehaviour, IDamageable
     {
         if (currentState == EnemyState.Dead || playerTarget == null) return;
 
-        bool hasLOS = CanSeePlayer();
         float distanceToPlayer = Vector2.Distance(transform.position, playerTarget.position);
+        // Only do the expensive linecast if player is within detection range
+        bool hasLOS = distanceToPlayer <= detectionRadius && CanSeePlayer();
 
         switch (currentState)
         {
             case EnemyState.Patrol:
                 HandlePatrol();
                 
-                if (hasLOS && distanceToPlayer <= detectionRadius)
+                if (hasLOS)
                 {
                     outOfSightTimer = 0f;
                     currentState = EnemyState.Tracking;
@@ -317,26 +318,20 @@ public class FlyingEnemyAI : MonoBehaviour, IDamageable
     {
         if (currentState == EnemyState.Dead) return;
 
-        DroneHealth health = collision.gameObject.GetComponent<DroneHealth>();
-        DroneController droneControl = collision.gameObject.GetComponent<DroneController>();
-        
-        if (health != null)
+        if (collision.gameObject.TryGetComponent<DroneHealth>(out var health))
         {
             if (currentState == EnemyState.Dashing)
             {
                 // Apply controlled knockback instead of raw momentum transfer
-                if (droneControl != null)
+                Rigidbody2D droneRb = collision.rigidbody; // Free cached property
+                if (droneRb != null)
                 {
-                    Rigidbody2D droneRb = collision.gameObject.GetComponent<Rigidbody2D>();
-                    if (droneRb != null)
-                    {
-                        // Partially dampen the velocity so it isn't completely stopped, but prevents launching to space
-                        droneRb.linearVelocity = Vector2.Lerp(droneRb.linearVelocity, Vector2.zero, 0.5f);
-                        
-                        // Apply a sensible knockback
-                        Vector2 knockbackDir = (collision.transform.position - transform.position).normalized;
-                        droneRb.AddForce(knockbackDir * playerKnockbackForce, ForceMode2D.Impulse);
-                    }
+                    // Partially dampen the velocity so it isn't completely stopped, but prevents launching to space
+                    droneRb.linearVelocity = Vector2.Lerp(droneRb.linearVelocity, Vector2.zero, 0.5f);
+                    
+                    // Apply a sensible knockback
+                    Vector2 knockbackDir = (collision.transform.position - transform.position).normalized;
+                    droneRb.AddForce(knockbackDir * playerKnockbackForce, ForceMode2D.Impulse);
                 }
                 
                 health.TakeDamage(damageToPlayer);

@@ -44,6 +44,8 @@ public class DroneController : MonoBehaviour
     
     private float currentAnimMultiplier = 1f;
     private float lastThrustTime = 0f;
+    private bool wasEmitting = true; // Start true so first frame forces sync to off
+    private static readonly int AnimIsOpen = Animator.StringToHash("IsOpen");
     
     [HideInInspector]
     public bool invertControls = false;
@@ -174,9 +176,10 @@ public class DroneController : MonoBehaviour
 
         if (speedSqr > 0.01f)
         {
+            float speed = Mathf.Sqrt(speedSqr);
             float dragForceMagnitude = 0.5f * airDensity * speedSqr * dragCoefficient * surfaceArea;
             
-            Vector2 dragVector = -velocity.normalized * dragForceMagnitude;
+            Vector2 dragVector = -(velocity / speed) * dragForceMagnitude;
             
             rb.AddForce(dragVector, ForceMode2D.Force);
         }
@@ -226,15 +229,16 @@ public class DroneController : MonoBehaviour
             }
         }
 
-        if (exhaustParticles != null)
+        if (exhaustParticles != null && shouldEmit != wasEmitting)
         {
             var emission = exhaustParticles.emission;
             emission.enabled = shouldEmit;
+            wasEmitting = shouldEmit;
         }
 
         if (undersideAnimator != null)
         {
-            undersideAnimator.SetBool("IsOpen", shouldEmit);
+            undersideAnimator.SetBool(AnimIsOpen, shouldEmit);
         }
 
         if (thrusterSource != null)

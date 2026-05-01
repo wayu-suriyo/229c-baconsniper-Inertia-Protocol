@@ -28,12 +28,17 @@ public class MagneticTrap : MonoBehaviour
     public Color activeColor = new Color(1f, 0f, 0f, 0.5f);
     public Color inactiveColor = new Color(0.5f, 0.5f, 0.5f, 0.1f);
 
+    [Header("Detection")]
+    [Tooltip("Set to Player + Enemy layers to avoid scanning walls/triggers")]
+    public LayerMask targetLayer;
+
     private SpriteRenderer spriteRenderer;
     private LineRenderer radiusLine;
     private AudioSource audioSource;
 
     private bool isActive = true;
     private float pulseTimer = 0f;
+    private Collider2D[] hitBuffer = new Collider2D[16];
 
     void Start()
     {
@@ -116,37 +121,34 @@ public class MagneticTrap : MonoBehaviour
     {
         if (!isActive) return;
 
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, maxInfluenceRadius);
-        foreach (Collider2D col in colliders)
+        int hitCount = Physics2D.OverlapCircleNonAlloc(transform.position, maxInfluenceRadius, hitBuffer, targetLayer);
+        for (int i = 0; i < hitCount; i++)
         {
-            if (col.GetComponent<DroneController>() != null || col.GetComponent<FlyingEnemyAI>() != null)
+            Rigidbody2D rb = hitBuffer[i].attachedRigidbody;
+            if (rb == null || !hitBuffer[i].gameObject.activeInHierarchy) continue;
+
+            Vector2 forceDirection = (Vector2)transform.position - (Vector2)hitBuffer[i].transform.position;
+            float distance = forceDirection.magnitude;
+
+            if (distance > 0f && distance <= maxInfluenceRadius)
             {
-                Rigidbody2D rb = col.GetComponent<Rigidbody2D>();
-                if (rb == null || !col.gameObject.activeInHierarchy) continue;
+                float mathDistance = Mathf.Max(distance, minSafeDistance);
+                float forceMagnitude = gravitationalConstant * (trapMass * rb.mass) / (mathDistance * mathDistance);
+                forceMagnitude = Mathf.Clamp(forceMagnitude, 0f, maxPullForce);
+                Vector2 appliedForce = forceDirection.normalized * forceMagnitude;
 
-                Vector2 forceDirection = (Vector2)transform.position - (Vector2)col.transform.position;
-                float distance = forceDirection.magnitude;
+                rb.WakeUp();
 
-                if (distance > 0f && distance <= maxInfluenceRadius)
+                if (forceDirection.y > 0)
                 {
-                    float mathDistance = Mathf.Max(distance, minSafeDistance);
-                    float forceMagnitude = gravitationalConstant * (trapMass * rb.mass) / (mathDistance * mathDistance);
-                    forceMagnitude = Mathf.Clamp(forceMagnitude, 0f, maxPullForce);
-                    Vector2 appliedForce = forceDirection.normalized * forceMagnitude;
-
-                    rb.WakeUp();
-
-                    if (forceDirection.y > 0)
+                    float gravityCounterForce = -Physics2D.gravity.y * rb.gravityScale * rb.mass;
+                    if (gravityCounterForce > 0)
                     {
-                        float gravityCounterForce = -Physics2D.gravity.y * rb.gravityScale * rb.mass;
-                        if (gravityCounterForce > 0)
-                        {
-                            appliedForce.y += gravityCounterForce * forceDirection.normalized.y;
-                        }
+                        appliedForce.y += gravityCounterForce * forceDirection.normalized.y;
                     }
-
-                    rb.AddForce(appliedForce, ForceMode2D.Force);
                 }
+
+                rb.AddForce(appliedForce, ForceMode2D.Force);
             }
         }
     }
