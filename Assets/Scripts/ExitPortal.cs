@@ -18,6 +18,11 @@ public class ExitPortal : MonoBehaviour
 
     void Start()
     {
+        if (GameUIManager.instance != null)
+        {
+            GameUIManager.instance.RegisterExitPortal(this);
+        }
+
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {

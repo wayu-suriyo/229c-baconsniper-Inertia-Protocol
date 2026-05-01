@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SmashPlatform2D : MonoBehaviour
+public class SmashPlatform2D : MonoBehaviour, IDamageable
 {
     [Header("Smash Settings")]
     public float breakVelocityThreshold = 8f;
@@ -29,5 +29,11 @@ public class SmashPlatform2D : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+    }
+
+    public void TakeDamage(float amount)
+    {
+        AudioManager.PlaySFXAt(smashSound, transform.position, volume);
+        Destroy(gameObject);
     }
 }

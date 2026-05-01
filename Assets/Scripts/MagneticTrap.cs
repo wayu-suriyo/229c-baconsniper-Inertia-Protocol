@@ -138,7 +138,11 @@ public class MagneticTrap : MonoBehaviour
 
                     if (forceDirection.y > 0)
                     {
-                        appliedForce.y += 9.81f * rb.mass * forceDirection.normalized.y;
+                        float gravityCounterForce = -Physics2D.gravity.y * rb.gravityScale * rb.mass;
+                        if (gravityCounterForce > 0)
+                        {
+                            appliedForce.y += gravityCounterForce * forceDirection.normalized.y;
+                        }
                     }
 
                     rb.AddForce(appliedForce, ForceMode2D.Force);

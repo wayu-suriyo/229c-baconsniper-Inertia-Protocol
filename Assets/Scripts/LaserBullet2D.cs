@@ -34,16 +34,11 @@ public class LaserBullet2D : MonoBehaviour
             return; 
         }
 
-        if (other.CompareTag("Player") || other.GetComponent<DroneHealth>() != null)
+        IDamageable damageable = other.GetComponent<IDamageable>();
+        if (damageable != null)
         {
             AudioManager.PlaySFXAt(hitSound, transform.position, soundVolume);
-
-            DroneHealth health = other.GetComponent<DroneHealth>();
-            if (health != null) health.TakeDamage(damage);
-        }
-        else if (other.GetComponent<SmashPlatform2D>() != null)
-        {
-            Destroy(other.gameObject);
+            damageable.TakeDamage(damage);
         }
 
         if (other.GetComponent<MagneticTrap>() == null)

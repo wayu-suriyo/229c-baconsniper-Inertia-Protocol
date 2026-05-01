@@ -53,6 +53,7 @@ public class GameUIManager : MonoBehaviour
     private FuelSystem playerFuel;
     private DroneHealth playerHealth;
     private DroneController playerController;
+    private ExitPortal currentExitPortal;
 
     void Awake()
     {
@@ -131,14 +132,13 @@ public class GameUIManager : MonoBehaviour
         if (currentDrives >= requiredDrives)
         {
             isGoalOpen = true;
-            ExitPortal portal = Object.FindAnyObjectByType<ExitPortal>();
-            if (portal != null)
+            if (currentExitPortal != null)
             {
-                portal.OpenPortal();
+                currentExitPortal.OpenPortal();
             }
             else
             {
-                Debug.LogWarning("Goal opened, but no ExitPortal found in scene!");
+                Debug.LogWarning("Goal opened, but no ExitPortal registered!");
                 ShowWinScreen();
             }
         }
@@ -287,5 +287,10 @@ public class GameUIManager : MonoBehaviour
     private void DisableDroneController()
     {
         if (playerController != null) playerController.enabled = false;
+    }
+
+    public void RegisterExitPortal(ExitPortal portal)
+    {
+        currentExitPortal = portal;
     }
 }

@@ -1,14 +1,17 @@
 using UnityEngine;
 
-public class DroneHealth : MonoBehaviour
+public class DroneHealth : MonoBehaviour, IDamageable
 {
     [Header("Health Settings")]
     public float maxHealth = 100f;
     public float currentHealth;
     
-    [Header("Impact Settings")]
-    public float crashThreshold = 10f;
-    public float damagePerForceUnit = 3f;
+    [Header("Impact & Landing Settings")]
+    [Tooltip("Minimum impact velocity to trigger damage on hard landings or crashes.")]
+    public float minimumImpactVelocity = 8f;
+    public float damagePerVelocityUnit = 3f;
+    [Tooltip("Maximum damage taken from a single physical collision")]
+    public float maxDamagePerCollision = 40f;
 
     [Header("Invincibility Frames")]
     [Tooltip("Seconds of invincibility after taking damage (prevents multi-source instant kill)")]
@@ -114,10 +117,13 @@ public class DroneHealth : MonoBehaviour
     {
         float impactForce = collision.relativeVelocity.magnitude;
 
-        if (impactForce >= crashThreshold)
+        if (impactForce >= minimumImpactVelocity)
         {
-            float excessForce = impactForce - crashThreshold;
-            float damageToTake = 5f + (excessForce * damagePerForceUnit);
+            float excessForce = impactForce - minimumImpactVelocity;
+            float damageToTake = 5f + (excessForce * damagePerVelocityUnit);
+            
+            damageToTake = Mathf.Min(damageToTake, maxDamagePerCollision);
+            
             TakeDamage(damageToTake);
         }
         else if (impactForce > 2f)

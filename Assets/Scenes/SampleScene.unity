@@ -271,7 +271,7 @@ Transform:
   m_GameObject: {fileID: 101257780}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -21.5602, y: 0.2512, z: 0}
+  m_LocalPosition: {x: -11.23, y: -11.83, z: 0}
   m_LocalScale: {x: 18.154179, y: 10.227673, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -841,144 +841,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!1 &264750582
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 264750583}
-  - component: {fileID: 264750585}
-  - component: {fileID: 264750584}
-  m_Layer: 6
-  m_Name: Square (3)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &264750583
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 264750582}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.0851, y: 7.18, z: 0}
-  m_LocalScale: {x: 17.913872, y: 0.57343787, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1401516168}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &264750584
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 264750582}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
---- !u!212 &264750585
-SpriteRenderer:
-  serializedVersion: 2
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 264750582}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
 --- !u!1 &284115401
 GameObject:
   m_ObjectHideFlags: 0
@@ -8019,6 +7881,7 @@ MonoBehaviour:
   trackingSpeed: 10
   maxTrackingVelocity: 3
   chargeTime: 1.5
+  chargeRotationSpeed: 5
   dashForce: 35
   damageToPlayer: 30
   playerKnockbackForce: 5
@@ -9550,7 +9413,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1119559417}
-  - {fileID: 264750583}
   - {fileID: 1540167581}
   - {fileID: 709776766}
   m_Father: {fileID: 0}
@@ -16370,9 +16232,7 @@ MonoBehaviour:
   surfaceArea: 0.2
   dragCoefficient: 0.5
   exhaustParticles: {fileID: 2063373901}
-  spriteRenderer: {fileID: 0}
-  facesRightNaturally: 1
-  undersideAnimator: {fileID: 0}
+  undersideAnimator: {fileID: 1935454268}
   baseAnimSpeed: 1
   maxAnimSpeedMultiplier: 3
   speedDecayRate: 2
@@ -16427,7 +16287,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.56, y: 0.65}
+  m_Size: {x: 2.56, y: 0.59}
   m_EdgeRadius: 0
 --- !u!50 &1935454263
 Rigidbody2D:
@@ -16524,7 +16384,7 @@ Transform:
   m_GameObject: {fileID: 1935454259}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.287, y: -0.229, z: 0}
+  m_LocalPosition: {x: -12.31, y: 3.4, z: 0}
   m_LocalScale: {x: 0.6565, y: 0.8209148, z: 0.6565}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -16563,8 +16423,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DroneHealth
   maxHealth: 100
   currentHealth: 100
-  crashThreshold: 3
-  damagePerForceUnit: 3
+  minimumImpactVelocity: 5
+  damagePerVelocityUnit: 3
+  maxDamagePerCollision: 40
   iFrameDuration: 0.5
   damageSoundClip: {fileID: 0}
   damageSoundVolume: 0.8
@@ -16582,7 +16443,7 @@ Animator:
   m_GameObject: {fileID: 1935454259}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b2a4b222b0f939f49a4331add3858c57, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -16794,6 +16655,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WindZone
   windDirection: {x: -90, y: 0}
   windForce: 15
+  overridePreZoneDistance: 1.5
   droneThrustOverride: 15
   droneTorqueOverride: 1
   droneTiltOverride: 60

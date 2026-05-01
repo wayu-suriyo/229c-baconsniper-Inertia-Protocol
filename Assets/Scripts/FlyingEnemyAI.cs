@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
-public class FlyingEnemyAI : MonoBehaviour
+public class FlyingEnemyAI : MonoBehaviour, IDamageable
 {
     public enum FacingDirection { Up, Down, Left, Right }
     private enum EnemyState { Patrol, Tracking, Charging, Dashing, Dead }
@@ -26,6 +26,8 @@ public class FlyingEnemyAI : MonoBehaviour
     
     [Header("Dash Attack")]
     public float chargeTime = 1.2f;
+    [Tooltip("How fast the enemy can turn to track the player while charging before a dash.")]
+    public float chargeRotationSpeed = 2f;
     public float dashForce = 35f;
     public float damageToPlayer = 30f;
     [Tooltip("Controlled knockback force to prevent launching the player to space")]
@@ -58,6 +60,7 @@ public class FlyingEnemyAI : MonoBehaviour
     private bool isWaitingInPatrol = false;
     private Vector2 spawnPoint;
     private Vector2 dashDirection;
+    private Vector2 currentAimDirection;
 
     void Start()
     {
@@ -134,8 +137,9 @@ public class FlyingEnemyAI : MonoBehaviour
 
             case EnemyState.Charging:
                 rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, Vector2.zero, Time.fixedDeltaTime * 5f);
-                Vector2 chargeDir = (playerTarget.position - transform.position).normalized;
-                RotateSprite(chargeDir);
+                Vector2 targetDir = (playerTarget.position - transform.position).normalized;
+                currentAimDirection = Vector3.Slerp(currentAimDirection, targetDir, Time.fixedDeltaTime * chargeRotationSpeed).normalized;
+                RotateSprite(currentAimDirection, 50f); // Fast visual rotation to match the strictly controlled aim vector
                 break;
                 
             case EnemyState.Dashing:
@@ -152,6 +156,13 @@ public class FlyingEnemyAI : MonoBehaviour
         if (currentState == EnemyState.Charging)
         {
             stateTimer -= Time.deltaTime;
+            
+            if (spriteRenderer != null)
+            {
+                float blink = Mathf.PingPong(Time.time * 15f, 1f);
+                spriteRenderer.color = Color.Lerp(chargingColor, Color.white, blink);
+            }
+
             if (stateTimer <= 0f)
             {
                 StartDashing();
@@ -243,7 +254,7 @@ public class FlyingEnemyAI : MonoBehaviour
         }
     }
 
-    private void RotateSprite(Vector2 direction)
+    private void RotateSprite(Vector2 direction, float turnSpeed = 10f)
     {
         if (direction == Vector2.zero) return;
         
@@ -276,13 +287,14 @@ public class FlyingEnemyAI : MonoBehaviour
         }
         
         // Apply rotation
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, angle), Time.fixedDeltaTime * 10f);
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, angle), Time.fixedDeltaTime * turnSpeed);
     }
 
     private void StartCharging()
     {
         currentState = EnemyState.Charging;
         stateTimer = chargeTime;
+        currentAimDirection = (playerTarget.position - transform.position).normalized;
         
         if (spriteRenderer != null) spriteRenderer.color = chargingColor;
         if (chargeParticles != null) chargeParticles.Play();
@@ -297,7 +309,7 @@ public class FlyingEnemyAI : MonoBehaviour
         if (chargeParticles != null) chargeParticles.Stop();
         if (dashSound != null) AudioManager.PlaySFXAt(dashSound, transform.position, volume);
         
-        dashDirection = (playerTarget.position - transform.position).normalized;
+        dashDirection = currentAimDirection.normalized;
         rb.AddForce(dashDirection * dashForce, ForceMode2D.Impulse);
     }
 
@@ -318,8 +330,8 @@ public class FlyingEnemyAI : MonoBehaviour
                     Rigidbody2D droneRb = collision.gameObject.GetComponent<Rigidbody2D>();
                     if (droneRb != null)
                     {
-                        // Cancel out the massive impulse inherited from the enemy
-                        droneRb.linearVelocity = Vector2.zero;
+                        // Partially dampen the velocity so it isn't completely stopped, but prevents launching to space
+                        droneRb.linearVelocity = Vector2.Lerp(droneRb.linearVelocity, Vector2.zero, 0.5f);
                         
                         // Apply a sensible knockback
                         Vector2 knockbackDir = (collision.transform.position - transform.position).normalized;
@@ -354,6 +366,11 @@ public class FlyingEnemyAI : MonoBehaviour
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
 
         Destroy(gameObject);
+    }
+    
+    public void TakeDamage(float amount)
+    {
+        Die(); // Instant kill regardless of damage amount
     }
     
     void OnDrawGizmosSelected()

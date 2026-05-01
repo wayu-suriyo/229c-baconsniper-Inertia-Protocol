@@ -10,6 +10,8 @@ public class WindZone : MonoBehaviour
     public float windForce = 15f;
 
     [Header("Drone Overrides")]
+    [Tooltip("Distance outside the wind zone (opposite to wind direction) where overrides begin applying early.")]
+    public float overridePreZoneDistance = 3f;
     [Tooltip("Overrides the drone's Thrust Force while in this specific wind zone.")]
     public float droneThrustOverride = 35f;
     [Tooltip("Overrides the drone's Torque Force while in this specific wind zone.")]
@@ -33,6 +35,7 @@ public class WindZone : MonoBehaviour
 
     private AudioSource windAudioSource;
     private HashSet<Rigidbody2D> affectedBodies = new HashSet<Rigidbody2D>();
+    private HashSet<DroneController> dronesInExpandedZone = new HashSet<DroneController>();
 
     void Start()
     {
@@ -54,12 +57,7 @@ public class WindZone : MonoBehaviour
 
     void Update()
     {
-        #if UNITY_EDITOR
-        if (!Application.isPlaying)
-        {
-            UpdateParticleDirection();
-        }
-        #endif
+        UpdateParticleDirection();
     }
 
     void FixedUpdate()
@@ -82,6 +80,49 @@ public class WindZone : MonoBehaviour
         {
             affectedBodies.Remove(k);
         }
+
+        // Handle Expanded Override Zone for Drones
+        BoxCollider2D col = GetComponent<BoxCollider2D>();
+        if (col != null)
+        {
+            Vector2 expandDir = windDirection.normalized;
+            Vector2 worldSize = new Vector2(col.size.x * Mathf.Abs(transform.lossyScale.x), col.size.y * Mathf.Abs(transform.lossyScale.y));
+            
+            Vector2 expandedSize = worldSize;
+            expandedSize.x += Mathf.Abs(expandDir.x) * overridePreZoneDistance;
+            expandedSize.y += Mathf.Abs(expandDir.y) * overridePreZoneDistance;
+            
+            Vector2 centerWorld = (Vector2)transform.TransformPoint(col.offset) + (expandDir * (overridePreZoneDistance / 2f));
+            
+            Collider2D[] hits = Physics2D.OverlapBoxAll(centerWorld, expandedSize, transform.eulerAngles.z);
+            HashSet<DroneController> currentHits = new HashSet<DroneController>();
+            
+            foreach (var hit in hits)
+            {
+                DroneController dc = hit.GetComponent<DroneController>();
+                if (dc != null)
+                {
+                    currentHits.Add(dc);
+                    if (!dronesInExpandedZone.Contains(dc))
+                    {
+                        dronesInExpandedZone.Add(dc);
+                        dc.ApplyWindOverride(this);
+                    }
+                }
+            }
+            
+            List<DroneController> toRemove = new List<DroneController>();
+            foreach (var dc in dronesInExpandedZone)
+            {
+                if (dc == null) toRemove.Add(dc);
+                else if (!currentHits.Contains(dc))
+                {
+                    dc.RemoveWindOverride(this);
+                    toRemove.Add(dc);
+                }
+            }
+            foreach (var dc in toRemove) dronesInExpandedZone.Remove(dc);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -94,9 +135,6 @@ public class WindZone : MonoBehaviour
                 affectedBodies.Add(rb);
             }
         }
-        
-        DroneController dc = other.GetComponent<DroneController>();
-        if (dc != null) dc.ApplyWindOverride(this);
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -106,9 +144,6 @@ public class WindZone : MonoBehaviour
         {
             affectedBodies.Remove(rb);
         }
-        
-        DroneController dc = other.GetComponent<DroneController>();
-        if (dc != null) dc.RemoveWindOverride(this);
     }
 
     private void UpdateParticleDirection()
@@ -151,8 +186,33 @@ public class WindZone : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.color = new Color(0.5f, 0.8f, 1f, 0.5f);
-        Gizmos.DrawCube(transform.position, GetComponent<BoxCollider2D>() != null ? GetComponent<BoxCollider2D>().size : Vector3.one);
+        BoxCollider2D col = GetComponent<BoxCollider2D>();
+        if (col != null)
+        {
+            Gizmos.color = new Color(0.5f, 0.8f, 1f, 0.5f);
+            Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
+            Gizmos.DrawCube(col.offset, col.size);
+            Gizmos.matrix = Matrix4x4.identity;
+
+            // Draw pre-zone (separate visual box)
+            Gizmos.color = new Color(1f, 0.8f, 0f, 0.3f);
+            Vector2 expandDir = windDirection.normalized;
+            Vector2 worldSize = new Vector2(col.size.x * Mathf.Abs(transform.lossyScale.x), col.size.y * Mathf.Abs(transform.lossyScale.y));
+            
+            // Calculate size of just the extended portion
+            Vector2 extensionSize = worldSize;
+            if (Mathf.Abs(expandDir.x) > 0.5f) extensionSize.x = overridePreZoneDistance;
+            if (Mathf.Abs(expandDir.y) > 0.5f) extensionSize.y = overridePreZoneDistance;
+            
+            // Calculate center of just the extended portion
+            Vector2 edgeOffset = new Vector2(worldSize.x / 2f * expandDir.x, worldSize.y / 2f * expandDir.y);
+            Vector2 centerWorld = (Vector2)transform.TransformPoint(col.offset) + edgeOffset + (expandDir * (overridePreZoneDistance / 2f));
+            
+            Gizmos.matrix = Matrix4x4.TRS(centerWorld, Quaternion.Euler(0, 0, transform.eulerAngles.z), Vector3.one);
+            Gizmos.DrawCube(Vector3.zero, extensionSize);
+            Gizmos.DrawWireCube(Vector3.zero, extensionSize);
+            Gizmos.matrix = Matrix4x4.identity;
+        }
         
         Gizmos.color = Color.cyan;
         Vector3 direction = new Vector3(windDirection.x, windDirection.y, 0).normalized;
