@@ -13,6 +13,13 @@ public class DroneController : MonoBehaviour
     public float maxSpeed = 15f;
     public float maxTiltAngle = 70f;
 
+    [Header("Forward Flight (Hold Shift)")]
+    [Tooltip("Maximum tilt angle while Shift is held (allows steeper forward flight).")]
+    public float forwardFlightMaxTilt = 60f;
+    [Tooltip("How much tilt compensation is removed. 1.0 = fully removed (raw directional thrust), 0.0 = no change.")]
+    [Range(0f, 1f)]
+    public float forwardFlightCompReduction = 0.8f;
+
     [Header("Air Resistance (Physics Topic E)")]
     [Tooltip("ความหนาแน่นของอากาศ (rho)")]
     public float airDensity = 1.25f;
@@ -46,6 +53,7 @@ public class DroneController : MonoBehaviour
     private float lastThrustTime = 0f;
     private bool wasEmitting = true; // Start true so first frame forces sync to off
     private static readonly int AnimIsOpen = Animator.StringToHash("IsOpen");
+    private bool isForwardFlight = false;
     
     [HideInInspector]
     public bool invertControls = false;
@@ -150,6 +158,9 @@ public class DroneController : MonoBehaviour
         bool activeThrust = invertControls ? !isThrusting : isThrusting;
         float activeTilt = invertControls ? -tiltInput : tiltInput;
 
+        // Forward Flight: hold Shift to unlock steeper tilt
+        isForwardFlight = Keyboard.current != null && Keyboard.current.leftShiftKey.isPressed;
+
         HandleTilt(activeTilt, activeThrust);
         HandleThrust(activeThrust);
         CalculateAirResistance(); 
@@ -191,7 +202,12 @@ public class DroneController : MonoBehaviour
         currentAngle = Mathf.DeltaAngle(0, currentAngle);
 
         float currentTorque = (activeWindZone != null) ? activeWindZone.droneTorqueOverride : torqueForce;
-        float currentMaxTilt = (activeWindZone != null) ? activeWindZone.droneTiltOverride : maxTiltAngle;
+        float baseTilt = (activeWindZone != null) ? activeWindZone.droneTiltOverride : maxTiltAngle;
+
+        // Forward Flight: use wider tilt angle while Shift is held
+        float currentMaxTilt = (isForwardFlight && Mathf.Abs(activeTilt) > 0.1f)
+            ? forwardFlightMaxTilt
+            : baseTilt;
 
         if (Mathf.Abs(activeTilt) > 0.1f)
         {
@@ -216,7 +232,15 @@ public class DroneController : MonoBehaviour
         if (shouldEmit)
         {
             float angleInRad = Mathf.Abs(rb.rotation) * Mathf.Deg2Rad;
-            float tiltCompensation = 1f / Mathf.Max(Mathf.Cos(angleInRad), 0.5f);
+            float fullCompensation = 1f / Mathf.Max(Mathf.Cos(angleInRad), 0.5f);
+
+            // In Forward Flight, reduce compensation so tilting redirects thrust sideways
+            float tiltCompensation = fullCompensation;
+            if (isForwardFlight && Mathf.Abs(rb.rotation) > 5f)
+            {
+                float reducedCompensation = Mathf.Lerp(fullCompensation, 1f, forwardFlightCompReduction);
+                tiltCompensation = reducedCompensation;
+            }
 
             float baseThrust = (activeWindZone != null) ? activeWindZone.droneThrustOverride : thrustForce;
             float currentThrust = invertControls ? baseThrust * invertThrustMultiplier : baseThrust;
