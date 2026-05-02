@@ -69,6 +69,7 @@ public class AudioManager : MonoBehaviour
         instance.lastPlayedTime[clip] = Time.unscaledTime;
 
         GameObject sfxGo = new GameObject($"SFX_{clip.name}");
+        sfxGo.transform.SetParent(instance.transform);
         AudioSource src = sfxGo.AddComponent<AudioSource>();
         src.clip = clip;
         src.volume = finalVolume;
@@ -79,12 +80,88 @@ public class AudioManager : MonoBehaviour
         Destroy(sfxGo, clip.length + 0.1f);
     }
 
+    /// <summary>
+    /// Play a non-positional SFX with custom pitch.
+    /// </summary>
+    public static void PlaySFX(AudioClip clip, float volume, float pitch)
+    {
+        if (instance == null || clip == null) return;
+
+        float finalVolume = volume * instance.sfxVolume * instance.masterVolume;
+
+        if (instance.lastPlayedTime.TryGetValue(clip, out float lastTime))
+        {
+            if (Time.unscaledTime - lastTime < instance.deduplicateWindow) return;
+        }
+
+        instance.lastPlayedTime[clip] = Time.unscaledTime;
+
+        GameObject sfxGo = new GameObject($"SFX_{clip.name}");
+        sfxGo.transform.SetParent(instance.transform);
+        AudioSource src = sfxGo.AddComponent<AudioSource>();
+        src.clip = clip;
+        src.volume = finalVolume;
+        src.pitch = pitch;
+        src.spatialBlend = 0f;
+        src.ignoreListenerPause = true;
+        src.Play();
+
+        Destroy(sfxGo, clip.length / Mathf.Abs(pitch) + 0.1f);
+    }
+
     public static void PlaySFXAt(AudioClip clip, Vector3 position, float volume = 1f)
     {
         if (instance == null || clip == null) return;
 
         float finalVolume = volume * instance.sfxVolume * instance.masterVolume;
         AudioSource.PlayClipAtPoint(clip, position, finalVolume);
+    }
+
+    /// <summary>
+    /// Play a spatial SFX with custom pitch. Useful for collision sound variety.
+    /// </summary>
+    public static void PlaySFXAt(AudioClip clip, Vector3 position, float volume, float pitch)
+    {
+        if (instance == null || clip == null) return;
+
+        float finalVolume = volume * instance.sfxVolume * instance.masterVolume;
+
+        GameObject sfxGo = new GameObject($"SFX_{clip.name}");
+        sfxGo.transform.position = position;
+        sfxGo.transform.SetParent(instance.transform);
+        AudioSource src = sfxGo.AddComponent<AudioSource>();
+        src.clip = clip;
+        src.volume = finalVolume;
+        src.pitch = pitch;
+        src.spatialBlend = 1f;
+        src.Play();
+
+        Destroy(sfxGo, clip.length / Mathf.Abs(pitch) + 0.1f);
+    }
+
+    /// <summary>
+    /// Play a spatial SFX with custom 3D distance and rolloff settings.
+    /// </summary>
+    public static void PlaySFXAt(AudioClip clip, Vector3 position, float volume, float minDistance, float maxDistance, AudioRolloffMode rolloffMode = AudioRolloffMode.Linear, float pitch = 1f)
+    {
+        if (instance == null || clip == null) return;
+
+        float finalVolume = volume * instance.sfxVolume * instance.masterVolume;
+
+        GameObject sfxGo = new GameObject($"SFX_{clip.name}");
+        sfxGo.transform.position = position;
+        sfxGo.transform.SetParent(instance.transform);
+        AudioSource src = sfxGo.AddComponent<AudioSource>();
+        src.clip = clip;
+        src.volume = finalVolume;
+        src.pitch = pitch;
+        src.spatialBlend = 1f;
+        src.rolloffMode = rolloffMode;
+        src.minDistance = minDistance;
+        src.maxDistance = maxDistance;
+        src.Play();
+
+        Destroy(sfxGo, clip.length / Mathf.Abs(pitch) + 0.1f);
     }
 
     public void SetMasterVolume(float value)

@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1773936122352473570}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.84, y: -0.3196, z: 0}
+  m_LocalPosition: {x: 18.72, y: 2.22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -166,7 +166,7 @@ MonoBehaviour:
   collectScalePop: 1.5
   collectPopDuration: 0.1
   collectShakeIntensity: 0.1
-  pickupSound: {fileID: 0}
+  pickupSound: {fileID: 8300000, guid: 4c0db25734abbfe45b307b4093069966, type: 3}
   volume: 0.8
 --- !u!1 &7828919221723360282
 GameObject:

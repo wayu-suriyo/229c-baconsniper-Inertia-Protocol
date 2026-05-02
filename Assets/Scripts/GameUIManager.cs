@@ -232,6 +232,9 @@ public class GameUIManager : MonoBehaviour
         DynamicCamera2D.StopShake();
         ForceHealthToZero();
         
+        // Silence all game audio
+        AudioListener.pause = true;
+
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(true);
@@ -244,6 +247,7 @@ public class GameUIManager : MonoBehaviour
     public void RestartLevel()
     {
         Time.timeScale = 1f;
+        AudioListener.pause = false;
 
         // If a checkpoint exists, reload scene but respawn at checkpoint
         if (CheckpointManager.instance != null &&
@@ -258,6 +262,7 @@ public class GameUIManager : MonoBehaviour
     public void LoadMainMenu()
     {
         Time.timeScale = 1f;
+        AudioListener.pause = false;
 
         // Clear checkpoint when returning to menu
         if (CheckpointManager.instance != null)
@@ -312,6 +317,9 @@ public class GameUIManager : MonoBehaviour
 
         DisableDroneController();
         DynamicCamera2D.StopShake();
+
+        // Silence all game audio, then play only the win sound
+        AudioListener.pause = true;
         AudioManager.PlaySFX(winSound, winSoundVolume);
 
         if (winPanel != null)
@@ -339,6 +347,7 @@ public class GameUIManager : MonoBehaviour
     public void LoadNextLevel()
     {
         Time.timeScale = 1f;
+        AudioListener.pause = false;
         SceneManager.LoadScene(nextLevelSceneName);
     }
 

@@ -4863,7 +4863,7 @@ Transform:
   m_GameObject: {fileID: 6639771174718182678}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.55, y: 3.37, z: 0}
+  m_LocalPosition: {x: 26, y: 6.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4948,10 +4948,15 @@ MonoBehaviour:
   maxPullForce: 20
   isPulseMode: 1
   activeTime: 2
-  restTime: 3
-  turnOnSound: {fileID: 0}
-  turnOffSound: {fileID: 0}
-  volume: 0.5
+  restTime: 2
+  activeLoopClip: {fileID: 8300000, guid: 11d51ebd9a74d1a469e9c217d9c4a70e, type: 3}
+  turnOnSound: {fileID: 8300000, guid: 5db9a1b06674f9640a0ab875da6b618c, type: 3}
+  turnOffSound: {fileID: 8300000, guid: e7807e73aeed36449bf794fa76c52aac, type: 3}
+  loopVolume: 0.12
+  sfxVolume: 0.05
+  audioFadeOutTime: 0.3
+  audioMinDistance: 5
+  audioMaxDistance: 20
   activeSprite: {fileID: 5114894581137781263, guid: 882ff309d84c4a74186f011eed05558d, type: 3}
   inactiveSprite: {fileID: 196740647765405860, guid: bc7ca6bcf047aef41ae75e55b364bfef, type: 3}
   activeParticles: {fileID: 1473514091676419943}

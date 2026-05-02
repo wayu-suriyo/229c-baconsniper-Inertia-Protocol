@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1402605718759068390}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.62, y: 0.03, z: 0}
+  m_LocalPosition: {x: 9.7, y: 0.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -100,10 +100,14 @@ MonoBehaviour:
   droneTiltOverride: 60
   windParticles: {fileID: 4519443145184729810}
   particleVisualSpeed: 15
-  windLoopClip: {fileID: 0}
-  windVolume: 0.8
-  audioMinDistance: 2
+  windLoopClip: {fileID: 8300000, guid: 4817dbe838b9cea4288fb1c1d1339545, type: 3}
+  windVolume: 0.5
+  ambientWindVolume: 0.1
+  audioMinDistance: 5
   audioMaxDistance: 20
+  audioFadeSpeed: 3
+  pitchOscillationAmount: 0.04
+  pitchOscillationSpeed: 0.7
   droneLayer:
     serializedVersion: 2
     m_Bits: 128

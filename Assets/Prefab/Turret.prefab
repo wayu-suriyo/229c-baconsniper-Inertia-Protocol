@@ -183,7 +183,7 @@ Transform:
   m_GameObject: {fileID: 7405154293884047846}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.8687773, y: -4.312, z: 0}
+  m_LocalPosition: {x: 13.02, y: -4.51, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -318,5 +318,5 @@ MonoBehaviour:
     m_Bits: 0
   turnSpeed: 5
   rotationPivot: {fileID: 8581650759234202215}
-  shootSound: {fileID: 0}
-  volume: 0.5
+  shootSound: {fileID: 8300000, guid: a92665aba9f1e7d4fbc174d06eb418c5, type: 3}
+  volume: 0.3

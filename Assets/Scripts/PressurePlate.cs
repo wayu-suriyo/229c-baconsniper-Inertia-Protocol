@@ -175,6 +175,8 @@ public class PressurePlate : MonoBehaviour
         if (droneRb == null) return;
         if (droneRb.linearVelocity.magnitude > hoverVelocityThreshold) return;
 
+        if (targetsActivated) return;
+
         targetsActivated = true;
         SetVisual(true);
         AudioManager.PlaySFX(pressSound, volume);

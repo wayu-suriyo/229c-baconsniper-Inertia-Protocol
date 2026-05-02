@@ -223,7 +223,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.7214181, b: 0, a: 1}
+      maxColor: {r: 0, g: 1, b: 0.19916606, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 0.6322595, b: 0, a: 1}
@@ -1309,24 +1309,24 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 0, g: 1, b: 0.7201364, a: 1}
-        key1: {r: 1, g: 1, b: 1, a: 0}
-        key2: {r: 0, g: 0, b: 0, a: 0}
+        key1: {r: 0, g: 1, b: 0.7201364, a: 0.3988235}
+        key2: {r: 1, g: 1, b: 1, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
-        ctime0: 48188
-        ctime1: 65535
-        ctime2: 0
+        ctime0: 0
+        ctime1: 39321
+        ctime2: 65535
         ctime3: 0
         ctime4: 0
         ctime5: 0
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 65535
-        atime2: 0
+        atime1: 39321
+        atime2: 65535
         atime3: 0
         atime4: 0
         atime5: 0
@@ -1334,8 +1334,8 @@ ParticleSystem:
         atime7: 0
         m_Mode: 0
         m_ColorSpace: 0
-        m_NumColorKeys: 2
-        m_NumAlphaKeys: 2
+        m_NumColorKeys: 3
+        m_NumAlphaKeys: 3
       minGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4991,6 +4991,8 @@ MonoBehaviour:
   closedSprite: {fileID: -2180643483155467516, guid: b418e9f42c089a84bba4f7099b69160c, type: 3}
   openSprite: {fileID: 21300000, guid: c32205fc65585d443a9df1163dac059f, type: 3}
   openParticles: {fileID: 1589449092984367077}
-  openSound: {fileID: 0}
-  enterSound: {fileID: 0}
+  openSound: {fileID: 8300000, guid: cbb8420e063a847428b510f19b6745cc, type: 3}
+  enterSound: {fileID: 8300000, guid: 5ca63212b8135e24491acf3bf5c4ade6, type: 3}
   volume: 0.8
+  slowMoTimeScale: 0.15
+  slowMoDuration: 0.4

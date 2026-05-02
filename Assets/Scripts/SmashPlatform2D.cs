@@ -8,8 +8,13 @@ public class SmashPlatform2D : MonoBehaviour, IDamageable
 
     [Header("Audio Settings")]
     public AudioClip smashSound;
-    [Range(0f, 1f)]
-    public float volume = 0.8f;
+    [Range(0f, 1f)] public float minVolume = 0.3f;
+    [Range(0f, 1f)] public float maxVolume = 1f;
+    [Tooltip("Impact velocity at which smash sound reaches max volume")]
+    public float maxVelocityForVolume = 20f;
+    [Tooltip("Random pitch range for smash sound")]
+    public float minPitch = 0.85f;
+    public float maxPitch = 1.15f;
 
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -19,7 +24,11 @@ public class SmashPlatform2D : MonoBehaviour, IDamageable
 
             if (impactForce >= breakVelocityThreshold)
             {
-                AudioManager.PlaySFXAt(smashSound, transform.position, volume);
+                // Scale volume: breakVelocityThreshold = quietest, maxVelocityForVolume = loudest
+                float t = Mathf.Clamp01((impactForce - breakVelocityThreshold) / (maxVelocityForVolume - breakVelocityThreshold));
+                float scaledVolume = Mathf.Lerp(minVolume, maxVolume, t);
+                float pitch = Random.Range(minPitch, maxPitch);
+                AudioManager.PlaySFXAt(smashSound, transform.position, scaledVolume, pitch);
                 GetComponent<Collider2D>().enabled = false;
 
                 DroneHealth playerHealth = collision.gameObject.GetComponent<DroneHealth>();
@@ -33,7 +42,8 @@ public class SmashPlatform2D : MonoBehaviour, IDamageable
 
     public void TakeDamage(float amount)
     {
-        AudioManager.PlaySFXAt(smashSound, transform.position, volume);
+        float pitch = Random.Range(minPitch, maxPitch);
+        AudioManager.PlaySFXAt(smashSound, transform.position, maxVolume, pitch);
         Destroy(gameObject);
     }
 }

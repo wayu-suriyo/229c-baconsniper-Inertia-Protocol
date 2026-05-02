@@ -9758,7 +9758,7 @@ Transform:
   m_GameObject: {fileID: 9145524477702627808}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.682, y: -0.304, z: 0}
+  m_LocalPosition: {x: 20.562, y: 2.2356, z: 0}
   m_LocalScale: {x: 1, y: 1.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9896,6 +9896,6 @@ MonoBehaviour:
   collectScalePop: 1.3
   collectPopDuration: 0.1
   collectShakeIntensity: 0.06
-  pickupSound: {fileID: 0}
-  volume: 0.8
+  pickupSound: {fileID: 8300000, guid: 3786ca96304966e4d94374bf990486d3, type: 3}
+  volume: 0.7
   refuelAmount: 50

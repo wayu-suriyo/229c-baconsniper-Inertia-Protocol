@@ -44,6 +44,8 @@ public class DroneController : MonoBehaviour
     public AudioClip thrusterClip;
     [Range(0f, 1f)] public float engineVolume = 0.4f;
     [Range(0f, 1f)] public float thrusterVolume = 0.7f;
+    [Tooltip("Time in seconds for thruster audio to fade out after releasing thrust")]
+    public float thrusterFadeOutTime = 0.25f;
 
     private Rigidbody2D rb;
     private float tiltInput = 0f;
@@ -70,6 +72,7 @@ public class DroneController : MonoBehaviour
     private InputAction moveAction;
     private AudioSource engineSource;
     private AudioSource thrusterSource;
+    private Coroutine thrusterFadeCoroutine;
 
     void Start()
     {
@@ -267,9 +270,39 @@ public class DroneController : MonoBehaviour
 
         if (thrusterSource != null)
         {
-            if (shouldEmit && !thrusterSource.isPlaying) thrusterSource.Play();
-            else if (!shouldEmit && thrusterSource.isPlaying) thrusterSource.Stop();
+            if (shouldEmit)
+            {
+                // Cancel any in-progress fade and restore full volume instantly
+                if (thrusterFadeCoroutine != null)
+                {
+                    StopCoroutine(thrusterFadeCoroutine);
+                    thrusterFadeCoroutine = null;
+                }
+                thrusterSource.volume = thrusterVolume;
+                if (!thrusterSource.isPlaying) thrusterSource.Play();
+            }
+            else if (thrusterSource.isPlaying && thrusterFadeCoroutine == null)
+            {
+                thrusterFadeCoroutine = StartCoroutine(FadeThrusterOut());
+            }
         }
+    }
+
+    private System.Collections.IEnumerator FadeThrusterOut()
+    {
+        float startVolume = thrusterSource.volume;
+        float elapsed = 0f;
+
+        while (elapsed < thrusterFadeOutTime)
+        {
+            elapsed += Time.deltaTime;
+            thrusterSource.volume = Mathf.Lerp(startVolume, 0f, elapsed / thrusterFadeOutTime);
+            yield return null;
+        }
+
+        thrusterSource.Stop();
+        thrusterSource.volume = thrusterVolume; // Restore for next time
+        thrusterFadeCoroutine = null;
     }
 
     private void ClampVelocity()

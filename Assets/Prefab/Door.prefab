@@ -155,9 +155,9 @@ MonoBehaviour:
   openOffset: {x: 0, y: 3}
   moveSpeed: 5
   startOpen: 0
-  openSound: {fileID: 0}
-  closeSound: {fileID: 0}
-  volume: 0.6
+  openSound: {fileID: 8300000, guid: 147854bcd8feec243971bf6bbeb0869d, type: 3}
+  closeSound: {fileID: 8300000, guid: 147854bcd8feec243971bf6bbeb0869d, type: 3}
+  volume: 0.05
 --- !u!50 &6066972292379378738
 Rigidbody2D:
   serializedVersion: 5

@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 9222858574289964001}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -35.86, y: -0.67, z: 0}
+  m_LocalPosition: {x: -5.73, y: 1.03, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -158,13 +158,14 @@ MonoBehaviour:
   restTime: 3
   zoneColor: {r: 0.4, g: 0, b: 1, a: 0.19607843}
   activeColor: {r: 1, g: 0.2, b: 0.8, a: 0.39215687}
-  activeLoopClip: {fileID: 0}
-  turnOnSound: {fileID: 0}
-  turnOffSound: {fileID: 0}
-  loopVolume: 0.5
-  sfxVolume: 0.7
-  audioMinDistance: 2
-  audioMaxDistance: 15
+  activeLoopClip: {fileID: 8300000, guid: 57172a360b739aa41bd0f54e22730a55, type: 3}
+  turnOnSound: {fileID: 8300000, guid: ceb0414aaab7980499647f50bfa3dfe9, type: 3}
+  turnOffSound: {fileID: 8300000, guid: 06d1228a052af4c42a66f0c1607c7ebb, type: 3}
+  loopVolume: 0.8
+  sfxVolume: 0.5
+  audioFadeOutTime: 0.3
+  audioMinDistance: 5
+  audioMaxDistance: 20
   chevronCount: 6
   chevronSize: 0.8
   chevronSpacing: 1.2

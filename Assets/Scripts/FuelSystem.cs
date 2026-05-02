@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class FuelSystem : MonoBehaviour
 {
@@ -11,16 +12,31 @@ public class FuelSystem : MonoBehaviour
     public AudioClip lowFuelWarningClip;
     [Range(0f, 1f)] public float warningVolume = 0.9f;
     [Range(0f, 1f)] public float lowFuelThreshold = 0.25f;
+    [Tooltip("Seconds for the warning sound to fade out after refuelling above threshold")]
+    public float warningFadeOutTime = 0.5f;
 
     public bool IsOutOfFuel => currentFuel <= 0f;
 
     private float emptyFuelTimer = 0f;
     private bool isGameOverTriggered = false;
-    private bool lowFuelWarningPlayed = false;
+
+    private AudioSource warningSource;
+    private bool isWarningActive = false;
+    private Coroutine warningFadeCoroutine;
 
     void Start()
     {
         currentFuel = maxFuel;
+
+        if (lowFuelWarningClip != null)
+        {
+            warningSource = gameObject.AddComponent<AudioSource>();
+            warningSource.clip = lowFuelWarningClip;
+            warningSource.loop = true;
+            warningSource.volume = warningVolume;
+            warningSource.spatialBlend = 0f;
+            warningSource.playOnAwake = false;
+        }
     }
 
     void Update()
@@ -31,12 +47,10 @@ public class FuelSystem : MonoBehaviour
             if (emptyFuelTimer >= 2f)
             {
                 isGameOverTriggered = true;
-                Debug.Log("Fuel depleted for 2 seconds. Game Over.");
-                
+                StopWarning();
+
                 if (GameUIManager.instance != null)
-                {
                     GameUIManager.instance.ShowGameOver();
-                }
             }
         }
         else if (!IsOutOfFuel)
@@ -45,15 +59,59 @@ public class FuelSystem : MonoBehaviour
         }
 
         float fuelPercent = currentFuel / maxFuel;
-        if (!lowFuelWarningPlayed && fuelPercent <= lowFuelThreshold && fuelPercent > 0f)
+
+        if (!isWarningActive && fuelPercent <= lowFuelThreshold && fuelPercent > 0f)
         {
-            lowFuelWarningPlayed = true;
-            AudioManager.PlaySFX(lowFuelWarningClip, warningVolume);
+            StartWarning();
         }
-        else if (fuelPercent > lowFuelThreshold)
+        else if (isWarningActive && fuelPercent > lowFuelThreshold)
         {
-            lowFuelWarningPlayed = false;
+            StopWarning();
         }
+    }
+
+    private void StartWarning()
+    {
+        if (warningSource == null) return;
+
+        isWarningActive = true;
+
+        // Cancel any in-progress fade and restore volume
+        if (warningFadeCoroutine != null)
+        {
+            StopCoroutine(warningFadeCoroutine);
+            warningFadeCoroutine = null;
+        }
+
+        warningSource.volume = warningVolume;
+        if (!warningSource.isPlaying) warningSource.Play();
+    }
+
+    private void StopWarning()
+    {
+        if (warningSource == null || !warningSource.isPlaying) return;
+
+        isWarningActive = false;
+
+        if (warningFadeCoroutine == null)
+            warningFadeCoroutine = StartCoroutine(FadeWarningOut());
+    }
+
+    private IEnumerator FadeWarningOut()
+    {
+        float startVolume = warningSource.volume;
+        float elapsed = 0f;
+
+        while (elapsed < warningFadeOutTime)
+        {
+            elapsed += Time.deltaTime;
+            warningSource.volume = Mathf.Lerp(startVolume, 0f, elapsed / warningFadeOutTime);
+            yield return null;
+        }
+
+        warningSource.Stop();
+        warningSource.volume = warningVolume; // Restore for next time
+        warningFadeCoroutine = null;
     }
 
     public void ConsumeFuel(float multiplier = 1f)
@@ -73,13 +131,12 @@ public class FuelSystem : MonoBehaviour
     {
         currentFuel += amount;
         if (currentFuel > maxFuel)
-        {
             currentFuel = maxFuel;
-        }
-        
+
         isGameOverTriggered = false;
         emptyFuelTimer = 0f;
 
         Debug.Log($"Fuel refilled by {amount}. Current fuel: {currentFuel:F1} / {maxFuel}");
     }
 }
+

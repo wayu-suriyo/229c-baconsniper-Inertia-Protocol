@@ -25,8 +25,10 @@ public class GravityZone : MonoBehaviour
     public AudioClip turnOffSound;
     [Range(0f, 1f)] public float loopVolume = 0.5f;
     [Range(0f, 1f)] public float sfxVolume = 0.7f;
-    public float audioMinDistance = 2f;
-    public float audioMaxDistance = 15f;
+    [Tooltip("Time in seconds for the loop audio to fade out when zone deactivates")]
+    public float audioFadeOutTime = 0.3f;
+    public float audioMinDistance = 5f;
+    public float audioMaxDistance = 25f;
 
     [Header("Chevron Animation")]
     public int chevronCount = 4;
@@ -43,7 +45,9 @@ public class GravityZone : MonoBehaviour
     private float pulseTimer = 0f;
     private SpriteRenderer sr;
     private AudioSource loopSource;
+    private Coroutine loopFadeCoroutine;
     private LineRenderer[] chevrons;
+    private bool audioInitialized = false;
 
     void Start()
     {
@@ -79,6 +83,14 @@ public class GravityZone : MonoBehaviour
             loopSource.volume = loopVolume;
             loopSource.playOnAwake = false;
         }
+
+        StartCoroutine(DelayedAudioStart());
+    }
+
+    private System.Collections.IEnumerator DelayedAudioStart()
+    {
+        yield return new WaitForSeconds(0.1f);
+        audioInitialized = true;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -160,24 +172,42 @@ public class GravityZone : MonoBehaviour
             lr.endColor = fadedColor;
         }
         
-        // Handle Audio
-        if (loopSource != null)
+        // Handle Audio — loop whenever zone is active, regardless of targets inside
+        if (loopSource != null && audioInitialized)
         {
-            bool hasValidTargets = false;
-            foreach (var kvp in affectedBodies)
+            if (isZoneActive)
             {
-                if (kvp.Key != null)
+                // Cancel any in-progress fade and restore volume
+                if (loopFadeCoroutine != null)
                 {
-                    hasValidTargets = true;
-                    break;
+                    StopCoroutine(loopFadeCoroutine);
+                    loopFadeCoroutine = null;
                 }
+                loopSource.volume = loopVolume;
+                if (!loopSource.isPlaying) loopSource.Play();
             }
-
-            if (isZoneActive && hasValidTargets && !loopSource.isPlaying)
-                loopSource.Play();
-            else if ((!isZoneActive || !hasValidTargets) && loopSource.isPlaying)
-                loopSource.Stop();
+            else if (loopSource.isPlaying && loopFadeCoroutine == null)
+            {
+                loopFadeCoroutine = StartCoroutine(FadeLoopOut());
+            }
         }
+    }
+
+    private System.Collections.IEnumerator FadeLoopOut()
+    {
+        float startVolume = loopSource.volume;
+        float elapsed = 0f;
+
+        while (elapsed < audioFadeOutTime)
+        {
+            elapsed += Time.deltaTime;
+            loopSource.volume = Mathf.Lerp(startVolume, 0f, elapsed / audioFadeOutTime);
+            yield return null;
+        }
+
+        loopSource.Stop();
+        loopSource.volume = loopVolume; // Restore for next activation
+        loopFadeCoroutine = null;
     }
 
     void FixedUpdate()
@@ -227,9 +257,9 @@ public class GravityZone : MonoBehaviour
         SetVisual(true);
         ApplyInvertedGravity();
         
-        if (turnOnSound != null && loopSource != null)
+        if (turnOnSound != null)
         {
-            loopSource.PlayOneShot(turnOnSound, sfxVolume);
+            AudioManager.PlaySFXAt(turnOnSound, transform.position, sfxVolume, audioMinDistance, audioMaxDistance);
         }
     }
 
@@ -239,9 +269,9 @@ public class GravityZone : MonoBehaviour
         SetVisual(false);
         RestoreGravity();
         
-        if (turnOffSound != null && loopSource != null)
+        if (turnOffSound != null)
         {
-            loopSource.PlayOneShot(turnOffSound, sfxVolume);
+            AudioManager.PlaySFXAt(turnOffSound, transform.position, sfxVolume, audioMinDistance, audioMaxDistance);
         }
     }
 

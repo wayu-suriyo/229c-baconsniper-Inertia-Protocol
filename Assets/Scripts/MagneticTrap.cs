@@ -17,10 +17,16 @@ public class MagneticTrap : MonoBehaviour
     public float restTime = 3f;
 
     [Header("Audio Settings")]
+    [Tooltip("Looping sound played while the magnet is actively pulling")]
+    public AudioClip activeLoopClip;
     public AudioClip turnOnSound;
     public AudioClip turnOffSound;
-    [Range(0f, 1f)]
-    public float volume = 0.5f;
+    [Range(0f, 1f)] public float loopVolume = 0.5f;
+    [Range(0f, 1f)] public float sfxVolume = 0.7f;
+    [Tooltip("Time in seconds for the loop audio to fade out when deactivated")]
+    public float audioFadeOutTime = 0.3f;
+    public float audioMinDistance = 5f;
+    public float audioMaxDistance = 25f;
 
     [Header("Visual Sprites")]
     [Tooltip("Sprite shown while the magnet is actively pulling.")]
@@ -49,6 +55,7 @@ public class MagneticTrap : MonoBehaviour
     private bool isActive = true;
     private float pulseTimer = 0f;
     private Collider2D[] hitBuffer = new Collider2D[16];
+    private Coroutine loopFadeCoroutine;
 
     void Start()
     {
@@ -57,8 +64,15 @@ public class MagneticTrap : MonoBehaviour
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.spatialBlend = 1f;
         audioSource.rolloffMode = AudioRolloffMode.Linear;
-        audioSource.minDistance = 2f;
-        audioSource.maxDistance = maxInfluenceRadius;
+        audioSource.minDistance = audioMinDistance;
+        audioSource.maxDistance = audioMaxDistance;
+
+        if (activeLoopClip != null)
+        {
+            audioSource.clip = activeLoopClip;
+            audioSource.loop = true;
+            audioSource.volume = loopVolume;
+        }
 
         radiusLine = GetComponent<LineRenderer>();
         if (radiusLine == null)
@@ -71,6 +85,17 @@ public class MagneticTrap : MonoBehaviour
 
         // Initialize visuals to match starting state
         SetVisual(isActive);
+        
+        StartCoroutine(DelayedAudioStart());
+    }
+
+    private System.Collections.IEnumerator DelayedAudioStart()
+    {
+        yield return new WaitForSeconds(0.1f); // Wait for camera to snap to player
+        if (isActive && activeLoopClip != null && !audioSource.isPlaying)
+        {
+            audioSource.Play();
+        }
     }
 
     void Update()
@@ -80,25 +105,20 @@ public class MagneticTrap : MonoBehaviour
             pulseTimer += Time.deltaTime;
             if (isActive && pulseTimer >= activeTime)
             {
-                isActive = false;
+                Deactivate();
                 pulseTimer = 0f;
-                if (turnOffSound != null) audioSource.PlayOneShot(turnOffSound, volume);
-                SetVisual(false);
             }
             else if (!isActive && pulseTimer >= restTime)
             {
-                isActive = true;
+                Activate();
                 pulseTimer = 0f;
-                if (turnOnSound != null) audioSource.PlayOneShot(turnOnSound, volume);
-                SetVisual(true);
             }
         }
         else
         {
             if (!isActive) // Only set once if it wasn't already active
             {
-                isActive = true;
-                SetVisual(true);
+                Activate();
             }
         }
 
@@ -108,6 +128,55 @@ public class MagneticTrap : MonoBehaviour
             radiusLine.startColor = targetColor;
             radiusLine.endColor = targetColor;
         }
+    }
+
+    private void Activate()
+    {
+        isActive = true;
+        SetVisual(true);
+
+        if (turnOnSound != null) AudioManager.PlaySFXAt(turnOnSound, transform.position, sfxVolume, audioMinDistance, audioMaxDistance);
+
+        if (activeLoopClip != null)
+        {
+            if (loopFadeCoroutine != null)
+            {
+                StopCoroutine(loopFadeCoroutine);
+                loopFadeCoroutine = null;
+            }
+            audioSource.volume = loopVolume;
+            if (!audioSource.isPlaying) audioSource.Play();
+        }
+    }
+
+    private void Deactivate()
+    {
+        isActive = false;
+        SetVisual(false);
+
+        if (turnOffSound != null) AudioManager.PlaySFXAt(turnOffSound, transform.position, sfxVolume, audioMinDistance, audioMaxDistance);
+
+        if (activeLoopClip != null && audioSource.isPlaying && loopFadeCoroutine == null)
+        {
+            loopFadeCoroutine = StartCoroutine(FadeLoopOut());
+        }
+    }
+
+    private System.Collections.IEnumerator FadeLoopOut()
+    {
+        float startVolume = audioSource.volume;
+        float elapsed = 0f;
+
+        while (elapsed < audioFadeOutTime)
+        {
+            elapsed += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(startVolume, 0f, elapsed / audioFadeOutTime);
+            yield return null;
+        }
+
+        audioSource.Stop();
+        audioSource.volume = loopVolume;
+        loopFadeCoroutine = null;
     }
 
     private void SetVisual(bool active)

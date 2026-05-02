@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 3834775689805482967}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 18.96, y: 5.28, z: 0}
+  m_LocalPosition: {x: 18.96, y: 8.8, z: 0}
   m_LocalScale: {x: 0.6906455, y: 0.6906455, z: 0.6906455}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -205,10 +205,10 @@ MonoBehaviour:
   trackingColor: {r: 1, g: 1, b: 1, a: 1}
   chargingColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   dashingColor: {r: 1, g: 0, b: 0, a: 1}
-  chargeSound: {fileID: 0}
-  dashSound: {fileID: 0}
-  crashSound: {fileID: 0}
-  volume: 0.8
+  chargeSound: {fileID: 8300000, guid: ee7e55a2e6e62a341ae65fd6dd4c07b3, type: 3}
+  dashSound: {fileID: 8300000, guid: df23e86cd6057da48a91859c562c9da2, type: 3}
+  crashSound: {fileID: 8300000, guid: e562c0a10af8034419a65f0b9bbba86f, type: 3}
+  volume: 0.5
 --- !u!95 &1322748018665140997
 Animator:
   serializedVersion: 7

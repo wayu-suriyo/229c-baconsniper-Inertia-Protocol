@@ -87,7 +87,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 253005588072490991, guid: 6eadeb520956406478b52159f717e4a4, type: 3}
   m_Color: {r: 0.84951943, g: 0.9245283, b: 0.8972523, a: 1}
@@ -199,10 +199,11 @@ MonoBehaviour:
   baseAnimSpeed: 1
   maxAnimSpeedMultiplier: 3
   speedDecayRate: 2
-  engineHumClip: {fileID: 0}
-  thrusterClip: {fileID: 0}
-  engineVolume: 0.4
-  thrusterVolume: 0.7
+  engineHumClip: {fileID: 8300000, guid: 57ec1e0e3c9f9d642a385da0d27d1757, type: 3}
+  thrusterClip: {fileID: 8300000, guid: 92af39d2921c90646b9530d585db3368, type: 3}
+  engineVolume: 0
+  thrusterVolume: 0.05
+  thrusterFadeOutTime: 0.25
   invertControls: 0
   invertThrustMultiplier: 1
   invertFuelMultiplier: 1
@@ -224,10 +225,18 @@ MonoBehaviour:
   damagePerVelocityUnit: 3
   maxDamagePerCollision: 40
   iFrameDuration: 0.5
-  damageSoundClip: {fileID: 0}
-  damageSoundVolume: 0.8
-  deathSoundClip: {fileID: 0}
-  deathSoundVolume: 1
+  damageSoundClip: {fileID: 8300000, guid: d70b4caebe9458c4896d1ccc66559f82, type: 3}
+  damageSoundMinVolume: 0.1
+  damageSoundMaxVolume: 0.2
+  damageSoundMaxVelocity: 20
+  bumpSoundClip: {fileID: 8300000, guid: f10d83f860b7cab4db0ffcea48469bc6, type: 3}
+  bumpSoundMinVolume: 0.1
+  bumpSoundMaxVolume: 0.2
+  bumpSoundMaxVelocity: 8
+  minPitch: 0.8
+  maxPitch: 1.2
+  deathSoundClip: {fileID: 8300000, guid: 3ec2ae38de9be304a90d552dfeaf6980, type: 3}
+  deathSoundVolume: 0.6
   explosionPrefab: {fileID: 9043156549408507262, guid: 62bd9fda895db3341bc0d557b9187837, type: 3}
   explosionDuration: 0.5
 --- !u!114 &2319085877781444116
@@ -244,10 +253,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FuelSystem
   maxFuel: 100
   currentFuel: 100
-  fuelDrainRate: 0.1
-  lowFuelWarningClip: {fileID: 0}
-  warningVolume: 0.9
+  fuelDrainRate: 10
+  lowFuelWarningClip: {fileID: 8300000, guid: 816bb68bbce16bc488a1e75cca91ed07, type: 3}
+  warningVolume: 0.03
   lowFuelThreshold: 0.25
+  warningFadeOutTime: 0.5
 --- !u!95 &8570111673287359289
 Animator:
   serializedVersion: 7

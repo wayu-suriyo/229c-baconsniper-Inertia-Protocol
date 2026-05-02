@@ -28,10 +28,18 @@ public class WindZone : MonoBehaviour
     [Tooltip("Looping wind sound — volume increases as drone gets closer (3D spatial)")]
     public AudioClip windLoopClip;
     [Range(0f, 1f)] public float windVolume = 0.8f;
+    [Tooltip("Volume heard from outside the zone (spatial falloff still applies based on distance)")]
+    [Range(0f, 1f)] public float ambientWindVolume = 0.25f;
     [Tooltip("Distance at which wind is fully audible")]
     public float audioMinDistance = 2f;
     [Tooltip("Distance at which wind becomes inaudible")]
     public float audioMaxDistance = 20f;
+    [Tooltip("How fast volume fades in/out when drone enters or exits the zone")]
+    public float audioFadeSpeed = 3f;
+    [Tooltip("Subtle pitch oscillation range — keeps loop from sounding repetitive (0 = off)")]
+    public float pitchOscillationAmount = 0.04f;
+    [Tooltip("Speed of the pitch oscillation cycle")]
+    public float pitchOscillationSpeed = 0.7f;
 
     [Header("Detection")]
     [Tooltip("Set to the Player layer so the expanded-zone query only finds the drone")]
@@ -44,6 +52,9 @@ public class WindZone : MonoBehaviour
     private Collider2D[] expandedZoneBuffer = new Collider2D[8];
     private List<Rigidbody2D> rbRemoveCache = new List<Rigidbody2D>();
     private List<DroneController> dcRemoveCache = new List<DroneController>();
+    private bool droneInsideZone = false;
+    private bool audioInitialized = false;
+    private float currentAudioVolume = 0f;
 
     void Start()
     {
@@ -59,8 +70,32 @@ public class WindZone : MonoBehaviour
             windAudioSource.rolloffMode = AudioRolloffMode.Linear;
             windAudioSource.minDistance = audioMinDistance;
             windAudioSource.maxDistance = audioMaxDistance;
-            windAudioSource.volume = windVolume;
+            windAudioSource.volume = 0f; // Start silent; fades in when drone enters
             windAudioSource.Play();
+        }
+
+        StartCoroutine(DelayedAudioInit());
+    }
+
+    private System.Collections.IEnumerator DelayedAudioInit()
+    {
+        yield return new WaitForSeconds(0.1f);
+        audioInitialized = true;
+    }
+
+    void Update()
+    {
+        if (windAudioSource == null || !audioInitialized) return;
+
+        // Target volume: full inside zone, ambient outside (3D rolloff handles distance attenuation)
+        float targetVolume = droneInsideZone ? windVolume : ambientWindVolume;
+        currentAudioVolume = Mathf.MoveTowards(currentAudioVolume, targetVolume, audioFadeSpeed * Time.deltaTime);
+        windAudioSource.volume = currentAudioVolume;
+
+        // Subtle pitch oscillation to break up loop repetition
+        if (pitchOscillationAmount > 0f)
+        {
+            windAudioSource.pitch = 1f + Mathf.Sin(Time.time * pitchOscillationSpeed) * pitchOscillationAmount;
         }
     }
 
@@ -135,20 +170,20 @@ public class WindZone : MonoBehaviour
         if (other.GetComponent<DroneController>() != null || other.GetComponent<FlyingEnemyAI>() != null)
         {
             Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                affectedBodies.Add(rb);
-            }
+            if (rb != null) affectedBodies.Add(rb);
+
+            // Mark drone inside for audio fade-in
+            if (other.GetComponent<DroneController>() != null) droneInsideZone = true;
         }
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
         Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            affectedBodies.Remove(rb);
-        }
+        if (rb != null) affectedBodies.Remove(rb);
+
+        // Fade out when drone leaves
+        if (other.GetComponent<DroneController>() != null) droneInsideZone = false;
     }
 
     private void UpdateParticleDirection()

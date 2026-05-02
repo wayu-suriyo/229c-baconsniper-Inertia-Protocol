@@ -255,9 +255,9 @@ MonoBehaviour:
   pressSmoothSpeed: 10
   unpressedColor: {r: 1, g: 1, b: 1, a: 1}
   pressedColor: {r: 1, g: 1, b: 1, a: 1}
-  pressSound: {fileID: 0}
-  releaseSound: {fileID: 0}
-  volume: 0.7
+  pressSound: {fileID: 8300000, guid: 2c3cd83506a0624438e3da82ac72fb5d, type: 3}
+  releaseSound: {fileID: 8300000, guid: 4c5f6e6bccee4bb42a63dbc6e68621ec, type: 3}
+  volume: 0.8
   exitGraceTime: 0.15
 --- !u!50 &3340097282729327574
 Rigidbody2D:

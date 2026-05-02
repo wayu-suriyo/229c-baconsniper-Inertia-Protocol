@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 6883880777622598223}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25.0819, y: -0.6019, z: 0}
+  m_LocalPosition: {x: -8.24, y: 1.07, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -153,8 +153,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InvertZone
   thrustMultiplier: 0.5
   fuelMultiplier: 0.25
-  zoneColor: {r: 1, g: 0, b: 0, a: 0.25}
-  activeColor: {r: 1, g: 0.2, b: 0.2, a: 0.5}
-  enterSound: {fileID: 0}
-  exitSound: {fileID: 0}
-  volume: 0.7
+  zoneColor: {r: 1, g: 0.42075467, b: 0.42075467, a: 0.19607843}
+  activeColor: {r: 1, g: 0.27735847, b: 0.27735847, a: 0.3137255}
+  enterSound: {fileID: 8300000, guid: 1b6845c19456d6f40949f37c25d5cf7e, type: 3}
+  exitSound: {fileID: 8300000, guid: efbe1a85c5847d34c9eb07d93c6c3bf7, type: 3}
+  volume: 0.15
