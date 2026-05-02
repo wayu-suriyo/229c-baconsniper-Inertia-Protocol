@@ -153,5 +153,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SmashPlatform2D
   breakVelocityThreshold: 5
   droneDamageThreshold: 15
-  smashSound: {fileID: 0}
-  volume: 0.8
+  smashSound: {fileID: 8300000, guid: 41b325ae184962542afedcd247797fbf, type: 3}
+  minVolume: 1
+  maxVolume: 1
+  maxVelocityForVolume: 20
+  minPitch: 0.85
+  maxPitch: 1.15

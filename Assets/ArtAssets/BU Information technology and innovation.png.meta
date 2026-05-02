@@ -1,0 +1,1677 @@
+fileFormatVersion: 2
+guid: 1bc5a007d701bb14c8094389d906567f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8060585312669918514
+    second: BU Information technology and innovation_0
+  - first:
+      213: 1241734573451750220
+    second: BU Information technology and innovation_1
+  - first:
+      213: 1291592902913371892
+    second: BU Information technology and innovation_2
+  - first:
+      213: -3739642542661662150
+    second: BU Information technology and innovation_3
+  - first:
+      213: -6251267142499290672
+    second: BU Information technology and innovation_4
+  - first:
+      213: 8067750706962850584
+    second: BU Information technology and innovation_5
+  - first:
+      213: 7407090058307224081
+    second: BU Information technology and innovation_6
+  - first:
+      213: 5133322226657723325
+    second: BU Information technology and innovation_7
+  - first:
+      213: -256798021094249772
+    second: BU Information technology and innovation_8
+  - first:
+      213: -6764517901582983355
+    second: BU Information technology and innovation_9
+  - first:
+      213: 1378397166256128531
+    second: BU Information technology and innovation_10
+  - first:
+      213: 188456907408409562
+    second: BU Information technology and innovation_11
+  - first:
+      213: -8332457634704511151
+    second: BU Information technology and innovation_12
+  - first:
+      213: 2701806134666641064
+    second: BU Information technology and innovation_13
+  - first:
+      213: 906332123302469712
+    second: BU Information technology and innovation_14
+  - first:
+      213: 6810888380238749332
+    second: BU Information technology and innovation_15
+  - first:
+      213: 3784756724163937535
+    second: BU Information technology and innovation_16
+  - first:
+      213: 7770442869344774037
+    second: BU Information technology and innovation_17
+  - first:
+      213: -409416341235020666
+    second: BU Information technology and innovation_18
+  - first:
+      213: 8933111564710055636
+    second: BU Information technology and innovation_19
+  - first:
+      213: -5698379561985063203
+    second: BU Information technology and innovation_20
+  - first:
+      213: 8130160140848227109
+    second: BU Information technology and innovation_21
+  - first:
+      213: 7742475694784520937
+    second: BU Information technology and innovation_22
+  - first:
+      213: -6653640603100584679
+    second: BU Information technology and innovation_23
+  - first:
+      213: 5610213757861264182
+    second: BU Information technology and innovation_24
+  - first:
+      213: -2543102031795936975
+    second: BU Information technology and innovation_25
+  - first:
+      213: 5358659723286086341
+    second: BU Information technology and innovation_26
+  - first:
+      213: 3534544037201491790
+    second: BU Information technology and innovation_27
+  - first:
+      213: -5399292854106741345
+    second: BU Information technology and innovation_28
+  - first:
+      213: 6425176440764033360
+    second: BU Information technology and innovation_29
+  - first:
+      213: -4716702329736065284
+    second: BU Information technology and innovation_30
+  - first:
+      213: -8288743047024567188
+    second: BU Information technology and innovation_31
+  - first:
+      213: -5851684887977073891
+    second: BU Information technology and innovation_32
+  - first:
+      213: -6433075002073316899
+    second: BU Information technology and innovation_33
+  - first:
+      213: 3313088389583071925
+    second: BU Information technology and innovation_34
+  - first:
+      213: 5650738992856653101
+    second: BU Information technology and innovation_35
+  - first:
+      213: 1011205894546679696
+    second: BU Information technology and innovation_36
+  - first:
+      213: 1502556469578859483
+    second: BU Information technology and innovation_37
+  - first:
+      213: -2127388529782264877
+    second: BU Information technology and innovation_38
+  - first:
+      213: -2182234045912252868
+    second: BU Information technology and innovation_39
+  - first:
+      213: 7932747423023142860
+    second: BU Information technology and innovation_40
+  - first:
+      213: -9075368251425388377
+    second: BU Information technology and innovation_41
+  - first:
+      213: 6286477443436109559
+    second: BU Information technology and innovation_42
+  - first:
+      213: -4875796151199040421
+    second: BU Information technology and innovation_43
+  - first:
+      213: 1362291895179069834
+    second: BU Information technology and innovation_44
+  - first:
+      213: 1793828930975861414
+    second: BU Information technology and innovation_45
+  - first:
+      213: -6810788427654850569
+    second: BU Information technology and innovation_46
+  - first:
+      213: -5311120489635323890
+    second: BU Information technology and innovation_47
+  - first:
+      213: 5238877152840310799
+    second: BU Information technology and innovation_48
+  - first:
+      213: -2871325068192159583
+    second: BU Information technology and innovation_49
+  - first:
+      213: -8355656457951034448
+    second: BU Information technology and innovation_50
+  - first:
+      213: 163328146096328399
+    second: BU Information technology and innovation_51
+  - first:
+      213: 1448008291910981198
+    second: BU Information technology and innovation_52
+  - first:
+      213: -3575676598174737610
+    second: BU Information technology and innovation_53
+  - first:
+      213: 6365528328620015947
+    second: BU Information technology and innovation_54
+  - first:
+      213: -2660553174998654920
+    second: BU Information technology and innovation_55
+  - first:
+      213: -8451204777579236013
+    second: BU Information technology and innovation_56
+  - first:
+      213: -8742551704907435129
+    second: BU Information technology and innovation_57
+  - first:
+      213: 5589325165249007555
+    second: BU Information technology and innovation_58
+  - first:
+      213: -4417316416681251571
+    second: BU Information technology and innovation_59
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: BU Information technology and innovation_0
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 1031
+        width: 493
+        height: 367
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 235eb6392a3fcdf60800000000000000
+      internalID: 8060585312669918514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_1
+      rect:
+        serializedVersion: 2
+        x: 1506
+        y: 1337
+        width: 40
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4ba9ebf3078b3110800000000000000
+      internalID: 1241734573451750220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_2
+      rect:
+        serializedVersion: 2
+        x: 1553
+        y: 1337
+        width: 39
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4fe219ce6e8ace110800000000000000
+      internalID: 1291592902913371892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_3
+      rect:
+        serializedVersion: 2
+        x: 1596
+        y: 1338
+        width: 40
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3a86b1cbee1a1cc0800000000000000
+      internalID: -3739642542661662150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_4
+      rect:
+        serializedVersion: 2
+        x: 1642
+        y: 1337
+        width: 39
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d1324f87a90f39a0800000000000000
+      internalID: -6251267142499290672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_5
+      rect:
+        serializedVersion: 2
+        x: 1685
+        y: 1337
+        width: 38
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8136de0f58866ff60800000000000000
+      internalID: 8067750706962850584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_6
+      rect:
+        serializedVersion: 2
+        x: 1728
+        y: 1338
+        width: 31
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 112cab0e9254bc660800000000000000
+      internalID: 7407090058307224081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_7
+      rect:
+        serializedVersion: 2
+        x: 1780
+        y: 1337
+        width: 39
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db30d8d1e593d3740800000000000000
+      internalID: 5133322226657723325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_8
+      rect:
+        serializedVersion: 2
+        x: 1823
+        y: 1338
+        width: 31
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4da67a57f8baf6cf0800000000000000
+      internalID: -256798021094249772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_9
+      rect:
+        serializedVersion: 2
+        x: 1507
+        y: 1230
+        width: 20
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54f1067feca9f12a0800000000000000
+      internalID: -6764517901582983355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_10
+      rect:
+        serializedVersion: 2
+        x: 1538
+        y: 1230
+        width: 59
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3120a1e6bec012310800000000000000
+      internalID: 1378397166256128531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_11
+      rect:
+        serializedVersion: 2
+        x: 1607
+        y: 1230
+        width: 45
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad30c8d0f888d9200800000000000000
+      internalID: 188456907408409562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_12
+      rect:
+        serializedVersion: 2
+        x: 1656
+        y: 1229
+        width: 57
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15f2271bde92d5c80800000000000000
+      internalID: -8332457634704511151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_13
+      rect:
+        serializedVersion: 2
+        x: 1720
+        y: 1230
+        width: 59
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8aeb6cc5d5ebe7520800000000000000
+      internalID: 2701806134666641064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_14
+      rect:
+        serializedVersion: 2
+        x: 1785
+        y: 1230
+        width: 78
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05028f1a340f39c00800000000000000
+      internalID: 906332123302469712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_15
+      rect:
+        serializedVersion: 2
+        x: 1868
+        y: 1230
+        width: 65
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49e57fc65e2258e50800000000000000
+      internalID: 6810888380238749332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_16
+      rect:
+        serializedVersion: 2
+        x: 1926
+        y: 1230
+        width: 58
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff400192038268430800000000000000
+      internalID: 3784756724163937535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_17
+      rect:
+        serializedVersion: 2
+        x: 1990
+        y: 1230
+        width: 19
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59723cebe9826db60800000000000000
+      internalID: 7770442869344774037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_18
+      rect:
+        serializedVersion: 2
+        x: 2017
+        y: 1229
+        width: 57
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68c427fb106715af0800000000000000
+      internalID: -409416341235020666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_19
+      rect:
+        serializedVersion: 2
+        x: 2083
+        y: 1230
+        width: 59
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4de0a7173a9c8fb70800000000000000
+      internalID: 8933111564710055636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_20
+      rect:
+        serializedVersion: 2
+        x: 2179
+        y: 1230
+        width: 57
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd6c88ccaf94be0b0800000000000000
+      internalID: -5698379561985063203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_21
+      rect:
+        serializedVersion: 2
+        x: 2241
+        y: 1230
+        width: 49
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5236c4a929124d070800000000000000
+      internalID: 8130160140848227109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_22
+      rect:
+        serializedVersion: 2
+        x: 2295
+        y: 1229
+        width: 57
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e22abd7f9cc27b60800000000000000
+      internalID: 7742475694784520937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_23
+      rect:
+        serializedVersion: 2
+        x: 2359
+        y: 1230
+        width: 59
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 915e21dbf1589a3a0800000000000000
+      internalID: -6653640603100584679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_24
+      rect:
+        serializedVersion: 2
+        x: 2429
+        y: 1230
+        width: 59
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63b745740bb7bdd40800000000000000
+      internalID: 5610213757861264182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_25
+      rect:
+        serializedVersion: 2
+        x: 2496
+        y: 1229
+        width: 57
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 131aa3f0d2615bcd0800000000000000
+      internalID: -2543102031795936975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_26
+      rect:
+        serializedVersion: 2
+        x: 2561
+        y: 1230
+        width: 46
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c209ae70a8cd5a40800000000000000
+      internalID: 5358659723286086341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_27
+      rect:
+        serializedVersion: 2
+        x: 2610
+        y: 1229
+        width: 57
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e47be5433193d0130800000000000000
+      internalID: 3534544037201491790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_28
+      rect:
+        serializedVersion: 2
+        x: 2673
+        y: 1229
+        width: 57
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f95a9a081cbd115b0800000000000000
+      internalID: -5399292854106741345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_29
+      rect:
+        serializedVersion: 2
+        x: 2728
+        y: 1230
+        width: 66
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 059e2fa4eefca2950800000000000000
+      internalID: 6425176440764033360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_30
+      rect:
+        serializedVersion: 2
+        x: 1505
+        y: 1121
+        width: 65
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfe03d4a838ea8eb0800000000000000
+      internalID: -4716702329736065284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_31
+      rect:
+        serializedVersion: 2
+        x: 1578
+        y: 1121
+        width: 59
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6c9c974d1878fc80800000000000000
+      internalID: -8288743047024567188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_32
+      rect:
+        serializedVersion: 2
+        x: 1647
+        y: 1121
+        width: 55
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d13ea921993aacea0800000000000000
+      internalID: -5851684887977073891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_33
+      rect:
+        serializedVersion: 2
+        x: 1738
+        y: 1121
+        width: 19
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd189f79e5029b6a0800000000000000
+      internalID: -6433075002073316899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_34
+      rect:
+        serializedVersion: 2
+        x: 1768
+        y: 1121
+        width: 59
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bae19a36547afd20800000000000000
+      internalID: 3313088389583071925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_35
+      rect:
+        serializedVersion: 2
+        x: 1838
+        y: 1121
+        width: 59
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2d5ba3dc257b6e40800000000000000
+      internalID: 5650738992856653101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_36
+      rect:
+        serializedVersion: 2
+        x: 1906
+        y: 1120
+        width: 57
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0976c3b4766880e00800000000000000
+      internalID: 1011205894546679696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_37
+      rect:
+        serializedVersion: 2
+        x: 1965
+        y: 1121
+        width: 65
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd38630f5272ad410800000000000000
+      internalID: 1502556469578859483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_38
+      rect:
+        serializedVersion: 2
+        x: 2023
+        y: 1121
+        width: 66
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3db661f476ff972e0800000000000000
+      internalID: -2127388529782264877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_39
+      rect:
+        serializedVersion: 2
+        x: 2083
+        y: 1121
+        width: 57
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3ef2ac72b527b1e0800000000000000
+      internalID: -2182234045912252868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_40
+      rect:
+        serializedVersion: 2
+        x: 2146
+        y: 1121
+        width: 19
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc7903270c7c61e60800000000000000
+      internalID: 7932747423023142860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_41
+      rect:
+        serializedVersion: 2
+        x: 2174
+        y: 1120
+        width: 57
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a88eef98a0dd0280800000000000000
+      internalID: -9075368251425388377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_42
+      rect:
+        serializedVersion: 2
+        x: 2240
+        y: 1121
+        width: 58
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7fed3887ded0e3750800000000000000
+      internalID: 6286477443436109559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_43
+      rect:
+        serializedVersion: 2
+        x: 1507
+        y: 1031
+        width: 44
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5c709acb31b55cb0800000000000000
+      internalID: -4875796151199040421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_44
+      rect:
+        serializedVersion: 2
+        x: 1551
+        y: 1031
+        width: 52
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a89ca8cc245d7e210800000000000000
+      internalID: 1362291895179069834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_45
+      rect:
+        serializedVersion: 2
+        x: 1606
+        y: 1031
+        width: 46
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6aa82aa98e5f4e810800000000000000
+      internalID: 1793828930975861414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_46
+      rect:
+        serializedVersion: 2
+        x: 1659
+        y: 1030
+        width: 44
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f79a4992083b71a0800000000000000
+      internalID: -6810788427654850569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_47
+      rect:
+        serializedVersion: 2
+        x: 1710
+        y: 1031
+        width: 49
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e00ecffdd0c1b46b0800000000000000
+      internalID: -5311120489635323890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_48
+      rect:
+        serializedVersion: 2
+        x: 1758
+        y: 1030
+        width: 45
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f00e4f4830b34b840800000000000000
+      internalID: 5238877152840310799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_49
+      rect:
+        serializedVersion: 2
+        x: 1809
+        y: 1031
+        width: 49
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a86bbb30110728d0800000000000000
+      internalID: -2871325068192159583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_50
+      rect:
+        serializedVersion: 2
+        x: 1883
+        y: 1030
+        width: 47
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b341aeb8beba0c80800000000000000
+      internalID: -8355656457951034448
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_51
+      rect:
+        serializedVersion: 2
+        x: 1938
+        y: 1031
+        width: 46
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fce05e16512444200800000000000000
+      internalID: 163328146096328399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_52
+      rect:
+        serializedVersion: 2
+        x: 1992
+        y: 1031
+        width: 15
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e469c2f9edb581410800000000000000
+      internalID: 1448008291910981198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_53
+      rect:
+        serializedVersion: 2
+        x: 2011
+        y: 1031
+        width: 52
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63b1e162415a06ec0800000000000000
+      internalID: -3575676598174737610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_54
+      rect:
+        serializedVersion: 2
+        x: 2066
+        y: 1031
+        width: 39
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b410513f946e65850800000000000000
+      internalID: 6365528328620015947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_55
+      rect:
+        serializedVersion: 2
+        x: 2111
+        y: 1031
+        width: 47
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 830ea2acbf0d31bd0800000000000000
+      internalID: -2660553174998654920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_56
+      rect:
+        serializedVersion: 2
+        x: 2158
+        y: 1030
+        width: 46
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3553e4cf70a47ba80800000000000000
+      internalID: -8451204777579236013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_57
+      rect:
+        serializedVersion: 2
+        x: 2208
+        y: 1031
+        width: 16
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 783b18e5b873ca680800000000000000
+      internalID: -8742551704907435129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_58
+      rect:
+        serializedVersion: 2
+        x: 2229
+        y: 1031
+        width: 45
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3cf81d0df95419d40800000000000000
+      internalID: 5589325165249007555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BU Information technology and innovation_59
+      rect:
+        serializedVersion: 2
+        x: 2276
+        y: 1031
+        width: 52
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0d663b7f1a82b2c0800000000000000
+      internalID: -4417316416681251571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      BU Information technology and innovation_0: 8060585312669918514
+      BU Information technology and innovation_1: 1241734573451750220
+      BU Information technology and innovation_10: 1378397166256128531
+      BU Information technology and innovation_11: 188456907408409562
+      BU Information technology and innovation_12: -8332457634704511151
+      BU Information technology and innovation_13: 2701806134666641064
+      BU Information technology and innovation_14: 906332123302469712
+      BU Information technology and innovation_15: 6810888380238749332
+      BU Information technology and innovation_16: 3784756724163937535
+      BU Information technology and innovation_17: 7770442869344774037
+      BU Information technology and innovation_18: -409416341235020666
+      BU Information technology and innovation_19: 8933111564710055636
+      BU Information technology and innovation_2: 1291592902913371892
+      BU Information technology and innovation_20: -5698379561985063203
+      BU Information technology and innovation_21: 8130160140848227109
+      BU Information technology and innovation_22: 7742475694784520937
+      BU Information technology and innovation_23: -6653640603100584679
+      BU Information technology and innovation_24: 5610213757861264182
+      BU Information technology and innovation_25: -2543102031795936975
+      BU Information technology and innovation_26: 5358659723286086341
+      BU Information technology and innovation_27: 3534544037201491790
+      BU Information technology and innovation_28: -5399292854106741345
+      BU Information technology and innovation_29: 6425176440764033360
+      BU Information technology and innovation_3: -3739642542661662150
+      BU Information technology and innovation_30: -4716702329736065284
+      BU Information technology and innovation_31: -8288743047024567188
+      BU Information technology and innovation_32: -5851684887977073891
+      BU Information technology and innovation_33: -6433075002073316899
+      BU Information technology and innovation_34: 3313088389583071925
+      BU Information technology and innovation_35: 5650738992856653101
+      BU Information technology and innovation_36: 1011205894546679696
+      BU Information technology and innovation_37: 1502556469578859483
+      BU Information technology and innovation_38: -2127388529782264877
+      BU Information technology and innovation_39: -2182234045912252868
+      BU Information technology and innovation_4: -6251267142499290672
+      BU Information technology and innovation_40: 7932747423023142860
+      BU Information technology and innovation_41: -9075368251425388377
+      BU Information technology and innovation_42: 6286477443436109559
+      BU Information technology and innovation_43: -4875796151199040421
+      BU Information technology and innovation_44: 1362291895179069834
+      BU Information technology and innovation_45: 1793828930975861414
+      BU Information technology and innovation_46: -6810788427654850569
+      BU Information technology and innovation_47: -5311120489635323890
+      BU Information technology and innovation_48: 5238877152840310799
+      BU Information technology and innovation_49: -2871325068192159583
+      BU Information technology and innovation_5: 8067750706962850584
+      BU Information technology and innovation_50: -8355656457951034448
+      BU Information technology and innovation_51: 163328146096328399
+      BU Information technology and innovation_52: 1448008291910981198
+      BU Information technology and innovation_53: -3575676598174737610
+      BU Information technology and innovation_54: 6365528328620015947
+      BU Information technology and innovation_55: -2660553174998654920
+      BU Information technology and innovation_56: -8451204777579236013
+      BU Information technology and innovation_57: -8742551704907435129
+      BU Information technology and innovation_58: 5589325165249007555
+      BU Information technology and innovation_59: -4417316416681251571
+      BU Information technology and innovation_6: 7407090058307224081
+      BU Information technology and innovation_7: 5133322226657723325
+      BU Information technology and innovation_8: -256798021094249772
+      BU Information technology and innovation_9: -6764517901582983355
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
