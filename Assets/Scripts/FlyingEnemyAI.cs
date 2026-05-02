@@ -316,6 +316,16 @@ public class FlyingEnemyAI : MonoBehaviour, IDamageable
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        HandleCollision(collision);
+    }
+
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        HandleCollision(collision);
+    }
+
+    private void HandleCollision(Collision2D collision)
+    {
         if (currentState == EnemyState.Dead) return;
 
         if (collision.gameObject.TryGetComponent<DroneHealth>(out var health))
@@ -344,6 +354,12 @@ public class FlyingEnemyAI : MonoBehaviour, IDamageable
             float impactForce = collision.relativeVelocity.magnitude;
             if (currentState == EnemyState.Dashing || impactForce >= crashThreshold)
             {
+                // If the obstacle is damageable (SmashPlatform, other enemies, etc), damage it on impact
+                if (collision.gameObject.TryGetComponent<IDamageable>(out var damageable))
+                {
+                    damageable.TakeDamage(damageToPlayer); // Deal crash damage to whatever it hit
+                }
+
                 // Crashed into a wall or obstacle hard enough, or while dashing!
                 Die();
             }

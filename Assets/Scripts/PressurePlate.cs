@@ -29,11 +29,17 @@ public class PressurePlate : MonoBehaviour
     public AudioClip releaseSound;
     [Range(0f, 1f)] public float volume = 0.7f;
 
+    [Header("Contact Debounce")]
+    [Tooltip("Grace period (seconds) after the drone breaks contact before the plate counts it as 'left'. Prevents micro-bounce jitter.")]
+    public float exitGraceTime = 0.15f;
+
     private bool isDroneOnPlate = false;
     private bool targetsActivated = false;
     private bool timerRunning = false;
     private bool movingObstacleActivated = false;
     private float timerRemaining = 0f;
+    private float exitGraceTimer = 0f;
+    private bool pendingExit = false;
     private Vector3 originalRendererLocalPos;
     private Vector3 targetLocalPos;
     private DroneController cachedDrone;
@@ -76,6 +82,21 @@ public class PressurePlate : MonoBehaviour
             );
         }
 
+        // --- Exit grace period: absorb micro-bounces ---
+        if (pendingExit)
+        {
+            exitGraceTimer -= Time.deltaTime;
+            if (exitGraceTimer <= 0f)
+            {
+                // Drone genuinely left the plate
+                pendingExit = false;
+                isDroneOnPlate = false;
+                cachedDrone = null;
+                HandleDroneExit();
+            }
+        }
+
+        // --- Timed release (door/gravity zone) ---
         if (!timerRunning) return;
 
         // Timer only counts while drone is OFF the plate
@@ -97,9 +118,12 @@ public class PressurePlate : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        cachedDrone = collision.gameObject.GetComponent<DroneController>();
-        if (cachedDrone == null) return;
+        DroneController drone = collision.gameObject.GetComponent<DroneController>();
+        if (drone == null) return;
+
+        cachedDrone = drone;
         isDroneOnPlate = true;
+        pendingExit = false;  // Cancel any pending exit — drone is back
         timerRunning = false;
 
         TryActivate(collision.rigidbody);
@@ -109,6 +133,7 @@ public class PressurePlate : MonoBehaviour
     {
         if (cachedDrone == null) return;
         isDroneOnPlate = true;
+        pendingExit = false;  // Still in contact — cancel any pending exit
 
         if (!targetsActivated)
             TryActivate(collision.rigidbody);
@@ -117,9 +142,18 @@ public class PressurePlate : MonoBehaviour
     void OnCollisionExit2D(Collision2D collision)
     {
         if (cachedDrone == null) return;
-        cachedDrone = null;
-        isDroneOnPlate = false;
 
+        // Don't immediately count as "left" — start a grace period
+        // to absorb physics micro-bounces
+        pendingExit = true;
+        exitGraceTimer = exitGraceTime;
+    }
+
+    /// <summary>
+    /// Called after the exit grace period expires — the drone genuinely left.
+    /// </summary>
+    private void HandleDroneExit()
+    {
         if (!targetsActivated) return;
 
         bool hasTimedTargets = doorTarget != null || gravityZoneTarget != null;

@@ -3,10 +3,16 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class ExitPortal : MonoBehaviour
 {
-    [Header("Portal Settings")]
-    public Color closedColor = Color.gray;
-    public Color openColor = Color.cyan;
-    
+    [Header("Portal Sprites")]
+    [Tooltip("Sprite shown when the portal is closed (waiting for all data drives).")]
+    public Sprite closedSprite;
+    [Tooltip("Sprite shown when the portal is open and ready to enter.")]
+    public Sprite openSprite;
+
+    [Header("VFX")]
+    [Tooltip("Particle system to play when the portal opens. Assign a child GameObject with a ParticleSystem.")]
+    public ParticleSystem openParticles;
+
     [Header("Audio Settings")]
     public AudioClip openSound;
     public AudioClip enterSound;
@@ -14,7 +20,6 @@ public class ExitPortal : MonoBehaviour
 
     private bool isOpen = false;
     private SpriteRenderer spriteRenderer;
-    private AudioSource audioSource;
 
     void Start()
     {
@@ -24,31 +29,43 @@ public class ExitPortal : MonoBehaviour
         }
 
         spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
+
+        // Show the closed sprite at start, preserve natural sprite color
+        if (spriteRenderer != null && closedSprite != null)
         {
-            spriteRenderer.color = closedColor;
+            spriteRenderer.sprite = closedSprite;
         }
 
-        audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.spatialBlend = 0f;
+        // Particles should be stopped at start
+        if (openParticles != null)
+        {
+            openParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
     }
 
     public void OpenPortal()
     {
         if (isOpen) return;
-        
+
         isOpen = true;
-        
-        if (spriteRenderer != null)
+
+        // Swap to open sprite
+        if (spriteRenderer != null && openSprite != null)
         {
-            spriteRenderer.color = openColor;
+            spriteRenderer.sprite = openSprite;
+        }
+
+        // Play particle effect
+        if (openParticles != null)
+        {
+            openParticles.Play();
         }
 
         if (openSound != null)
         {
             AudioManager.PlaySFX(openSound, volume);
         }
-        
+
         Debug.Log("Exit Portal Opened!");
     }
 

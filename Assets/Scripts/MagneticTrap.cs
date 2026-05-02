@@ -22,6 +22,16 @@ public class MagneticTrap : MonoBehaviour
     [Range(0f, 1f)]
     public float volume = 0.5f;
 
+    [Header("Visual Sprites")]
+    [Tooltip("Sprite shown while the magnet is actively pulling.")]
+    public Sprite activeSprite;
+    [Tooltip("Sprite shown while the magnet is resting/inactive.")]
+    public Sprite inactiveSprite;
+
+    [Header("VFX")]
+    [Tooltip("Particle system that plays while the magnet is active. Will stop when resting.")]
+    public ParticleSystem activeParticles;
+
     [Header("Visual Radius")]
     public int circleSegments = 50;
     public float lineWidth = 0.05f;
@@ -58,6 +68,9 @@ public class MagneticTrap : MonoBehaviour
             radiusLine.useWorldSpace = false;
         }
         DrawRadiusCircle();
+
+        // Initialize visuals to match starting state
+        SetVisual(isActive);
     }
 
     void Update()
@@ -70,24 +83,23 @@ public class MagneticTrap : MonoBehaviour
                 isActive = false;
                 pulseTimer = 0f;
                 if (turnOffSound != null) audioSource.PlayOneShot(turnOffSound, volume);
+                SetVisual(false);
             }
             else if (!isActive && pulseTimer >= restTime)
             {
                 isActive = true;
                 pulseTimer = 0f;
                 if (turnOnSound != null) audioSource.PlayOneShot(turnOnSound, volume);
+                SetVisual(true);
             }
         }
         else
         {
-            isActive = true;
-        }
-
-        if (spriteRenderer != null)
-        {
-            Color c = spriteRenderer.color;
-            c.a = isActive ? 1f : 0.3f;
-            spriteRenderer.color = c;
+            if (!isActive) // Only set once if it wasn't already active
+            {
+                isActive = true;
+                SetVisual(true);
+            }
         }
 
         if (radiusLine != null)
@@ -95,6 +107,25 @@ public class MagneticTrap : MonoBehaviour
             Color targetColor = isActive ? activeColor : inactiveColor;
             radiusLine.startColor = targetColor;
             radiusLine.endColor = targetColor;
+        }
+    }
+
+    private void SetVisual(bool active)
+    {
+        // Swap sprite
+        if (spriteRenderer != null)
+        {
+            Sprite target = active ? activeSprite : inactiveSprite;
+            if (target != null) spriteRenderer.sprite = target;
+        }
+
+        // Control particles
+        if (activeParticles != null)
+        {
+            if (active)
+                activeParticles.Play();
+            else
+                activeParticles.Stop(false, ParticleSystemStopBehavior.StopEmitting);
         }
     }
 

@@ -1,22 +1,10 @@
 using UnityEngine;
 
-public class DataDrive : MonoBehaviour
+public class DataDrive : PickupBase
 {
-    [Header("Effects")]
-    public AudioClip collectSound;
-    [Range(0f, 1f)]
-    public float volume = 0.8f;
-
-    void OnTriggerEnter2D(Collider2D other)
+    protected override void ApplyEffect(Collider2D player)
     {
-        if (other.CompareTag("Player") || other.GetComponent<DroneHealth>() != null)
-        {
-            AudioManager.PlaySFXAt(collectSound, transform.position, volume);
-
-            if (GameUIManager.instance != null)
-                GameUIManager.instance.AddDataDrive();
-
-            Destroy(gameObject);
-        }
+        if (GameUIManager.instance != null)
+            GameUIManager.instance.AddDataDrive();
     }
 }
